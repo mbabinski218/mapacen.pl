@@ -23,14 +23,11 @@ namespace MapacenBackend.Services
 
         public IEnumerable<CategoryDto>? GetCategories()
         {
-            foreach(var category in _dbContext.Categories) 
+            return _dbContext.Categories.Select(category => new CategoryDto
             {
-                yield return new CategoryDto
-                {
-                    Id = category.Id,
-                    Name = category.Name,
-                };
-            }
+                Id = category.Id,
+                Name = category.Name,
+            });
         }
 
         public CategoryDto? GetCategoryById(int id)

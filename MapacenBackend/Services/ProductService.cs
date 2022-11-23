@@ -1,4 +1,5 @@
 ﻿using MapacenBackend.Entities;
+using MapacenBackend.Exceptions;
 using MapacenBackend.Models.CategoryDtos;
 using MapacenBackend.Models.ProductDtos;
 using Microsoft.EntityFrameworkCore;
@@ -61,7 +62,19 @@ namespace MapacenBackend.Services
 
         public void UpdateProduct(int id, UpdateProductDto dto)
         {
-            throw new NotImplementedException();
+            var product = _dbContext.Products.FirstOrDefault(c => c.Id == id);
+            if (product == null) throw new NotFoundException("Category with requested id does not exist");
+
+            if (dto.Category != null && dto.Name != null)
+            {
+                product.Name = dto.Name;
+                product.Category = new Category
+                {
+                    Id = dto.Category.Id,
+                    Name = dto.Category.Name
+                };
+                _dbContext.SaveChanges();
+            }
         }
     }
 

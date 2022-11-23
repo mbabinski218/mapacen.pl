@@ -31,5 +31,12 @@ namespace MapacenBackend.Controllers
         {
             return Ok(_service.GetProductsByCategory(category));
         }
+
+        [HttpPut("{id}")]
+        public ActionResult Update([FromBody] UpdateProductDto dto, [FromRoute] int id)
+        {
+            _service.UpdateProduct(id, dto);
+            return Ok();
+        }
     }
 }
