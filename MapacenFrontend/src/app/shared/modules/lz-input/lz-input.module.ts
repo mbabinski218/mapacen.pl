@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LzInputComponent } from '@shared/modules/actions/lz-input/lz-input.component';
+import { LzInputComponent } from '@shared/modules/lz-input/lz-input.component';
 import { InputMaskModule } from '@ngneat/input-mask';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
-    LzInputComponent
+    LzInputComponent,
   ],
   imports: [
     MatInputModule,

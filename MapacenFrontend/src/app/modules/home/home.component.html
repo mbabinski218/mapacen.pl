@@ -1,4 +1,42 @@
-<button mat-raised-button color="primary">get all</button>
-<button mat-raised-button>get by id</button>
-<button mat-raised-button>post</button>
+<div class="home">
+  <button
+    class="button"
+    mat-stroked-button
+    color="primary"
+    (click)="getAll()"
+  >
+    get all
+  </button>
 
+  <form [formGroup]="form">
+    <button
+      class="button"
+      mat-stroked-button
+      type="button"
+      (click)="getOne()"
+    >
+      get by id
+    </button>
+
+    <lz-input
+      controlName="id"
+      type="number"
+      label="get by id"
+    >
+    </lz-input>
+    <button
+      class="button"
+      mat-stroked-button
+      type="button"
+      (click)="postOne()"
+    >
+      post new
+    </button>
+    <lz-input
+      controlName="name"
+      type="text"
+      label="name to post"
+    >
+    </lz-input>
+  </form>
+</div>

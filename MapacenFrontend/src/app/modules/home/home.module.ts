@@ -5,6 +5,7 @@ import { HomeRoutingModule } from '@modules/home/home-routing.module';
 import { HomeService } from '@modules/home/api/home.service';
 import { MatButtonModule } from '@angular/material/button';
 import { LzInputModule } from '@shared/modules/lz-input/lz-input.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,8 @@ import { LzInputModule } from '@shared/modules/lz-input/lz-input.module';
     HomeRoutingModule,
     MatButtonModule,
     LzInputModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     HomeService,

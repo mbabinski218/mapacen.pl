@@ -2,7 +2,7 @@ import { DAY_AND_RECEIPT_MASK, HARDWARE_OR_SOFTWARE_ID_MASK, UUID_MASK } from '@
 import { AbstractControl, ControlContainer, FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
-import { ErrorMessage } from '@shared/modules/actions/lz-input/interfaces/error-message.interface';
+import { ErrorMessage } from '@shared/modules/lz-input/interfaces/error-message.interface';
 import { Nullable } from '@core/types/nullable';
 import { BANK_ACCOUNT_MASK, DATE_MASK, HOUR_MASK, InputMaskType, NIP_MASK, POSTCODE_MASK, TELEPHONE_MASK, UNIQUE_NUMBER_MASK } from '@app/config/mask-input/mask-input.config';
 import { InputmaskOptions } from '@ngneat/input-mask';
@@ -32,7 +32,7 @@ export class LzInputComponent {
   @Input() placeholder: string;
   @Input() type = 'text';
   @Input() maxLength = 524287;//Maximum length of HTML input
-  @Input() appearance: 'legacy' | 'fill' | 'standard' | 'outline' = 'outline';
+  @Input() appearance: 'fill' | 'outline' = 'outline';
   @Input() lzErrorMessage: Partial<ErrorMessage>;
   @Input() readonly = false;
   @Input() touchedPlaceholder = false;
@@ -63,7 +63,7 @@ export class LzInputComponent {
 
   get visiblePlaceholder(): string {
     if (this.readonly || this.getControl.touched)
-      return;
+      return null;
 
     if (this.touchedPlaceholder)
       return this.placeholder;
@@ -79,6 +79,7 @@ export class LzInputComponent {
       if (Object.prototype.hasOwnProperty.call(this.getControl.errors, key))
         return this.lzErrorMessage[key as keyof ErrorMessage];
     }
+    return null;
   }
 
   setMask(value: InputMaskType): InputmaskOptions<unknown> {
