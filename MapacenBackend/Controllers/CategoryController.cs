@@ -30,7 +30,7 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Category> CreateCategory([FromBody] CreateCategoryDto dto)
+        public ActionResult<CategoryDto> CreateCategory([FromBody] CreateCategoryDto dto)
         {
             var category = _service.CreateCategory(dto);
             return Created($"/api/category/{category.Id}", category);

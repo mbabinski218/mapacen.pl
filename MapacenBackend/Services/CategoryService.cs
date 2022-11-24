@@ -8,7 +8,7 @@ namespace MapacenBackend.Services
     {
         IEnumerable<CategoryDto>? GetCategories();
         CategoryDto? GetCategoryById(int id);
-        Category CreateCategory(CreateCategoryDto dto);
+        CategoryDto CreateCategory(CreateCategoryDto dto);
         void UpdateCategory(int id, UpdateCategoryDto dto);
     }
 
@@ -36,12 +36,17 @@ namespace MapacenBackend.Services
             return new CategoryDto { Id= category.Id,Name= category.Name };
         }
 
-        public Category CreateCategory(CreateCategoryDto dto)
+        public CategoryDto CreateCategory(CreateCategoryDto dto)
         {
             var category = new Category { Name = dto.Name };
             _dbContext.Categories.Add(category);
             _dbContext.SaveChanges();
-            return category;
+            
+            return new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
         }
 
         public void UpdateCategory(int id, UpdateCategoryDto dto)
