@@ -1,8 +1,17 @@
-.home {
-  background-color: green;
+.flex-stretch {
+  flex: 1 0 auto;
 }
 
-.button {
-  background-color: navy;
-  margin: 10px 0;
+.content {
+  padding: 10px 20%;
+  min-height: 100vh;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+
+.icon {
+  position: relative;
+  top: 2px;
 }

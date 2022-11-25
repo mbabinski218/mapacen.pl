@@ -1,42 +1,15 @@
-<div class="home">
-  <button
-    class="button"
-    mat-stroked-button
-    color="primary"
-    (click)="getAll()"
+<mat-toolbar color="primary">
+  mapacen.pl
+  <div class="flex-stretch"></div>
+  <mat-icon class="mr-8 icon">brightness_5</mat-icon>
+  <mat-slide-toggle
+    [formControl]="toggleControl"
+    class="mr-8"
   >
-    get all
-  </button>
+  </mat-slide-toggle>
+  <mat-icon class="icon">bedtime</mat-icon>
+</mat-toolbar>
 
-  <form [formGroup]="form">
-    <button
-      class="button"
-      mat-stroked-button
-      type="button"
-      (click)="getOne()"
-    >
-      get by id
-    </button>
-
-    <lz-input
-      controlName="id"
-      type="number"
-      label="get by id"
-    >
-    </lz-input>
-    <button
-      class="button"
-      mat-stroked-button
-      type="button"
-      (click)="postOne()"
-    >
-      post new
-    </button>
-    <lz-input
-      controlName="name"
-      type="text"
-      label="name to post"
-    >
-    </lz-input>
-  </form>
+<div class="content mat-app-background">
+  <app-showoff></app-showoff>
 </div>

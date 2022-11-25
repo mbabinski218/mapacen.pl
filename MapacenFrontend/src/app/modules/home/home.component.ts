@@ -1,41 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HomeService } from '@modules/home/api/home.service';
-import { Category } from '@modules/home/interfaces/home.interface';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, HostBinding } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
-  items$: Observable<Category>;
-  form: FormGroup;
+  @HostBinding('class') className = 'darkMode';
 
-  constructor(
-    private homeService: HomeService,
-    private fb: FormBuilder,
-  ) { }
+  toggleControl = new FormControl(true);
+
+  constructor(private overlay: OverlayContainer) { }
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      id: [null, [Validators.required]],
-      name: [null, [Validators.required]],
+    this.toggleControl.valueChanges.subscribe((darkMode) => {
+      const darkClassName = 'darkMode';
+      this.className = darkMode ? darkClassName : '';
+      darkMode ? this.overlay.getContainerElement().classList.add(darkClassName) : this.overlay.getContainerElement().classList.remove(darkClassName);
     });
   }
-
-  getAll() {
-    this.homeService.getAllCategories().subscribe((res) => console.log(res));
-  }
-
-  getOne() {
-    this.homeService.getCategory(this.form.get('id').value).subscribe((res) => console.log(res));
-  }
-
-  postOne() {
-    this.homeService.createCategory(this.form.get('name').value).subscribe((res) => console.log(res));
-  }
-
 }
