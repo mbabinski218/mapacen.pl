@@ -2,6 +2,7 @@
 using MapacenBackend.Models.CategoryDtos;
 using MapacenBackend.Models.ProductDtos;
 using MapacenBackend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -20,6 +21,7 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Service Administrator, Local Administrator")]
         public ActionResult<Product> CreateProduct([FromBody] CreateProductDto dto)
         {
             var product = _service.CreateProduct(dto);
@@ -27,13 +29,15 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Service Administrator, Local Administrator, User")]
         public ActionResult<IEnumerable<ProductDto>?> GetProductsByCategory([FromQuery] CategoryDto category)
         {
             return Ok(_service.GetProductsByCategory(category));
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update([FromRoute] int id, [FromBody] UpdateProductDto dto)
+        [Authorize(Roles = "Service Administrator, Local Administrator")]
+        public ActionResult Update([FromBody] UpdateProductDto dto, [FromRoute] int id)
         {
             _service.UpdateProduct(id, dto);
             return Ok();

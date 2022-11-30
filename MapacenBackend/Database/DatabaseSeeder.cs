@@ -71,12 +71,12 @@ namespace MapacenBackend.Database
 
                 new Role()
                 {
-                    Name="Local Administrator"
+                    Name = "Local Administrator"
                 },
 
                 new Role()
                 {
-                    Name= "Service Administrator"
+                    Name = "Service Administrator"
                 }
             };
 
