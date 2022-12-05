@@ -6,6 +6,7 @@ using MapacenBackend.Entities;
 using MapacenBackend.Exceptions;
 using MapacenBackend.Models;
 using MapacenBackend.Models.UserDtos;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace MapacenBackend.Services;
@@ -35,27 +36,20 @@ public class UserService : IUserService
     {
         return _dbContext.Users.FirstOrDefault(u => u != null && u.Email == dto.Email) ?? throw new NotFoundException();
     }
-    
+
     public void RegisterUser(CreateUserDto dto)
     {
         CreatePasswordHash(dto.Password, out var passwordHash, out var passwordSalt);
-        if (_dbContext.Users.Any(u => u != null && u.PasswordHash.SequenceEqual(passwordHash)) ||
-            _dbContext.Users.Any(u => u != null && u.PasswordSalt.SequenceEqual(passwordSalt)))
-        {
-            throw new PasswordAlreadyTakenException();
-        }
-        
-        if(_dbContext.Users.Any(u => u != null && u.Email == dto.Email))
-        {
+
+        if (_dbContext.Users.Any(u => u != null && u.Email == dto.Email))
             throw new EmailAlreadyUsedException();
-        }
-        
+
         _dbContext.Users.Add(new User
         {
             Name = dto.Name,
             Email = dto.Email,
             CanComment = true,
-            County = dto.County,
+            CountyId = dto.CountyId,
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
             RoleID = 1
@@ -67,7 +61,7 @@ public class UserService : IUserService
     {
         var user = GetUser(dto);
 
-        if (dto.Password == null || 
+        if (dto.Password == null ||
             !VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
         {
             throw new InvalidLoginDataException();
@@ -82,16 +76,17 @@ public class UserService : IUserService
         user.RefreshToken = refreshToken.Token;
         user.TokenCreated = refreshToken.Created;
         user.TokenExpires = refreshToken.Expires;
-        
+
         _httpContextAccessor.HttpContext?.Response.Cookies.Append("refreshToken", refreshToken.Token, new CookieOptions
         {
             HttpOnly = true,
             Expires = refreshToken.Expires
         });
-        
+
+        _dbContext.SaveChanges();
         return CreateToken(user);
     }
-    
+
     private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
         using var hmac = new HMACSHA512();
@@ -105,17 +100,19 @@ public class UserService : IUserService
         var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         return computedHash.SequenceEqual(passwordHash);
     }
-    
+
     private string CreateToken(User user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
             _configuration.GetSection("Token").Value));
-        
+
+        var role = _dbContext.Roles.FirstOrDefault(r => r.Id == user.RoleID);
+
         var token = new JwtSecurityToken
         (
             claims: new List<Claim>
             {
-                new(ClaimTypes.Role, user.Role.Name)
+                new(ClaimTypes.Role, role.Name)
             },
             expires: DateTime.Now.AddDays(1),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature)

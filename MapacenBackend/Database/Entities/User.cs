@@ -14,7 +14,7 @@ public class User
     public byte[] PasswordSalt { get; set; }
     public County County { get; set; }
     public int CountyId { get; set; }
-    public string RefreshToken { get; set; }
-    public DateTime TokenCreated { get; set; }
-    public DateTime TokenExpires { get; set; }
+    public string? RefreshToken { get; set; }
+    public DateTime? TokenCreated { get; set; }
+    public DateTime? TokenExpires { get; set; }
 }

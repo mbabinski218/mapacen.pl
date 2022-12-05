@@ -10,15 +10,15 @@ public class CreateUserDto
     [MaxLength(128)]
     [MinLength(1)]
     public string Name { get; set; }
-    
+
     [Required]
     [EmailAddress]
     public string Email { get; set; }
-    
+
     [Required]
     [PasswordPropertyText]
     public string Password { get; set; }
-    
+
     [Required]
-    public County County { get; set; }
+    public int CountyId { get; set; }
 }
