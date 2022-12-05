@@ -42,8 +42,8 @@ namespace MapacenBackend.Database
         {
             var counties = new List<County>();
 
-            //using (var sr = new StreamReader(Path.GetFullPath("Database\\Counties.csv")))
-            using(var sr = new StreamReader(@"Counties.csv"))
+            using (var sr = new StreamReader(Path.GetFullPath("Database\\Counties.csv")))
+            //using(var sr = new StreamReader(@"Counties.csv"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -71,12 +71,12 @@ namespace MapacenBackend.Database
 
                 new Role()
                 {
-                    Name="Local Administrator"
+                    Name = "Local Administrator"
                 },
 
                 new Role()
                 {
-                    Name= "Service Administrator"
+                    Name = "Service Administrator"
                 }
             };
 

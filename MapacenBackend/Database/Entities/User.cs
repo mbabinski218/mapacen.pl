@@ -10,7 +10,11 @@ public class User
     public string Email { get; set; }
     public string Name { get; set; }
     public bool CanComment { get; set; }
-    public string PasswordHash { get; set; }
+    public byte[] PasswordHash { get; set; }
+    public byte[] PasswordSalt { get; set; }
     public County County { get; set; }
     public int CountyId { get; set; }
+    public string? RefreshToken { get; set; }
+    public DateTime? TokenCreated { get; set; }
+    public DateTime? TokenExpires { get; set; }
 }
