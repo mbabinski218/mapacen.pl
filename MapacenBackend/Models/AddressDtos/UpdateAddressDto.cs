@@ -23,6 +23,6 @@ namespace MapacenBackend.Models.AddressDtos
         [Range(1, 5000)]
         public int? Number { get; set; }
 
-        public County? County { get; set; }
+        public int? CountyId { get; set; }
     }
 }

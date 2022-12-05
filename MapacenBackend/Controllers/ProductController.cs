@@ -33,7 +33,7 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update([FromBody] UpdateProductDto dto, [FromRoute] int id)
+        public ActionResult Update([FromRoute] int id, [FromBody] UpdateProductDto dto)
         {
             _service.UpdateProduct(id, dto);
             return Ok();

@@ -6,8 +6,8 @@ namespace MapacenBackend.Models.SalesPointDtos
 {
     public class SalesPointDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public AddressDto Address { get; set; }
-        public List<OfferDto> Offers { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace MapacenBackend.Models.ProductDtos
         [MinLength(1)]
         public string? Name { get; set; }
 
-        public CategoryDto? Category { get; set; }
+        public int? CategoryId { get; set; }
     }
 }

@@ -7,7 +7,7 @@ public class MapacenDbContext : DbContext
     public MapacenDbContext(DbContextOptions<MapacenDbContext> options) : base(options)
     {
         //Database.EnsureDeleted();
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
     }
 
     public DbSet<Address> Addresses { get; set; }
@@ -22,9 +22,9 @@ public class MapacenDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Address>()
-            .HasIndex(x => x.Number)
-            .IsUnique();
+        //modelBuilder.Entity<Address>().
+        //    .HasIndex(a => new { a.Street, a.City, a.PostalCode, a.Number })
+        //    .IsUnique();
 
         modelBuilder.Entity<User>()
             .HasIndex(x => x.Email)

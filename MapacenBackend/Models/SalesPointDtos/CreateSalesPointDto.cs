@@ -12,7 +12,7 @@ namespace MapacenBackend.Models.SalesPointDtos
         public string Name { get; set; }
 
         [Required]
-        public CreateAddressDto address { get; set; }
+        public CreateAddressDto Address { get; set; }
 
     }
 }

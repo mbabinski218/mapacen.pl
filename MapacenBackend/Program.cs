@@ -13,10 +13,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //builder.Services.AddDbContext<MapacenDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MapacenString")));
-builder.Services.AddDbContext<MapacenDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mapacen")));
+builder.Services.AddDbContext<MapacenDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MapacenString")));
 builder.Services.AddScoped<DatabaseSeeder>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISalesPointService, SalesPointService>();
 
 var app = builder.Build();
 

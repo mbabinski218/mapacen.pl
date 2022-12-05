@@ -9,6 +9,6 @@ namespace MapacenBackend.Models.SalesPointDtos
         [MinLength(1)]
         public string? Name { get; set; }
 
-        public UpdateAddressDto? address { get; set; }
+        public UpdateAddressDto? Address { get; set; }
     }
 }

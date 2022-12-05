@@ -3,6 +3,7 @@ using MapacenBackend.Exceptions;
 using MapacenBackend.Models.CategoryDtos;
 using MapacenBackend.Models.ProductDtos;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 
 namespace MapacenBackend.Services
 {
@@ -39,20 +40,32 @@ namespace MapacenBackend.Services
         public IEnumerable<ProductDto>? GetProductsByCategory(CategoryDto dto)
         {
             var products = new List<ProductDto>();
-            foreach (var product in GetProductByCategory(dto)?.Products)
+            var category = GetProductCategory(dto);
+
+            if (category == null) throw new NotFoundException("Requested category does not exist");
+
+            foreach (var product in category.Products)
             {
-                products.Add(new ProductDto { Name = product.Name, Category = dto });
+                products.Add(new ProductDto
+                {
+                    Name = product.Name,
+                    Category = new CategoryDto
+                    {
+                        Id = category.Id,
+                        Name = category.Name
+                    }
+                });
             }
 
-            return products.ToList();
+            return products;
         }
 
-        private Category? GetProductByCategory(CategoryDto category)
+        private Category? GetProductCategory(CategoryDto category)
         {
             return _dbContext
                 .Categories
                 .Include(p => p.Products)
-                .FirstOrDefault(p => p.Id == category.Id);
+                .FirstOrDefault(c => c.Id == category.Id);
         }
 
         public Product? GetProductById(int id)
@@ -65,16 +78,10 @@ namespace MapacenBackend.Services
             var product = _dbContext.Products.FirstOrDefault(c => c.Id == id);
             if (product == null) throw new NotFoundException("Category with requested id does not exist");
 
-            if (dto.Category != null && dto.Name != null)
-            {
-                product.Name = dto.Name;
-                product.Category = new Category
-                {
-                    Id = dto.Category.Id,
-                    Name = dto.Category.Name
-                };
-                _dbContext.SaveChanges();
-            }
+            product.Name = dto?.Name ?? product.Name;
+            product.CategoryId = dto?.CategoryId ?? product.CategoryId;
+
+            _dbContext.SaveChanges();
         }
     }
 

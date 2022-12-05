@@ -9,7 +9,7 @@ namespace MapacenBackend.Models.OfferDtos
     {
         public decimal Price { get; set; }
         public ProductDto Product { get; set; }
-        public SalesPointDto SalesPoint { get; set; }
-        public List<CommentDto> Comments { get; set; }
+        public int SalesPointId { get; set; }
+        //public List<CommentDto> Comments { get; set; }
     }
 }

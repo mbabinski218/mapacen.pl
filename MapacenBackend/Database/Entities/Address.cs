@@ -9,4 +9,5 @@ public class Address
     public int Number { get; set; }
     public int CountyId { get; set; }
     public virtual County County { get; set; }
+
 }
