@@ -20,12 +20,12 @@
       Find category by id
     </button>
 
-    <lz-input
+    <my-input
       controlName="id"
       type="number"
       label="Id"
     >
-    </lz-input>
+    </my-input>
     <button
       [disabled]="nameNotValid"
       class="button"
@@ -36,12 +36,12 @@
     >
       Create new category
     </button>
-    <lz-input
+    <my-input
       controlName="name"
       type="text"
       label="Name"
     >
-    </lz-input>
+    </my-input>
     <button
       [disabled]="idNotValid || nameNotValid"
       class="button"

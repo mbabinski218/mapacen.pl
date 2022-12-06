@@ -2,17 +2,17 @@ import { DAY_AND_RECEIPT_MASK, HARDWARE_OR_SOFTWARE_ID_MASK, UUID_MASK } from '@
 import { AbstractControl, ControlContainer, FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
-import { ErrorMessage } from '@shared/modules/lz-input/interfaces/error-message.interface';
+import { ErrorMessage } from '@shared/modules/my-input/interfaces/error-message.interface';
 import { Nullable } from '@core/types/nullable';
 import { BANK_ACCOUNT_MASK, DATE_MASK, HOUR_MASK, InputMaskType, NIP_MASK, POSTCODE_MASK, TELEPHONE_MASK, UNIQUE_NUMBER_MASK } from '@app/config/mask-input/mask-input.config';
 import { InputmaskOptions } from '@ngneat/input-mask';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
-  selector: 'lz-input',
+  selector: 'my-input',
   exportAs: 'input',
-  templateUrl: './lz-input.component.html',
-  styleUrls: ['./lz-input.component.scss'],
+  templateUrl: './my-input.component.html',
+  styleUrls: ['./my-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   viewProviders: [
@@ -22,7 +22,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
     }
   ]
 })
-export class LzInputComponent {
+export class MyInputComponent {
 
   @ViewChild(MatFormFieldControl, { static: true }) control: MatFormFieldControl<string>;
 

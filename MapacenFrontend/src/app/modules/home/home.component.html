@@ -1,15 +1,17 @@
-<mat-toolbar color="primary">
-  mapacen.pl
-  <div class="flex-stretch"></div>
-  <mat-icon class="mr-8 icon">brightness_5</mat-icon>
-  <mat-slide-toggle
-    [formControl]="toggleControl"
-    class="mr-8"
-  >
-  </mat-slide-toggle>
-  <mat-icon class="icon">bedtime</mat-icon>
-</mat-toolbar>
+<div class="background mat-app-background">
+  <div class="move">
+    <mat-icon class="mr-8">brightness_5</mat-icon>
+    <mat-slide-toggle
+      [formControl]="toggleControl"
+      class="mr-8"
+    >
+    </mat-slide-toggle>
+    <mat-icon>bedtime</mat-icon>
+  </div>
+  <!-- nie tykać kurwa tego wyżej!! -->
 
-<div class="content mat-app-background">
-  <app-showoff></app-showoff>
+  <div class="content">
+
+
+  </div>
 </div>

@@ -1,17 +1,20 @@
-.flex-stretch {
-  flex: 1 0 auto;
+.background {
+  height: 100%;
+  width: 100%;
 }
 
 .content {
-  padding: 10px 20%;
-  min-height: 100vh;
+  margin: 10px 15%;
+  border: 1px solid rgba(189, 189, 189, 0.616);
+  padding: 10px;
 }
 
 .mr-8 {
   margin-right: 8px;
 }
 
-.icon {
-  position: relative;
-  top: 2px;
+.move {
+  padding: 8px 8px;
+  display: flex;
+  justify-content: flex-end;
 }

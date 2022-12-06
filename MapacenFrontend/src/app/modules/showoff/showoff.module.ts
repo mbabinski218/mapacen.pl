@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LzInputModule } from '@shared/modules/lz-input/lz-input.module';
+import { MyInputModule } from '@shared/modules/my-input/my-input.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ShowoffComponent } from '@modules/showoff/showoff.component';
@@ -14,7 +14,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
   imports: [
     CommonModule,
     MatButtonModule,
-    LzInputModule,
+    MyInputModule,
     FormsModule,
     ReactiveFormsModule,
     NgxJsonViewerModule,
