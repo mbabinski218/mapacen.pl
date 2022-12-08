@@ -52,7 +52,7 @@ public class UserService : IUserService
             CountyId = dto.CountyId,
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
-            RoleID = 1
+            RoleID = dto.RoleId
         });
         _dbContext.SaveChanges();
     }

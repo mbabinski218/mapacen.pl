@@ -21,7 +21,7 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Service Administrator, Local Administrator")]
+        //[Authorize(Roles = "Service Administrator, Local Administrator")]
         public ActionResult<Product> CreateProduct([FromBody] CreateProductDto dto)
         {
             var product = _service.CreateProduct(dto);
@@ -36,11 +36,17 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Service Administrator, Local Administrator")]
+        //[Authorize(Roles = "Service Administrator, Local Administrator")]
         public ActionResult Update([FromBody] UpdateProductDto dto, [FromRoute] int id)
         {
             _service.UpdateProduct(id, dto);
             return Ok();
+        }
+
+        [HttpGet("{name}")]
+        public ActionResult<IEnumerable<ProductDto>?> GetProductsByName([FromRoute] string name)
+        {
+            return Ok(_service.GetProductsByName(name));
         }
     }
 }

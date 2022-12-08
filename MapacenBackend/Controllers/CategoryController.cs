@@ -33,7 +33,7 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Service Administrator")]
+        //[Authorize(Roles = "Service Administrator")]
         public ActionResult<CategoryDto> CreateCategory([FromBody] CreateCategoryDto dto)
         {
             var category = _service.CreateCategory(dto);

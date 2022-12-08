@@ -1,6 +1,7 @@
 using System.Text;
 using MapacenBackend.Database;
 using MapacenBackend.Entities;
+using MapacenBackend.Middleware;
 using MapacenBackend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,10 @@ builder.Services.AddScoped<DatabaseSeeder>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISalesPointService, SalesPointService>();
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -29,10 +33,11 @@ builder.Services.AddSwaggerGen(options =>
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey
     });
-builder.Services.AddScoped<ISalesPointService, SalesPointService>();
+    //builder.Services.AddScoped<ISalesPointService, SalesPointService>();
 
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -57,6 +62,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -23,17 +23,17 @@ namespace MapacenBackend.Services
 
         public IEnumerable<CategoryDto>? GetCategories()
         {
-            return _dbContext.Categories.Select(category => new CategoryDto
+            return _dbContext.Categories.Select(c => new CategoryDto
             {
-                Id = category.Id,
-                Name = category.Name,
+                Id = c.Id,
+                Name = c.Name,
             });
         }
 
         public CategoryDto? GetCategoryById(int id)
         {
             var category = _dbContext.Categories.FirstOrDefault(c => c.Id == id);
-            return new CategoryDto { Id= category.Id,Name= category.Name };
+            return new CategoryDto { Id = category.Id, Name = category.Name };
         }
 
         public CategoryDto CreateCategory(CreateCategoryDto dto)
@@ -41,7 +41,7 @@ namespace MapacenBackend.Services
             var category = new Category { Name = dto.Name };
             _dbContext.Categories.Add(category);
             _dbContext.SaveChanges();
-            
+
             return new CategoryDto
             {
                 Id = category.Id,

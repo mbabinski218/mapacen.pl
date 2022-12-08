@@ -8,6 +8,5 @@ public class UserDto
     [EmailAddress]
     public string? Email { get; set; }
 
-    [PasswordPropertyText]
     public string? Password { get; set; }
 }

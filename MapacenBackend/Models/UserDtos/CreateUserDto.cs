@@ -16,9 +16,14 @@ public class CreateUserDto
     public string Email { get; set; }
 
     [Required]
-    [PasswordPropertyText]
     public string Password { get; set; }
 
     [Required]
+    [Compare("Password")]
+    public string ConfirmedPassword { get; set; }
+
+    [Required]
     public int CountyId { get; set; }
+
+    public int RoleId { get; set; } = 1;
 }

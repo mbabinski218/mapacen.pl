@@ -13,6 +13,7 @@ namespace MapacenBackend.Services
         Product? GetProductById(int id);
         Product CreateProduct(CreateProductDto dto);
         void UpdateProduct(int id, UpdateProductDto dto);
+        IEnumerable<ProductDto>? GetProductsByName(string name);
     }
 
     public class ProductService : IProductService
@@ -76,12 +77,30 @@ namespace MapacenBackend.Services
         public void UpdateProduct(int id, UpdateProductDto dto)
         {
             var product = _dbContext.Products.FirstOrDefault(c => c.Id == id);
-            if (product == null) throw new NotFoundException("Category with requested id does not exist");
+            if (product == null) throw new NotFoundException("Product with requested id does not exist");
 
             product.Name = dto?.Name ?? product.Name;
             product.CategoryId = dto?.CategoryId ?? product.CategoryId;
 
             _dbContext.SaveChanges();
+        }
+
+        public IEnumerable<ProductDto>? GetProductsByName(string name)
+        {
+            return _dbContext.
+                Products
+                .Where(p => EF
+                .Functions
+                .Like(p.Name, $"%{name}%"))
+                .Select(p => new ProductDto
+                {
+                    Name = p.Name,
+                    Category = new CategoryDto
+                    {
+                        Id = p.Category.Id,
+                        Name = p.Category.Name
+                    }
+                });
         }
     }
 
