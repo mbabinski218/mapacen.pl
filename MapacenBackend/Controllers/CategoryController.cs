@@ -19,14 +19,14 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Service Administrator, Local Administrator, User")]
+        //[Authorize(Roles = "Service Administrator, Local Administrator, User")]
         public ActionResult<IEnumerable<CategoryDto>> GetCategories()
         {
             return Ok(_service.GetCategories());
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Service Administrator, Local Administrator, User")]
+        //[Authorize(Roles = "Service Administrator, Local Administrator, User")]
         public ActionResult<CategoryDto> GetCategoryById([FromRoute] int id)
         {
             return Ok(_service.GetCategoryById(id));
@@ -41,7 +41,7 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Service Administrator")]
+        //[Authorize(Roles = "Service Administrator")]
         public ActionResult Update([FromBody] UpdateCategoryDto dto, [FromRoute] int id)
         {
             _service.UpdateCategory(id, dto);

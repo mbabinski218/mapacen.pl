@@ -60,7 +60,8 @@ namespace MapacenBackend.Services
                 .SalesPoints
                 .Include(s => s.Address)
                 .FirstOrDefault(s => s.Id == id);
-            if (salesPoint == null) throw new NotFoundException("County with requested id does not exist");
+            if (salesPoint == null)
+                throw new NotFoundException("Sales point with requested id does not exist");
 
             salesPoint.Name = dto?.Name ?? salesPoint.Name;
 
@@ -95,7 +96,11 @@ namespace MapacenBackend.Services
                         Street = salesPoint.Address.Street,
                         PostalCode = salesPoint.Address.PostalCode,
                         Number = salesPoint.Address.Number,
-                        CountyId = salesPoint.Address.CountyId
+                        County = new County
+                        {
+                            Id = salesPoint.Address.CountyId,
+                            Name = salesPoint.Address.County.Name
+                        }
                     }
                 };
             }

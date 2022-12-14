@@ -17,4 +17,7 @@ public class User
     public string? RefreshToken { get; set; }
     public DateTime? TokenCreated { get; set; }
     public DateTime? TokenExpires { get; set; }
+    public virtual List<Comment> Comments { get; set; }
+
+    //TODO referencja do ulubionych
 }

@@ -27,6 +27,7 @@ namespace MapacenBackend.Services
 
         public Product CreateProduct(CreateProductDto dto)
         {
+            //TODO not found excpetion
             var product = new Product
             {
                 Name = dto.Name,
@@ -43,7 +44,8 @@ namespace MapacenBackend.Services
             var products = new List<ProductDto>();
             var category = GetProductCategory(dto);
 
-            if (category == null) throw new NotFoundException("Requested category does not exist");
+            if (category == null)
+                throw new NotFoundException("Requested category does not exist");
 
             foreach (var product in category.Products)
             {
@@ -102,6 +104,7 @@ namespace MapacenBackend.Services
                     }
                 });
         }
+
     }
 
 }

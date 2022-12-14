@@ -9,9 +9,9 @@ namespace MapacenBackend.Models.OfferDtos
         public decimal Price { get; set; }
 
         [Required]
-        public Product Product { get; set; }
+        public int ProductId { get; set; }
 
         [Required]
-        public SalesPoint SalesPoint { get; set; }
+        public int SalesPointId { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Service Administrator, Local Administrator, User")]
+        //[Authorize(Roles = "Service Administrator, Local Administrator, User")]
         public ActionResult<IEnumerable<ProductDto>?> GetProductsByCategory([FromQuery] CategoryDto category)
         {
             return Ok(_service.GetProductsByCategory(category));

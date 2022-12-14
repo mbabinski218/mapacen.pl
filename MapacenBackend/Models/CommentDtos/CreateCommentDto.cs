@@ -11,6 +11,9 @@ namespace MapacenBackend.Models.CommentDtos
         public string Content { get; set; }
 
         [Required]
-        public User Author { get; set; }
+        public int UserId { get; set; }
+
+        [Required]
+        public int OfferId { get; set; }
     }
 }

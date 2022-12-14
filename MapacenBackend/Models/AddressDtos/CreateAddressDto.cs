@@ -5,10 +5,11 @@ namespace MapacenBackend.Models.AddressDtos
 {
     public class CreateAddressDto
     {
+        //TODO poprawić regexa żeby polskie znaki przyjmował 
         [Required]
         [MaxLength(64)]
         [MinLength(1)]
-        [RegularExpression(@"^[a-zA-Z]+\-?[a-zA-Z]+$")]  // Accepts upper and lower case letters and one hyphen
+        [RegularExpression(@"^[a-żA-Ż]+\-?[a-żA-Ż]+$")]  // Accepts upper and lower case letters and one hyphen
         public string City { get; set; }
 
         [Required]

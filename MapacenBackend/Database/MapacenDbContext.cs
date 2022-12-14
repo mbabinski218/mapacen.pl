@@ -18,7 +18,7 @@ public class MapacenDbContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<SalesPoint> SalesPoints { get; set; }
-    public DbSet<User?> Users { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,6 +29,7 @@ public class MapacenDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasIndex(x => x.Email)
             .IsUnique();
+
 
         //modelBuilder.Entity<User>()
         //    .AllProperties()
@@ -42,9 +43,17 @@ public class MapacenDbContext : DbContext
         //    .Property(x => x.Products)
         //    .IsRequired();
 
-        //modelBuilder.Entity<Comment>()
-        //    .AllProperties()
-        //    .ForEach(x => x.IsRequired());
+        modelBuilder.Entity<Comment>()
+            .HasOne(c => c.User)
+            .WithMany(u => u.Comments)
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        //modelBuilder.Entity<User>()
+        //    .HasMany(u => u.Comments)
+        //    .WithOne(c => c.User)
+        //    .HasForeignKey(c => c.UserId)
+        //    .OnDelete(DeleteBehavior.Cascade);
 
         //modelBuilder.Entity<Comment>()
         //    .Property(c => c.Content)
