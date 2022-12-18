@@ -23,6 +23,6 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
     MatIconModule,
     TopMenuModule,
-  ]
+  ],
 })
 export class HomeModule { }

@@ -1,6 +1,6 @@
 import { idNameOnly } from './interfaces/top-menu.interface';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { TopMenuService } from './api/top-menu.service';
@@ -18,34 +18,31 @@ export class TopMenuComponent implements OnInit {
   counties: idNameOnly[] = []
   categories: idNameOnly[] = []
   form: FormGroup;
-
-  mySelectedCounty: string;
-  mySelectedCategory: string;
   loginString = 'Zaloguj';
 
-  countyPressed = false;
-  categoriesPressed = false;
-
+  mySelectedCounty: string;
   filteredCounties: Observable<string[]>;
+  myCountyControl = new FormControl('');
+
+  mySelectedCategory: string;
   filteredCategories: Observable<string[]>;
+  myCategoryControl = new FormControl('');
 
   constructor(
     private topMenuService: TopMenuService,
     private fb: FormBuilder,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
-      county: [null],
       product: [null],
-      category: [null],
     });
 
     this.topMenuService.getAllCounties().subscribe((res) => {
       if (res) {
         this.counties = res
-        this.filteredCounties = this.form.get('county').valueChanges.pipe(
+        this.filteredCounties = this.myCountyControl.valueChanges.pipe(
           startWith(''),
           map(value => this._filter(value || '', 'counties')),
         );
@@ -55,7 +52,7 @@ export class TopMenuComponent implements OnInit {
     this.topMenuService.getAllCategories().subscribe((res) => {
       if (res) {
         this.categories = res
-        this.filteredCategories = this.form.get('category').valueChanges.pipe(
+        this.filteredCategories = this.myCategoryControl.valueChanges.pipe(
           startWith(''),
           map(value => this._filter(value || '', 'categories')),
         );

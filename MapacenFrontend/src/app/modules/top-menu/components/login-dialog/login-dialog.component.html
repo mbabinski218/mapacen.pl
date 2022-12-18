@@ -55,7 +55,7 @@
             type="text"
             placeholder="Wybierz powiat"
             matInput
-            controlName="county"
+            [formControl]="myCountyControl"
             [matAutocomplete]="powiat"
           >
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
