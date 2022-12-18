@@ -1,4 +1,5 @@
-﻿using MapacenBackend.Entities;
+﻿using AutoMapper;
+using MapacenBackend.Entities;
 using MapacenBackend.Exceptions;
 using MapacenBackend.Models.CategoryDtos;
 using MapacenBackend.Models.ProductDtos;
@@ -19,20 +20,19 @@ namespace MapacenBackend.Services
     public class ProductService : IProductService
     {
         private readonly MapacenDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public ProductService(MapacenDbContext dbContext)
+        public ProductService(MapacenDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public Product CreateProduct(CreateProductDto dto)
         {
-            //TODO not found excpetion
-            var product = new Product
-            {
-                Name = dto.Name,
-                CategoryId = dto.CategoryId
-            };
+            //TODO not found exception
+            var product = _mapper.Map<Product>(dto);
+
             _dbContext.Products.Add(product);
             _dbContext.SaveChanges();
 
@@ -41,33 +41,21 @@ namespace MapacenBackend.Services
 
         public IEnumerable<ProductDto>? GetProductsByCategory(CategoryDto dto)
         {
-            var products = new List<ProductDto>();
             var category = GetProductCategory(dto);
 
             if (category == null)
                 throw new NotFoundException("Requested category does not exist");
 
-            foreach (var product in category.Products)
-            {
-                products.Add(new ProductDto
-                {
-                    Name = product.Name,
-                    Category = new CategoryDto
-                    {
-                        Id = category.Id,
-                        Name = category.Name
-                    }
-                });
-            }
-
-            return products;
+            return category
+                .Products
+                .Select(product => _mapper.Map<ProductDto>(product));
         }
 
         private Category? GetProductCategory(CategoryDto category)
         {
             return _dbContext
                 .Categories
-                .Include(p => p.Products)
+                .Include(c => c.Products)
                 .FirstOrDefault(c => c.Id == category.Id);
         }
 
@@ -94,15 +82,7 @@ namespace MapacenBackend.Services
                 .Where(p => EF
                 .Functions
                 .Like(p.Name, $"%{name}%"))
-                .Select(p => new ProductDto
-                {
-                    Name = p.Name,
-                    Category = new CategoryDto
-                    {
-                        Id = p.Category.Id,
-                        Name = p.Category.Name
-                    }
-                });
+                .Select(p => _mapper.Map<ProductDto>(p));
         }
 
     }

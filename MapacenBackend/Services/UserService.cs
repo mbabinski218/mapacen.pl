@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using AutoMapper;
 using MapacenBackend.Entities;
 using MapacenBackend.Exceptions;
 using MapacenBackend.Models;
@@ -24,12 +25,14 @@ public class UserService : IUserService
     private readonly MapacenDbContext _dbContext;
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IMapper _mapper;
 
-    public UserService(MapacenDbContext dbContext, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+    public UserService(MapacenDbContext dbContext, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IMapper mapper)
     {
         _dbContext = dbContext;
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
+        _mapper = mapper;
     }
 
     public User GetUser(UserDto dto)

@@ -1,4 +1,5 @@
-﻿using MapacenBackend.Entities;
+﻿using AutoMapper;
+using MapacenBackend.Entities;
 using MapacenBackend.Exceptions;
 using MapacenBackend.Models.AddressDtos;
 using MapacenBackend.Models.CategoryDtos;
@@ -23,29 +24,24 @@ namespace MapacenBackend.Services
     public class OfferService : IOfferService
     {
         private readonly MapacenDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public OfferService(MapacenDbContext dbContext)
+        public OfferService(MapacenDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public int AddOffer(CreateOfferDto dto)
         {
-            if (GetProductById(dto.ProductId) != null
-                && GetSalesPointById(dto.SalesPointId) != null)
-            {
-                var offer = new Offer
-                {
-                    Price = dto.Price,
-                    ProductId = dto.ProductId,
-                    SalesPointId = dto.SalesPointId,
-                };
+            if (GetProductById(dto.ProductId) == null || GetSalesPointById(dto.SalesPointId) == null)
+                throw new InvalidOperationException("Fatal error");
 
-                _dbContext.Offers.Add(offer);
-                _dbContext.SaveChanges();
-                return offer.Id;
-            }
-            throw new InvalidOperationException("Fatal error");
+            var offer = _mapper.Map<Offer>(dto);
+
+            _dbContext.Offers.Add(offer);
+            _dbContext.SaveChanges();
+            return offer.Id;
         }
 
         public IEnumerable<OfferDto>? GetOffers(int countyId, string productName, int? categoryId)
@@ -65,37 +61,7 @@ namespace MapacenBackend.Services
                 .Where(o => o.SalesPoint.Address.CountyId == countyId)
                 .Where(o => EF.Functions
                     .Like(o.Product.Name, $"%{productName}%"))
-                    .Select(o => new OfferDto
-                    {
-                        Id = o.Id,
-                        Price = o.Price,
-                        Product = new ProductDto
-                        {
-                            Name = o.Product.Name,
-                            Category = new CategoryDto
-                            {
-                                Id = o.Product.CategoryId,
-                                Name = o.Product.Category.Name,
-                            }
-                        },
-                        SalesPoint = new SalesPointDto
-                        {
-                            Id = o.SalesPointId,
-                            Name = o.SalesPoint.Name,
-                            Address = new AddressDto
-                            {
-                                City = o.SalesPoint.Address.City,
-                                Street = o.SalesPoint.Address.Street,
-                                PostalCode = o.SalesPoint.Address.PostalCode,
-                                Number = o.SalesPoint.Address.Number,
-                                County = new County
-                                {
-                                    Id = o.SalesPoint.Address.CountyId,
-                                    Name = o.SalesPoint.Address.County.Name
-                                }
-                            }
-                        }
-                    });
+                    .Select(o => _mapper.Map<OfferDto>(o));
         }
 
         private IEnumerable<OfferDto>? GetOffersByProductNameAndCategory(int countyId, string productName, int categoryId)
@@ -109,37 +75,7 @@ namespace MapacenBackend.Services
                 .Where(o => o.Product.CategoryId == categoryId)
                 .Where(o => EF.Functions
                     .Like(o.Product.Name, $"%{productName}%"))
-                    .Select(o => new OfferDto
-                    {
-                        Id = o.Id,
-                        Price = o.Price,
-                        Product = new ProductDto
-                        {
-                            Name = o.Product.Name,
-                            Category = new CategoryDto
-                            {
-                                Id = o.Product.CategoryId,
-                                Name = o.Product.Category.Name,
-                            }
-                        },
-                        SalesPoint = new SalesPointDto
-                        {
-                            Id = o.SalesPointId,
-                            Name = o.SalesPoint.Name,
-                            Address = new AddressDto
-                            {
-                                City = o.SalesPoint.Address.City,
-                                Street = o.SalesPoint.Address.Street,
-                                PostalCode = o.SalesPoint.Address.PostalCode,
-                                Number = o.SalesPoint.Address.Number,
-                                County = new County
-                                {
-                                    Id = o.SalesPoint.Address.CountyId,
-                                    Name = o.SalesPoint.Address.County.Name
-                                }
-                            }
-                        }
-                    });
+                    .Select(o => _mapper.Map<OfferDto>(o));
         }
 
         public IEnumerable<CommentDto>? GetAllComments(int offerId)
@@ -148,13 +84,7 @@ namespace MapacenBackend.Services
                 .Comments
                 .Where(c => c.OfferId == offerId)
                 .Include(c => c.User)
-                .Select(c => new CommentDto
-                {
-                    Author = c.User.Name,
-                    Likes = c.Likes,
-                    DisLikes = c.Dislikes,
-                    Content = c.Content
-                });
+                .Select(c => _mapper.Map<CommentDto>(c));
 
             //return _dbContext
             //    .Offers
@@ -186,7 +116,7 @@ namespace MapacenBackend.Services
             var offer = _dbContext
                 .Offers
                 .FirstOrDefault(o => o.Id == id);
-            if (offer == null) throw new NotFoundException("Offer with requsted id does not exist");
+            if (offer == null) throw new NotFoundException("Offer with requested id does not exist");
             return offer;
         }
 
@@ -194,8 +124,7 @@ namespace MapacenBackend.Services
         {
             var product = _dbContext
                 .Products
-                .Where(p => p.Id == id)
-                .FirstOrDefault();
+                .FirstOrDefault(p => p.Id == id);
 
             if (product == null)
                 throw new NotFoundException("Product with requested id does not exist");
@@ -205,8 +134,7 @@ namespace MapacenBackend.Services
         private SalesPoint GetSalesPointById(int id)
         {
             var salesPoint = _dbContext.SalesPoints
-                .Where(s => s.Id == id)
-                .FirstOrDefault();
+                .FirstOrDefault(s => s.Id == id);
 
             if (salesPoint == null)
                 throw new NotFoundException("SalesPoint with requested id does not exist");

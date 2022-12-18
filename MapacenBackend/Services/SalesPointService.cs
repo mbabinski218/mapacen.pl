@@ -1,4 +1,5 @@
-﻿using MapacenBackend.Entities;
+﻿using AutoMapper;
+using MapacenBackend.Entities;
 using MapacenBackend.Exceptions;
 using MapacenBackend.Models.AddressDtos;
 using MapacenBackend.Models.SalesPointDtos;
@@ -18,40 +19,29 @@ namespace MapacenBackend.Services
     public class SalesPointService : ISalesPointService
     {
         private readonly MapacenDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public SalesPointService(MapacenDbContext dbContext)
+        public SalesPointService(MapacenDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public SalesPoint CreateSalesPoint(CreateSalesPointDto dto)
         {
-            var salesPoint = new SalesPoint
-            {
-                Name = dto.Name,
-                Address = new Address
-                {
-                    City = dto.Address.City,
-                    Street = dto.Address.Street,
-                    PostalCode = dto.Address.PostalCode,
-                    Number = dto.Address.Number,
-                    CountyId = dto.Address.CountyId
-                }
-            };
+            var salesPoint = _mapper.Map<SalesPoint>(dto);
 
             if (_dbContext.Addresses.Any(a =>
-                a.City == salesPoint.Address.City &&
-                a.Street == salesPoint.Address.Street &&
-                a.PostalCode == salesPoint.Address.PostalCode &&
-                a.Number == salesPoint.Address.Number &&
-                a.CountyId == salesPoint.Address.CountyId))
+                    a.City == salesPoint.Address.City &&
+                    a.Street == salesPoint.Address.Street &&
+                    a.PostalCode == salesPoint.Address.PostalCode &&
+                    a.Number == salesPoint.Address.Number &&
+                    a.CountyId == salesPoint.Address.CountyId))
                 throw new NotUniqueElementException("Sales point address must be unique");
 
             _dbContext.Add(salesPoint);
             _dbContext.SaveChanges();
-
             return salesPoint;
-
         }
 
         public void UpdateSalesPoint(int id, UpdateSalesPointDto dto)
@@ -60,12 +50,13 @@ namespace MapacenBackend.Services
                 .SalesPoints
                 .Include(s => s.Address)
                 .FirstOrDefault(s => s.Id == id);
+
             if (salesPoint == null)
                 throw new NotFoundException("Sales point with requested id does not exist");
 
             salesPoint.Name = dto?.Name ?? salesPoint.Name;
 
-            if (dto.Address != null)
+            if (dto?.Address != null)
             {
                 salesPoint.Address.City = dto?.Address.City ?? salesPoint.Address.City;
                 salesPoint.Address.Street = dto?.Address.Street ?? salesPoint.Address.Street;
@@ -79,31 +70,11 @@ namespace MapacenBackend.Services
 
         public IEnumerable<SalesPointDto>? GetSalesPointsByCounty(int countyId)
         {
-            var salesPoints = _dbContext
+            return _dbContext
                 .SalesPoints
                 .Include(s => s.Address)
-                .Where(s => s.Address.CountyId == countyId);
-
-            foreach (var salesPoint in salesPoints)
-            {
-                yield return new SalesPointDto
-                {
-                    Id = salesPoint.Id,
-                    Name = salesPoint.Name,
-                    Address = new AddressDto
-                    {
-                        City = salesPoint.Address.City,
-                        Street = salesPoint.Address.Street,
-                        PostalCode = salesPoint.Address.PostalCode,
-                        Number = salesPoint.Address.Number,
-                        County = new County
-                        {
-                            Id = salesPoint.Address.CountyId,
-                            Name = salesPoint.Address.County.Name
-                        }
-                    }
-                };
-            }
+                .Where(s => s.Address.CountyId == countyId)
+                .Select(s => _mapper.Map<SalesPointDto>(s));
         }
     }
 }

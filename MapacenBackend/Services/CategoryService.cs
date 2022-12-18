@@ -1,4 +1,5 @@
-﻿using MapacenBackend.Entities;
+﻿using AutoMapper;
+using MapacenBackend.Entities;
 using MapacenBackend.Models.CategoryDtos;
 using MapacenBackend.Exceptions;
 
@@ -15,38 +16,32 @@ namespace MapacenBackend.Services
     public class CategoryService : ICategoryService
     {
         private readonly MapacenDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public CategoryService(MapacenDbContext dbContext)
+        public CategoryService(MapacenDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public IEnumerable<CategoryDto>? GetCategories()
         {
-            return _dbContext.Categories.Select(c => new CategoryDto
-            {
-                Id = c.Id,
-                Name = c.Name,
-            });
+            return _dbContext.Categories.Select(c => _mapper.Map<CategoryDto>(c));
         }
 
         public CategoryDto? GetCategoryById(int id)
         {
             var category = _dbContext.Categories.FirstOrDefault(c => c.Id == id);
-            return new CategoryDto { Id = category.Id, Name = category.Name };
+            return _mapper.Map<CategoryDto>(category);
         }
 
         public CategoryDto CreateCategory(CreateCategoryDto dto)
         {
-            var category = new Category { Name = dto.Name };
+            var category = _mapper.Map<Category>(dto);
             _dbContext.Categories.Add(category);
             _dbContext.SaveChanges();
 
-            return new CategoryDto
-            {
-                Id = category.Id,
-                Name = category.Name
-            };
+            return _mapper.Map<CategoryDto>(category);
         }
 
         public void UpdateCategory(int id, UpdateCategoryDto dto)

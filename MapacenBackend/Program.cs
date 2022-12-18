@@ -2,6 +2,7 @@ using System.Text;
 using MapacenBackend.Database;
 using MapacenBackend.Entities;
 using MapacenBackend.Middleware;
+using MapacenBackend.Models;
 using MapacenBackend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ builder.Services.AddScoped<ISalesPointService, SalesPointService>();
 builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSwaggerGen(options =>
