@@ -1,6 +1,7 @@
 import { Component, HostBinding } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ export class HomeComponent {
 
   toggleControl = new FormControl(true);
 
-  constructor(private overlay: OverlayContainer) { }
+  constructor(private overlay: OverlayContainer, private router: Router) { }
 
   ngOnInit(): void {
     this.toggleControl.valueChanges.subscribe((darkMode) => {
@@ -21,5 +22,9 @@ export class HomeComponent {
       this.className = darkMode ? darkClassName : '';
       darkMode ? this.overlay.getContainerElement().classList.add(darkClassName) : this.overlay.getContainerElement().classList.remove(darkClassName);
     });
+  }
+
+  onAdminButtonClick(): void {
+    this.router.navigateByUrl('/home/admin-panel');
   }
 }

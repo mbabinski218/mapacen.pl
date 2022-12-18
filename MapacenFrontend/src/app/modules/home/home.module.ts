@@ -9,9 +9,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { AdminComponent } from '../admin/admin.component';
+import { MatButtonModule } from '@angular/material/button';
+
+
 @NgModule({
   declarations: [
     HomeComponent,
+    AdminComponent,
   ],
   imports: [
     CommonModule,
@@ -22,6 +27,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     ReactiveFormsModule,
     MatToolbarModule,
     ShowoffModule,
+    MatButtonModule,
+    MatIconModule,
+
   ],
 })
 export class HomeModule { }
