@@ -1,0 +1,88 @@
+app-top-menu {
+  .top {
+    padding: 8px 16px;
+    margin: 5px 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 16px;
+    justify-content: space-between;
+  }
+
+  .title {
+    font-size: 38px;
+    font-weight: 700;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: rgb(245, 245, 245);
+
+    &--move {
+      display: flex;
+      align-items: baseline;
+    }
+  }
+
+  .button {
+    cursor: pointer;
+    border: 2px solid rgb(245, 245, 245);
+    border-radius: 12px;
+    min-height: 45px;
+    min-width: 45px;
+    height: 45px;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .icon {
+    color: rgb(245, 245, 245);
+  }
+
+  .mat-mdc-form-field {
+    flex-direction: unset !important;
+    display: flex !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    width: 0 !important;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .powiat {
+    cursor: pointer;
+    min-width: 240px;
+    border-radius: 4px;
+  }
+
+  .kategoria {
+    cursor: pointer;
+    min-width: 220px;
+    border-radius: 4px;
+    position: relative;
+    right: 40px;
+  }
+
+  .produkt {
+    min-width: 320px;
+    width: 100%;
+    border-radius: 4px;
+  }
+
+  .login {
+    min-height: 45px;
+    border: 2px solid rgb(245, 245, 245) !important;
+    background-color: rgb(96, 72, 156);
+    border-radius: 16px;
+  }
+
+  .find {
+    position: relative;
+    right: 40px;
+  }
+}

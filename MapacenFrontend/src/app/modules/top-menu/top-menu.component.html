@@ -1,0 +1,89 @@
+<div class="top mainColor">
+  <div class="title--move">
+    <span class="title">mapacen.pl</span>
+  </div>
+
+  <!-- <div class="button backgroundColor">
+    <mat-icon class="icon">public</mat-icon>
+  </div> -->
+
+  <form
+    [formGroup]="form"
+    class="container"
+  >
+    <div class="button backgroundColor">
+      <mat-icon class="icon">favorite_outlined</mat-icon>
+    </div>
+
+    <mat-form-field
+      appearance="outline"
+      class="backgroundColor powiat"
+    >
+      <mat-label>Powiat</mat-label>
+      <input
+        type="text"
+        placeholder="Wybierz powiat"
+        matInput
+        controlName="county"
+        [matAutocomplete]="powiat"
+      >
+      <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+      <mat-autocomplete #powiat="matAutocomplete">
+        <mat-option
+          *ngFor="let option of filteredCounties | async"
+          [value]="option"
+          (onSelectionChange)="selectedCounty(option)"
+        >
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <div class="produkt backgroundColor">
+      <my-input
+        controlName="product"
+        type="text"
+        label="Wyszukaj produkt"
+      >
+      </my-input>
+    </div>
+    <mat-form-field
+      appearance="outline"
+      class="backgroundColor kategoria"
+    >
+      <mat-label>Kategoria</mat-label>
+      <input
+        type="text"
+        placeholder="Wybierz kategorię"
+        matInput
+        controlName="category"
+        [matAutocomplete]="kategoria"
+      >
+      <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+      <mat-autocomplete #kategoria="matAutocomplete">
+        <mat-option
+          *ngFor="let option of filteredCategories | async"
+          [value]="option"
+          (onSelectionChange)="selectedCategory(option)"
+        >
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <div
+      (click)="search()"
+      class="button find secondaryColor"
+    >
+      <mat-icon>search</mat-icon>
+    </div>
+  </form>
+
+  <button
+    mat-stroked-button
+    (click)="logIn()"
+    class="login"
+  >
+    {{ loginString }}
+  </button>
+</div>
