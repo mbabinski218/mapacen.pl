@@ -1,0 +1,67 @@
+.top-text {
+  margin-top: 10%;
+  text-align: center;
+  align-items: center;
+  font-size: 56px;
+  color: white;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button-grid {
+  margin-top: 10%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+
+button {
+  width: 500px;
+  height: 180px;
+  background-image: linear-gradient(to right, #196880, #1f7d99, #269fc4);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 42px;
+  font-style: italic;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  cursor: pointer;
+  background-image: linear-gradient(to right, #1e7c99, #238dad, #31c2ee);
+}
+
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-container {
+  margin-top: 50px;
+}
+
+input {
+  border-radius: 25px;
+  width: 1050px;
+  height: 50px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0 10px;
+  font-size: 32px;
+}
+
+.frame {
+  color: rgb(255, 255, 255);
+  margin-top: 20px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

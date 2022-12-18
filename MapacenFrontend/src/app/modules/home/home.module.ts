@@ -10,9 +10,14 @@ import { FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TopMenuModule } from '@modules/top-menu/top-menu.module';
 
+import { AdminComponent } from '../admin/admin.component';
+import { MatButtonModule } from '@angular/material/button';
+
+
 @NgModule({
   declarations: [
     HomeComponent,
+    AdminComponent,
   ],
   imports: [
     CommonModule,
@@ -23,7 +28,10 @@ import { TopMenuModule } from '@modules/top-menu/top-menu.module';
     ReactiveFormsModule,
     MatToolbarModule,
     ShowoffModule,
+    MatButtonModule,
+    MatIconModule,
     TopMenuModule,
+
   ],
   providers: [
     // FormGroupDirective,

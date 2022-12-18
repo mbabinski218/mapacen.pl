@@ -3,3 +3,21 @@
   border: 1px solid rgba(189, 189, 189, 0.616);
   padding: 10px;
 }
+
+.mr-8 {
+  margin-right: 8px;
+}
+
+.move {
+  padding: 8px 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-button {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  background-color: rgb(96, 72, 156);
+
+}

@@ -1,0 +1,33 @@
+<div [hidden]="isHidden">
+  <div class="top-text">{{adviceText}}</div>
+</div>
+<div class="button-grid">
+  <button (click)="addUser()">Zbanuj użytkownika</button>
+  <button (click)="deleteUser()">Odblokuj użytkownika</button>
+  <button (click)="addCategory()">Dodaj kategorię</button>
+  <button (click)="deleteCategory()">Usuń kategorię</button>
+</div>
+<div class="input-container">
+  <input
+    [value]="text"
+    (input)="saveInput($event)"
+    placeholder="Wpisz tekst..."
+  >
+</div>
+<div *ngIf="actionsArray.length > 0; else noActions">
+  <div class="frame">
+    <ng-container *ngFor="let action of actionsArray.reverse()">
+      <li>
+        {{action.formattedDate}}
+        {{action.action}}
+      </li>
+      <br>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #noActions>
+  <div class="frame">
+    Brak akcji w ostatnim czasie...
+  </div>
+</ng-template>
