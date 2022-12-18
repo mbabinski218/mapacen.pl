@@ -6,8 +6,9 @@ import { AuthenticationModule } from '@modules/authentication/authentication.mod
 import { ShowoffModule } from '@modules/showoff/showoff.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { TopMenuModule } from '@modules/top-menu/top-menu.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     ReactiveFormsModule,
     MatToolbarModule,
     ShowoffModule,
+    TopMenuModule,
   ],
+  providers: [
+    // FormGroupDirective,
+  ]
 })
 export class HomeModule { }
