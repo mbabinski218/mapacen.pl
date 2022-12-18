@@ -1,5 +1,4 @@
-import { Category } from './../showoff/interfaces/showoff.interface';
-import { County } from './interfaces/showoff.interface';
+import { idNameOnly } from './interfaces/top-menu.interface';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -16,8 +15,8 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
 })
 export class TopMenuComponent implements OnInit {
 
-  counties: County[] = []
-  categories: Category[] = []
+  counties: idNameOnly[] = []
+  categories: idNameOnly[] = []
   form: FormGroup;
 
   mySelectedCounty: string;

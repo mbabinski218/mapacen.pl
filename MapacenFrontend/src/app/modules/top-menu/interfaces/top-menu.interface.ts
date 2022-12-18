@@ -1,4 +1,4 @@
-export interface County {
+export interface idNameOnly {
   id: number,
   name: string,
 }

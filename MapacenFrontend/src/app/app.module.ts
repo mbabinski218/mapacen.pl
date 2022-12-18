@@ -19,9 +19,6 @@ import { InputMaskModule } from '@ngneat/input-mask';
     RouterModule,
     InputMaskModule,
   ],
-  providers: [
-    
-  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

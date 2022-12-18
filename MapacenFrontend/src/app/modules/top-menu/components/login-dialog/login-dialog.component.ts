@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { map, Observable, startWith } from 'rxjs';
-import { County } from '@modules/top-menu/interfaces/showoff.interface';
+import { idNameOnly } from '@modules/top-menu/interfaces/top-menu.interface';
 
 @Component({
   selector: 'app-login-dialog',
@@ -21,7 +21,7 @@ export class LoginDialogComponent {
   filteredCounties: Observable<string[]>;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public counties: County[],
+    @Inject(MAT_DIALOG_DATA) public counties: idNameOnly[],
     public dialogRef: MatDialogRef<LoginDialogComponent>,
     private fb: FormBuilder,
   ) { }
