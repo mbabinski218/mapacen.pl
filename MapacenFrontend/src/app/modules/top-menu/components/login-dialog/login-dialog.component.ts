@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { map, Observable, startWith } from 'rxjs';
@@ -16,9 +16,10 @@ export class LoginDialogComponent {
   loginForm: FormGroup;
   registerForm: FormGroup;
   login = true;
+  
   currentCounty: string;
-
   filteredCounties: Observable<string[]>;
+  myCountyControl = new FormControl('');
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public counties: idNameOnly[],
@@ -34,12 +35,11 @@ export class LoginDialogComponent {
     this.registerForm = this.fb.group({
       email: [null, [Validators.required]],
       userName: [null, [Validators.required]],
-      county: [null, [Validators.required]],
       password: [null, [Validators.required]],
       passwordAgain: [null, [Validators.required]],
     });
 
-    this.filteredCounties = this.registerForm.get('county').valueChanges.pipe(
+    this.filteredCounties = this.myCountyControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );

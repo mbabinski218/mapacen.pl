@@ -2,7 +2,7 @@
   <div class="title--move">
     <span class="title">mapacen.pl</span>
   </div>
-  
+
   <form
     [formGroup]="form"
     class="container"
@@ -20,7 +20,7 @@
         type="text"
         placeholder="Wybierz powiat"
         matInput
-        controlName="county"
+        [formControl]="myCountyControl"
         [matAutocomplete]="powiat"
       >
       <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
@@ -52,7 +52,7 @@
         type="text"
         placeholder="Wybierz kategorię"
         matInput
-        controlName="category"
+        [formControl]="myCategoryControl"
         [matAutocomplete]="kategoria"
       >
       <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
