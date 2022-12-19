@@ -1,7 +1,10 @@
 <div class="top mainColor">
-  <div class="title--move">
-    <span class="title">mapacen.pl</span>
-  </div>
+  <span
+    (click)="reload()"
+    class="title"
+  >
+    mapacen.pl
+  </span>
 
   <form
     [formGroup]="form"
@@ -14,6 +17,7 @@
     <mat-form-field
       appearance="outline"
       class="backgroundColor powiat"
+      (click)="openState('county')"
     >
       <mat-label>Powiat</mat-label>
       <input
@@ -22,13 +26,23 @@
         matInput
         [formControl]="myCountyControl"
         [matAutocomplete]="powiat"
+        (click)="openState('county')"
       >
-      <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      <mat-autocomplete #powiat="matAutocomplete">
+      <mat-icon
+        matSuffix
+        (click)="openState('county')"
+      >
+        <span *ngIf="openedCounties">keyboard_arrow_up</span>
+        <span *ngIf="!openedCounties">keyboard_arrow_down</span>
+      </mat-icon>
+      <mat-autocomplete
+        #powiat="matAutocomplete"
+        (optionSelected)="selectedCounty($event)"
+        (closed)="closeState('county')"
+      >
         <mat-option
           *ngFor="let option of filteredCounties | async"
           [value]="option"
-          (onSelectionChange)="selectedCounty(option)"
         >
           {{ option }}
         </mat-option>
@@ -46,6 +60,7 @@
     <mat-form-field
       appearance="outline"
       class="backgroundColor kategoria"
+      (click)="openState('category')"
     >
       <mat-label>Kategoria</mat-label>
       <input
@@ -54,13 +69,23 @@
         matInput
         [formControl]="myCategoryControl"
         [matAutocomplete]="kategoria"
+        (click)="openState('category')"
       >
-      <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      <mat-autocomplete #kategoria="matAutocomplete">
+      <mat-icon
+        matSuffix
+        (click)="openState('category')"
+      >
+        <span *ngIf="openedCategories">keyboard_arrow_up</span>
+        <span *ngIf="!openedCategories">keyboard_arrow_down</span>
+      </mat-icon>
+      <mat-autocomplete
+        #kategoria="matAutocomplete"
+        (optionSelected)="selectedCategory($event)"
+        (closed)="closeState('category')"
+      >
         <mat-option
           *ngFor="let option of filteredCategories | async"
           [value]="option"
-          (onSelectionChange)="selectedCategory(option)"
         >
           {{ option }}
         </mat-option>
