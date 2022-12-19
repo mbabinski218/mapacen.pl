@@ -9,17 +9,13 @@ app-top-menu {
   }
 
   .title {
+    cursor: pointer;
     font-size: 38px;
     font-weight: 700;
     height: 100%;
     display: flex;
     align-items: center;
     color: rgb(245, 245, 245);
-
-    &--move {
-      display: flex;
-      align-items: baseline;
-    }
   }
 
   .button {

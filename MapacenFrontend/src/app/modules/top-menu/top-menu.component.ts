@@ -6,6 +6,7 @@ import { startWith, map } from 'rxjs/operators';
 import { TopMenuService } from './api/top-menu.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-top-menu',
@@ -27,6 +28,9 @@ export class TopMenuComponent implements OnInit {
   mySelectedCategory: string;
   filteredCategories: Observable<string[]>;
   myCategoryControl = new FormControl('');
+
+  openedCategories = false;
+  openedCounties = false;
 
   constructor(
     private topMenuService: TopMenuService,
@@ -60,21 +64,23 @@ export class TopMenuComponent implements OnInit {
     })
   }
 
-  selectedCounty(selected: string): void {
-    this.mySelectedCounty = selected;
-    console.log(selected)
+  selectedCounty(selected: MatAutocompleteSelectedEvent): void {
+    this.mySelectedCounty = selected.option.value;
     // strzał do api po id, chyba sie wali z tym ostatnim wybranym
 
   }
 
-  selectedCategory(selected: string): void {
-    this.mySelectedCategory = selected;
-    console.log(selected)
+  selectedCategory(selected: MatAutocompleteSelectedEvent): void {
+    this.mySelectedCategory = selected.option.value;
     // strzał do api po id, chyba sie wali z tym ostatnim wybranym
   }
 
   search() {
     //szuka przedmiotów filtrując po wyszukiwaniu i jak jest to też po kategorii
+  }
+
+  reload() {
+    window.location.reload();
   }
 
   logIn() {
@@ -84,6 +90,14 @@ export class TopMenuComponent implements OnInit {
       panelClass: 'loginDialog',
       data: this.counties,
     });
+  }
+
+  openState(where: string): void {
+    where === 'category' ? this.openedCategories = true : this.openedCounties = true;
+  }
+
+  closeState(where: string): void {
+    where === 'category' ? this.openedCategories = false : this.openedCounties = false;
   }
 
   private _filter(value: string, which: string): string[] {
