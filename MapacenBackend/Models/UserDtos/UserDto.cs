@@ -1,12 +1,14 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using MapacenBackend.Entities;
 
-namespace MapacenBackend.Models.UserDtos;
-
-public class UserDto
+namespace MapacenBackend.Models.UserDtos
 {
-    [EmailAddress]
-    public string? Email { get; set; }
+    public class UserDto
+    {
+        public string Email { get; set; }
+        public string Name { get; set; }
+        public bool CanComment { get; set; }
+        public string RoleName { get; set; }
+        public County County { get; set; }
 
-    public string? Password { get; set; }
+    }
 }

@@ -15,7 +15,7 @@ namespace MapacenBackend.Models.AddressDtos
         [Required]
         [MaxLength(64)]
         [MinLength(1)]
-        [RegularExpression(@"^[a-zA-Z]+(\s?[a-zA-Z]+)*$")] //Accepts upper and lower case letters and spaces
+        [RegularExpression(@"^[a-żA-Ż]+(\s?[a-żA-Ż]+)*$")] //Accepts upper and lower case letters and spaces
         public string Street { get; set; }
 
         [Required]

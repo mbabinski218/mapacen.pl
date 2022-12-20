@@ -1,4 +1,5 @@
-﻿using MapacenBackend.Models.UserDtos;
+﻿using MapacenBackend.Models;
+using MapacenBackend.Models.UserDtos;
 using MapacenBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,15 +22,15 @@ namespace MapacenBackend.Controllers
             _service.RegisterUser(dto);
             return Ok();
         }
-        
+
         [HttpPost("login")]
-        public ActionResult<string> Login([FromBody] UserDto dto)
+        public ActionResult<TokenToReturn> Login([FromBody] LoginUserDto dto)
         {
             return Ok(_service.LoginUser(dto));
         }
-        
+
         [HttpPost("refreshToken")]
-        public ActionResult<string> RefreshToken([FromBody] UserDto dto)
+        public ActionResult<string> RefreshToken([FromBody] LoginUserDto dto)
         {
             var user = _service.GetUser(dto);
             var refreshToken = Request.Cookies["refreshToken"];
@@ -38,13 +39,26 @@ namespace MapacenBackend.Controllers
             {
                 return Unauthorized("Invalid Refresh Token.");
             }
-            
-            if(user.TokenExpires < DateTime.Now)
+
+            if (user.TokenExpires < DateTime.Now)
             {
                 return Unauthorized("Token expired.");
             }
-            
+
             return Ok(_service.GenerateNewTokensForUser(user));
+        }
+
+        [HttpPost("userCounty/{userId}/{countyId}")]
+        public ActionResult ChangeUserCounty([FromRoute] int userId, [FromRoute] int countyId)
+        {
+            _service.ChangeUserCounty(userId, countyId);
+            return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<UserDto> GetUser([FromRoute] int id)
+        {
+            return Ok(_service.GetUser(id));
         }
     }
 }

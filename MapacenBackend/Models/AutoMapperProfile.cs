@@ -39,7 +39,7 @@ namespace MapacenBackend.Models
             CreateMap<CreateSalesPointDto, SalesPoint>();
 
             // User
-            CreateMap<User, UserDto>();
+            CreateMap<User, LoginUserDto>();
         }
     }
 }

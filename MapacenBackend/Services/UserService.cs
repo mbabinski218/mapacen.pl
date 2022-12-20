@@ -14,10 +14,12 @@ namespace MapacenBackend.Services;
 
 public interface IUserService
 {
-    public User GetUser(UserDto dto);
+    public User GetUser(LoginUserDto dto);
     public void RegisterUser(CreateUserDto dto);
-    public string LoginUser(UserDto dto);
+    public TokenToReturn LoginUser(LoginUserDto dto);
     public string GenerateNewTokensForUser(User user);
+    void ChangeUserCounty(int userId, int countyId);
+    UserDto GetUser(int id);
 }
 
 public class UserService : IUserService
@@ -35,9 +37,12 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
-    public User GetUser(UserDto dto)
+    public User GetUser(LoginUserDto dto)
     {
-        return _dbContext.Users.FirstOrDefault(u => u != null && u.Email == dto.Email) ?? throw new NotFoundException();
+        return _dbContext
+            .Users
+            //.Include(u => u.County)
+            .FirstOrDefault(u => u != null && u.Email == dto.Email) ?? throw new NotFoundException();
     }
 
     public void RegisterUser(CreateUserDto dto)
@@ -60,7 +65,7 @@ public class UserService : IUserService
         _dbContext.SaveChanges();
     }
 
-    public string LoginUser(UserDto dto)
+    public TokenToReturn LoginUser(LoginUserDto dto)
     {
         var user = GetUser(dto);
 
@@ -70,7 +75,23 @@ public class UserService : IUserService
             throw new InvalidLoginDataException();
         }
 
-        return GenerateNewTokensForUser(user);
+        string generatedNewToken = GenerateNewTokensForUser(user);
+
+        //return new UserDto
+        //{
+        //    Name = user.Name,
+        //    RoleName = user.Role.Name,
+        //    Email = user.Email,
+        //    CanComment = user.CanComment,
+        //    County = new County
+        //    {
+        //        Id = user.County.Id,
+        //        Name = user.County.Name
+        //    },
+        //    TokenContent = generatedNewToken
+        //};
+
+        return new TokenToReturn(generatedNewToken);
     }
 
     public string GenerateNewTokensForUser(User user)
@@ -89,6 +110,39 @@ public class UserService : IUserService
         _dbContext.SaveChanges();
         return CreateToken(user);
     }
+
+    public void ChangeUserCounty(int userId, int countyId)
+    {
+        _dbContext
+            .Users
+            .FirstOrDefault(u => u.Id == userId)
+            !.CountyId = countyId;
+
+        _dbContext.SaveChanges();
+    }
+
+    public UserDto GetUser(int id)
+    {
+        var user = _dbContext
+            .Users
+            .Include(u => u.County)
+            .Include(u => u.Role)
+            .FirstOrDefault(u => u.Id == id);
+
+        return new UserDto
+        {
+            Name = user.Name,
+            RoleName = user.Role.Name,
+            Email = user.Email,
+            CanComment = user.CanComment,
+            County = new County
+            {
+                Id = user.County.Id,
+                Name = user.County.Name
+            },
+        };
+    }
+
 
     private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
@@ -115,7 +169,12 @@ public class UserService : IUserService
         (
             claims: new List<Claim>
             {
-                new(ClaimTypes.Role, role.Name)
+                new(type:"userId", user.Id.ToString()),
+                new(type:"role", user.Role.Name),
+                new(type:"name", user.Name),
+                new(type:"email", user.Email),
+                new(type:"countyId", user.CountyId.ToString()),
+                new(type:"canComment", user.CanComment.ToString())
             },
             expires: DateTime.Now.AddDays(1),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature)
