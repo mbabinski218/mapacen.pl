@@ -27,6 +27,8 @@
         [formControl]="myCountyControl"
         [matAutocomplete]="powiat"
         (click)="openState('county')"
+        (keyup.enter)="chooseFirstOption()"
+        [value]="userCounty"
       >
       <mat-icon
         matSuffix
@@ -70,6 +72,7 @@
         [formControl]="myCategoryControl"
         [matAutocomplete]="kategoria"
         (click)="openState('category')"
+        (keyup.enter)="chooseFirstOption()"
       >
       <mat-icon
         matSuffix
@@ -93,18 +96,56 @@
     </mat-form-field>
 
     <div
-      (click)="search()"
       class="button find secondaryColor"
+      (click)="search()"
     >
       <mat-icon>search</mat-icon>
     </div>
   </form>
 
   <button
+    *ngIf="!logged; else log"
     mat-stroked-button
-    (click)="logIn()"
     class="login"
+    (click)="logIn()"
   >
-    {{ loginString }}
+    Zaloguj
   </button>
+
+  <ng-template
+    #log
+    class="logowanie"
+  >
+    <button
+      class="login logowanie"
+      (click)="showUserInfo = !showUserInfo"
+    >
+      <mat-icon class="iconLogged">face_5</mat-icon>
+    </button>
+  </ng-template>
+
+  <mat-card
+    class="user"
+    *ngIf="showUserInfo"
+  >
+    <mat-card-header>
+      <mat-card-title>Informacje o koncie</mat-card-title>
+    </mat-card-header><br>
+    <mat-card-content>
+      <div class="info">
+        <span>Pseudonim: {{ userName }}</span>
+        <span>E-mail: {{ userEmail }}</span>
+        <span>Powiat: {{ userCounty }}</span><br>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        class="login"
+        mat-button
+        (click)="logout()"
+      >
+        Wyloguj
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

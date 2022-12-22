@@ -71,6 +71,7 @@ app-top-menu {
   }
 
   .login {
+    cursor: pointer;
     min-height: 45px;
     border: 2px solid rgb(245, 245, 245) !important;
     background-color: rgb(96, 72, 156);
@@ -80,5 +81,40 @@ app-top-menu {
   .find {
     position: relative;
     right: 40px;
+  }
+
+  .iconLogged {
+    font-size: 35px;
+    width: fit-content;
+    height: fit-content;
+    color: white;
+  }
+
+  .logowanie {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .user {
+    position: absolute;
+    width: 250px;
+    z-index: 10;
+    top: 7.5%;
+    right: 2%;
+    display: flex;
+    align-items: center;
+    background-color: rgb(22, 32, 65);
+    border: 2px solid rgb(245, 245, 245);
+    border-radius: 16px;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-size: 17px;
   }
 }

@@ -11,10 +11,16 @@ export class AdminComponent {
 
   categories = new Array<string>
 
+
+
+  
   constructor() {
     this.users = [new User('Adam_Kowalski', false), new User('Monika16', false), new User('Łowca-okazji', false)]
     this.categories = ['Alkohole', 'Drób', 'Meble']
-  }
+  }//TODO KONSTRUKTOR TYLKO DO TWORZENIA OBIEKTOW, JAK CO MA SIE STAC PRZY UTWORZENIU KOMPONENTU TO PISZE SIE W ngOnInit()!
+
+
+
   //end of testing code fragment
 
   adviceText = ''

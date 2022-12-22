@@ -4,14 +4,28 @@ export interface idNameOnly {
 }
 
 export interface Login {
-  email: string;
-  password: string;
+  email: string,
+  password: string,
 }
 
 export interface Register {
-  name: string;
-  email: string;
-  password: string;
-  confirmedPassword: string;
-  countyId: number;
+  name: string,
+  email: string,
+  password: string,
+  confirmedPassword: string,
+  countyId: number,
+}
+
+export interface Token {
+  tokenContent: string,
+}
+
+export interface TokenContent {
+  name: string,
+  email: string,
+  role: string,
+  countyId: string,
+  userId: string,
+  canComment: string,
+  exp: number,
 }

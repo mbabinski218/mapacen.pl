@@ -41,3 +41,13 @@ body {
 .mat-mdc-dialog-container .mdc-dialog__surface {
   background-color: transparent !important;
 }
+
+.cdk-overlay-pane:not(.mat-mdc-autocomplete-panel-above) .mdc-menu-surface.mat-mdc-autocomplete-panel {
+  background-color: rgb(96, 72, 156);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

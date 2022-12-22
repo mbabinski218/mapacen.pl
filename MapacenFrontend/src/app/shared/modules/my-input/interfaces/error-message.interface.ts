@@ -7,7 +7,7 @@ export interface ErrorMessage {
   inputMask: string;
   nip: string;
   incorrect: string;
-  maxlength: string;
+  maxLength: string;
   badCurrentPassword: string;
   badSamePassword: string;
   nipGus: string;

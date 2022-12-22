@@ -1,16 +1,18 @@
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TopMenuComponent } from './top-menu.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { TopMenuService } from './api/top-menu.service';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { TopMenuComponent } from '@modules/top-menu/top-menu.component';
 import { MyInputModule } from '@shared/modules/my-input/my-input.module';
-import { TopMenuService } from './api/top-menu.service';
-import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { ToastMessageModule } from '@shared/modules/toast-message/toast-message.module';
+import { LoginDialogComponent } from '@modules/top-menu/components/login-dialog/login-dialog.component';
 
 @NgModule({
   declarations: [
@@ -18,16 +20,18 @@ import { MatDialogModule } from '@angular/material/dialog';
     LoginDialogComponent,
   ],
   imports: [
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatAutocompleteModule,
-    MatFormFieldModule,
     FormsModule,
-    ReactiveFormsModule,
-    MatInputModule,
+    CommonModule,
+    MatIconModule,
     MyInputModule,
+    MatCardModule,
+    MatInputModule,
+    MatButtonModule,
     MatDialogModule,
+    ToastMessageModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
   ],
   exports: [
     TopMenuComponent,
