@@ -7,12 +7,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { OffersComponent } from './modules/offers/offers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    OffersComponent,
   ],
   imports: [
     RouterModule,
