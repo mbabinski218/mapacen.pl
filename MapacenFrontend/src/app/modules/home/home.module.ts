@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { HomeComponent } from '@modules/home/home.component';
+import { TopMenuModule } from '@modules/top-menu/top-menu.module';
 import { HomeRoutingModule } from '@modules/home/home-routing.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { TopMenuModule } from '@modules/top-menu/top-menu.module';
-import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -15,14 +15,14 @@ import { MatButtonModule } from '@angular/material/button';
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule,
-    MatSlideToggleModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatToolbarModule,
-    MatButtonModule,
     MatIconModule,
     TopMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule,
+    HomeRoutingModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule,
   ],
 })
 export class HomeModule { }

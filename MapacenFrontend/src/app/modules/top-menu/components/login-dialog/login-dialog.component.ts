@@ -1,13 +1,15 @@
-import { USERNAME_PATTERN } from './../../../../core/constants/validation-patterns.conts';
-import { Component, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { map, Observable, startWith } from 'rxjs';
-import { idNameOnly } from '@modules/top-menu/interfaces/top-menu.interface';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TopMenuService } from '@modules/top-menu/api/top-menu.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { idNameOnly } from '@modules/top-menu/interfaces/top-menu.interface';
+import { USERNAME_PATTERN } from '@core/constants/validation-patterns.conts';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MyLocalStorageService } from '@shared/services/my-local-storage.service';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@core/constants/validation-patterns.conts';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { ToastMessageService } from '@shared/modules/toast-message/services/toast-message.service';
 
 @Component({
   selector: 'app-login-dialog',
@@ -17,6 +19,7 @@ import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@core/constants/validation-patt
 })
 export class LoginDialogComponent {
 
+  @ViewChild(MatAutocomplete) matAutocomplete: MatAutocomplete;
   loginForm: FormGroup;
   registerForm: FormGroup;
   login = true;
@@ -30,11 +33,16 @@ export class LoginDialogComponent {
   passwordMode = 'password';
   openedCounties = false;
 
+  registerValid = false;
+  loginValid = false;
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public counties: idNameOnly[],
-    public dialogRef: MatDialogRef<LoginDialogComponent>,
     private fb: FormBuilder,
     private topMenuService: TopMenuService,
+    private toastMessageService: ToastMessageService,
+    public dialogRef: MatDialogRef<LoginDialogComponent>,
+    private myLocalStorageService: MyLocalStorageService,
+    @Inject(MAT_DIALOG_DATA) public counties: idNameOnly[],
   ) { }
 
   ngOnInit() {
@@ -54,10 +62,31 @@ export class LoginDialogComponent {
       startWith(''),
       map(value => this._filter(value || '')),
     );
+
+    this.registerForm.valueChanges.subscribe((res) => {
+      if (res.password === res.confirmedPassword) {
+        this.registerForm.get('confirmedPassword').setErrors(null)
+        this.registerForm.setErrors(null)
+      }
+      else {
+        this.registerForm.get('confirmedPassword').setErrors({ 'incorrect': true })
+        this.registerForm.setErrors({ 'incorrect': true })
+      }
+
+      this.registerValid = this.registerForm.valid;
+    })
+
+    this.loginForm.valueChanges.subscribe(() => {
+      this.loginValid = this.loginForm.valid;
+    })
   }
 
   change(): void {
     this.login = !this.login;
+
+    this.loginForm.reset();
+    this.registerForm.reset();
+    this.myCountyControl.reset();
   }
 
   selectedCounty(selected: MatAutocompleteSelectedEvent): void {
@@ -68,15 +97,20 @@ export class LoginDialogComponent {
   handleFormSubmit() {
     if (this.login) {
       if (this.loginForm.valid) {
-        console.log('ruchanie')
-        // this.topMenuService.loginUser(this.loginForm.value).subscribe((res) => console.log(res))
+        this.topMenuService.loginUser(this.loginForm.value).subscribe((res) => {
+          this.myLocalStorageService.setStorage(res)
+          this.dialogRef.close();
+          this.refresh();
+        })
       }
       return;
     }
 
     if (this.registerForm.valid && this.myCountyControl.valid) {
-      console.log('ruchanie')
-      // this.topMenuService.registerUser(this.registerForm.value).subscribe((res) => console.log(res))
+      this.topMenuService.registerUser(this.registerForm.value).subscribe(() => {
+        this.toastMessageService.notifyOfSuccess('Rejestracja powiodła się! Teraz możesz się zalogować')
+        this.change();
+      })
     }
   }
 
@@ -99,6 +133,14 @@ export class LoginDialogComponent {
 
   closeState(): void {
     this.openedCounties = false;
+  }
+
+  chooseFirstOption(): void {
+    this.matAutocomplete.options.first.select();
+  }
+
+  private refresh() {
+    setTimeout(() => window.location.reload(), 10)
   }
 
   private _filter(value: string): string[] {

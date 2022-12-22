@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: RoutesPath.HOME
+    redirectTo: RoutesPath.HOME,
   },
 ];
 

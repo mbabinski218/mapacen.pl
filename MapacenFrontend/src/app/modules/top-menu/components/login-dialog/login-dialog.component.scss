@@ -27,6 +27,7 @@ app-login-dialog {
     border: 2px solid rgb(245, 245, 245) !important;
     background-color: rgb(96, 72, 156);
     border-radius: 16px;
+    height: 50px !important;
   }
 
   .position {
@@ -51,7 +52,6 @@ app-login-dialog {
   .icon {
     cursor: pointer;
     position: relative;
-    top: 0px;
-    right: 8px;
+    right: 12px;
   }
 }
