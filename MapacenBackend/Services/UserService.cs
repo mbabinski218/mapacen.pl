@@ -41,7 +41,6 @@ public class UserService : IUserService
     {
         return _dbContext
             .Users
-            //.Include(u => u.County)
             .FirstOrDefault(u => u != null && u.Email == dto.Email) ?? throw new NotFoundException();
     }
 
@@ -50,7 +49,7 @@ public class UserService : IUserService
         CreatePasswordHash(dto.Password, out var passwordHash, out var passwordSalt);
 
         if (_dbContext.Users.Any(u => u != null && u.Email == dto.Email))
-            throw new EmailAlreadyUsedException();
+            throw new EmailAlreadyUsedException("Wpisany email jest już zajęty");
 
         _dbContext.Users.Add(new User
         {
@@ -72,7 +71,7 @@ public class UserService : IUserService
         if (dto.Password == null ||
             !VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
         {
-            throw new InvalidLoginDataException();
+            throw new InvalidLoginDataException("Niepoprawny login lub hasło");
         }
 
         string generatedNewToken = GenerateNewTokensForUser(user);

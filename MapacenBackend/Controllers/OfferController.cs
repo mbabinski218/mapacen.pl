@@ -25,10 +25,10 @@ namespace MapacenBackend.Controllers
             return Created($"api/offer/{offerId}", null);
         }
 
-        [HttpGet] 
-        public ActionResult<IEnumerable<OfferDto>> GetOffers(int countyId, string productName, int? categoryId)
+        [HttpGet]
+        public ActionResult<IEnumerable<OfferDto>> GetOffers(int countyId, string productName, int? categoryId, int pageSize, int pageNumber)
         {
-            return Ok(_service.GetOffers(countyId, productName, categoryId));
+            return Ok(_service.GetOffers(countyId, productName, categoryId, pageSize, pageNumber));
         }
 
         [HttpGet("comments/{offerId}")]

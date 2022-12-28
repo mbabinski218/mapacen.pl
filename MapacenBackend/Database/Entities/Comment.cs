@@ -10,4 +10,5 @@ public class Comment
     public virtual User User { get; set; }
     public int OfferId { get; set; }
     public virtual Offer Offer { get; set; }
+    public DateTime CreationDate { get; set; }
 }

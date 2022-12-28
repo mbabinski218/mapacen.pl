@@ -1,3 +1,4 @@
+using MapacenBackend.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace MapacenBackend.Entities;
@@ -19,6 +20,7 @@ public class MapacenDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<SalesPoint> SalesPoints { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Favourites> Favourites { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

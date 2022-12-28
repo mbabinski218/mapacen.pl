@@ -15,9 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<MapacenDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mapacenAzure")));
-
-//builder.Services.AddDbContext<MapacenDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MapacenString")));
+//builder.Services.AddDbContext<MapacenDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("mapacenAzure")));
+builder.Services.AddDbContext<MapacenDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MapacenString")));
 builder.Services.AddScoped<DatabaseSeeder>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -61,7 +60,7 @@ var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
 seeder.Seed();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

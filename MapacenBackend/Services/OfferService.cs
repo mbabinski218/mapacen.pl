@@ -17,7 +17,7 @@ namespace MapacenBackend.Services
     {
         public int AddOffer(CreateOfferDto dto);
         IEnumerable<CommentDto>? GetAllComments(int offerId);
-        IEnumerable<OfferDto>? GetOffers(int countyId, string productName, int? categoryId);
+        IEnumerable<OfferDto>? GetOffers(int countyId, string productName, int? categoryId, int pageSize, int pageNumber);
         void UpdateOffer(int id, UpdateOfferDto dt);
     }
 
@@ -44,38 +44,50 @@ namespace MapacenBackend.Services
             return offer.Id;
         }
 
-        public IEnumerable<OfferDto>? GetOffers(int countyId, string productName, int? categoryId)
+        public IEnumerable<OfferDto>? GetOffers(int countyId, string productName, int? categoryId, int pageSize, int pageNumber)
         {
             return categoryId == null
-                ? GetOffersByProductName(countyId, productName)
-                : GetOffersByProductNameAndCategory(countyId, productName, (int)categoryId);
+                ? GetOffersByProductName(countyId, productName, pageSize, pageNumber)
+                : GetOffersByProductNameAndCategory(countyId, productName, (int)categoryId, pageSize, pageNumber);
         }
 
-        private IEnumerable<OfferDto>? GetOffersByProductName(int countyId, string productName)
+        private IEnumerable<OfferDto>? GetOffersByProductName(int countyId, string productName, int pageSize, int pageNumber)
         {
-            return _dbContext
+            var offers = _dbContext
                 .Offers
                 .Include(o => o.Product)
+                    .ThenInclude(p => p.Category)
                 .Include(o => o.SalesPoint)
                     .ThenInclude(s => s.Address)
+                        .ThenInclude(a => a.County)
                 .Where(o => o.SalesPoint.Address.CountyId == countyId)
                 .Where(o => EF.Functions
                     .Like(o.Product.Name, $"%{productName}%"))
-                    .Select(o => _mapper.Map<OfferDto>(o));
+                .Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize);
+
+            return _mapper.Map<List<OfferDto>>(offers);
+
         }
 
-        private IEnumerable<OfferDto>? GetOffersByProductNameAndCategory(int countyId, string productName, int categoryId)
+        private IEnumerable<OfferDto>? GetOffersByProductNameAndCategory(int countyId, string productName, int categoryId, int pageSize, int pageNumber)
         {
-            return _dbContext
+            var offers = _dbContext
                 .Offers
                 .Include(o => o.Product)
+                    .ThenInclude(p => p.Category)
                 .Include(o => o.SalesPoint)
                     .ThenInclude(s => s.Address)
+                        .ThenInclude(a => a.County)
                 .Where(o => o.SalesPoint.Address.CountyId == countyId)
                 .Where(o => o.Product.CategoryId == categoryId)
                 .Where(o => EF.Functions
                     .Like(o.Product.Name, $"%{productName}%"))
-                    .Select(o => _mapper.Map<OfferDto>(o));
+                .Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize)
+                .ToList();
+
+            return _mapper.Map<List<OfferDto>>(offers);
         }
 
         public IEnumerable<CommentDto>? GetAllComments(int offerId)
@@ -85,21 +97,12 @@ namespace MapacenBackend.Services
                 .Where(c => c.OfferId == offerId)
                 .Include(c => c.User)
                 .Select(c => _mapper.Map<CommentDto>(c));
-
-            //return _dbContext
-            //    .Offers
-            //    .Where(o => o.Id == offerId)
-            //    .Include(o => o.Comments)
-            //    .Select(o => o.Comments)
-            //    .Select(lc => lc.ForEach(l => ))
-            //    .Select(c => new CommentDto
-            //    {
-            //        Author = c.User.Name,
-            //        Likes = c.Likes,
-            //        DisLikes = c.Dislikes,
-            //        Content = c.Content
-            //    });
         }
+
+        //public void AddOfferToFavourites(OfferDto offerDto)
+        //{
+
+        //}
 
         public void UpdateOffer(int id, UpdateOfferDto dto)
         {

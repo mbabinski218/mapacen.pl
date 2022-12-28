@@ -1,4 +1,5 @@
 ﻿using MapacenBackend.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MapacenBackend.Models.CommentDtos
@@ -15,5 +16,7 @@ namespace MapacenBackend.Models.CommentDtos
 
         [Required]
         public int OfferId { get; set; }
+
+        public DateTime CreationDate { get; set; } = DateTime.Now;
     }
 }
