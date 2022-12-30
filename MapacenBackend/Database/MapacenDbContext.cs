@@ -1,4 +1,3 @@
-using MapacenBackend.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace MapacenBackend.Entities;
@@ -21,6 +20,7 @@ public class MapacenDbContext : DbContext
     public DbSet<SalesPoint> SalesPoints { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Favourites> Favourites { get; set; }
+    public DbSet<FavouritesOffer> FavouritesOffer { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,24 +32,22 @@ public class MapacenDbContext : DbContext
             .HasIndex(x => x.Email)
             .IsUnique();
 
-
-        //modelBuilder.Entity<User>()
-        //    .AllProperties()
-        //    .ForEach(x => x.IsRequired());
-
-        //modelBuilder.Entity<Role>()
-        //    .AllProperties()
-        //    .ForEach(x => x.IsRequired());
-
-        //modelBuilder.Entity<Category>()
-        //    .Property(x => x.Products)
-        //    .IsRequired();
-
         modelBuilder.Entity<Comment>()
             .HasOne(c => c.User)
             .WithMany(u => u.Comments)
             .HasForeignKey(c => c.UserId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<FavouritesOffer>()
+        .HasKey(fo => new { fo.OfferId, fo.FavouritesId });
+        modelBuilder.Entity<FavouritesOffer>()
+            .HasOne(fo => fo.Favourites)
+            .WithMany(b => b.FavouritesOffer)
+            .HasForeignKey(fo => fo.FavouritesId);
+        modelBuilder.Entity<FavouritesOffer>()
+            .HasOne(fo => fo.Offer)
+            .WithMany(c => c.FavouritesOffer)
+            .HasForeignKey(fo => fo.OfferId);
 
         //modelBuilder.Entity<User>()
         //    .HasMany(u => u.Comments)

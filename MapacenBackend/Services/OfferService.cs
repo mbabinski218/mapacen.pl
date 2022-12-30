@@ -16,7 +16,9 @@ namespace MapacenBackend.Services
     public interface IOfferService
     {
         public int AddOffer(CreateOfferDto dto);
+        void AddOfferToFavourites(int offerId, int favoritesId);
         IEnumerable<CommentDto>? GetAllComments(int offerId);
+        IEnumerable<OfferDto>? GetFavouritesOffers(int favouritesId);
         IEnumerable<OfferDto>? GetOffers(int countyId, string productName, int? categoryId, int pageSize, int pageNumber);
         void UpdateOffer(int id, UpdateOfferDto dt);
     }
@@ -99,10 +101,42 @@ namespace MapacenBackend.Services
                 .Select(c => _mapper.Map<CommentDto>(c));
         }
 
-        //public void AddOfferToFavourites(OfferDto offerDto)
-        //{
+        public void AddOfferToFavourites(int offerId, int favoritesId)
+        {
+            _dbContext.FavouritesOffer.Add(
+                new FavouritesOffer
+                {
+                    FavouritesId = _dbContext.Favourites.FirstOrDefault(f => f.Id == favoritesId).Id,
+                    OfferId = GetOfferById(offerId).Id
+                });
 
-        //}
+            _dbContext.SaveChanges();
+        }
+
+        public IEnumerable<OfferDto>? GetFavouritesOffers(int favouritesId)
+        {
+            //var offers = _dbContext
+            //    .Favourites
+            //    .Where(f => f.Id == favouritesId)
+            //    .Include(f => f.FavouritesOffer)
+            //    .ThenInclude(f => f.Offer)
+            //    .Select(f => f.);
+
+            var offers = _dbContext
+                .FavouritesOffer
+                .Where(fo => fo.FavouritesId == favouritesId)
+                .Include(fo => fo.Offer)
+                .ThenInclude(o => o.Product)
+                .ThenInclude(p => p.Category)
+                .Include(fo => fo.Offer.SalesPoint)
+                .ThenInclude(s => s.Address)
+                .ThenInclude(a => a.County)
+                .Select(fo => fo.Offer)
+                .ToList();
+
+            return _mapper.Map<List<OfferDto>>(offers);
+
+        }
 
         public void UpdateOffer(int id, UpdateOfferDto dto)
         {

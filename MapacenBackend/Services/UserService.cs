@@ -9,6 +9,7 @@ using MapacenBackend.Models;
 using MapacenBackend.Models.UserDtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+//using Database.Entities.Favourites;
 
 namespace MapacenBackend.Services;
 
@@ -51,6 +52,10 @@ public class UserService : IUserService
         if (_dbContext.Users.Any(u => u != null && u.Email == dto.Email))
             throw new EmailAlreadyUsedException("Wpisany email jest już zajęty");
 
+        var f = _dbContext.Favourites.Add(new Favourites());
+        _dbContext.SaveChanges();
+        var f1 = f.Entity.Id;
+
         _dbContext.Users.Add(new User
         {
             Name = dto.Name,
@@ -59,7 +64,8 @@ public class UserService : IUserService
             CountyId = dto.CountyId,
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
-            RoleID = dto.RoleId
+            RoleID = dto.RoleId,
+            FavouritesId = f1
         });
         _dbContext.SaveChanges();
     }
@@ -75,20 +81,6 @@ public class UserService : IUserService
         }
 
         string generatedNewToken = GenerateNewTokensForUser(user);
-
-        //return new UserDto
-        //{
-        //    Name = user.Name,
-        //    RoleName = user.Role.Name,
-        //    Email = user.Email,
-        //    CanComment = user.CanComment,
-        //    County = new County
-        //    {
-        //        Id = user.County.Id,
-        //        Name = user.County.Name
-        //    },
-        //    TokenContent = generatedNewToken
-        //};
 
         return new TokenToReturn(generatedNewToken);
     }
@@ -173,7 +165,8 @@ public class UserService : IUserService
                 new(type:"name", user.Name),
                 new(type:"email", user.Email),
                 new(type:"countyId", user.CountyId.ToString()),
-                new(type:"canComment", user.CanComment.ToString())
+                new(type:"canComment", user.CanComment.ToString()),
+                new(type:"favoritesId", user.FavouritesId.ToString())
             },
             expires: DateTime.Now.AddDays(1),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature)

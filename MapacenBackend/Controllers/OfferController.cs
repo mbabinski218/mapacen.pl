@@ -36,5 +36,18 @@ namespace MapacenBackend.Controllers
         {
             return Ok(_service.GetAllComments(offerId));
         }
+
+        [HttpPost("favourites")]
+        public ActionResult AddOfferToFavorites([FromQuery] int offerId, [FromQuery] int favoritesId)
+        {
+            _service.AddOfferToFavourites(offerId, favoritesId);
+            return Ok();
+        }
+
+        [HttpGet("favourites/{favouritesId}")]
+        public ActionResult<IEnumerable<OfferDto>?> GetFavouritesOffers([FromRoute] int favouritesId)
+        {
+            return Ok(_service.GetFavouritesOffers(favouritesId));
+        }
     }
 }

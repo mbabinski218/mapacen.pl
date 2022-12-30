@@ -18,6 +18,6 @@ public class User
     public DateTime? TokenCreated { get; set; }
     public DateTime? TokenExpires { get; set; }
     public virtual List<Comment> Comments { get; set; }
-
-    //TODO referencja do ulubionych
+    public int FavouritesId { get; set; }
+    public virtual Favourites Favourites { get; set; }
 }
