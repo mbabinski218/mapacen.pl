@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using MapacenBackend.Entities;
+using MapacenBackend.Exceptions;
 using MapacenBackend.Models.CommentDtos;
 
 namespace MapacenBackend.Services
 {
     public interface ICommentService
     {
-        int CreateComment(CreateCommentDto dto);
+        public int CreateComment(CreateCommentDto dto);
+        public void LikeComment(int commentId);
+        public void DislikeComment(int commentId);
     }
 
     public class CommentService : ICommentService
@@ -30,6 +33,26 @@ namespace MapacenBackend.Services
             return comment.Id;
         }
 
-        //TODO likowanie i dislikowanie
+        public void LikeComment(int commentId)
+        {
+            var comment = _dbContext
+                .Comments
+                .FirstOrDefault(c => c.Id == commentId)
+                ?? throw new NotFoundException("Comment with requested id does not exist");
+
+            comment.Likes++;
+            _dbContext.SaveChanges();
+        }
+
+        public void DislikeComment(int commentId)
+        {
+            var comment = _dbContext
+                .Comments
+                .FirstOrDefault(c => c.Id == commentId) 
+                ?? throw new NotFoundException("Comment with requested id does not exist");
+
+            comment.Dislikes++;
+            _dbContext.SaveChanges();
+        }
     }
 }

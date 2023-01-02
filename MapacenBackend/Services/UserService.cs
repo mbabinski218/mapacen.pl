@@ -104,11 +104,12 @@ public class UserService : IUserService
 
     public void ChangeUserCounty(int userId, int countyId)
     {
-        _dbContext
+        var user = _dbContext
             .Users
             .FirstOrDefault(u => u.Id == userId)
-            !.CountyId = countyId;
+            ?? throw new NotFoundException("User with requested id does not exist");
 
+        user.CountyId = countyId;
         _dbContext.SaveChanges();
     }
 
