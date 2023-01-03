@@ -19,7 +19,7 @@ namespace MapacenBackend.Services
         void AddOfferToFavourites(int offerId, int favoritesId);
         IEnumerable<CommentDto>? GetAllComments(int offerId);
         IEnumerable<OfferDto>? GetFavouritesOffers(int favouritesId);
-        IEnumerable<OfferDto>? GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber);
+        OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber);
         void UpdateOffer(int id, UpdateOfferDto dt);
     }
 
@@ -46,14 +46,14 @@ namespace MapacenBackend.Services
             return offer.Id;
         }
 
-        public IEnumerable<OfferDto>? GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber)
+        public OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber)
         {
             return categoryId == null
                 ? GetOffersByProductName(countyId, productName ?? "", pageSize, pageNumber)
                 : GetOffersByProductNameAndCategory(countyId, productName ?? "", categoryId.Value, pageSize, pageNumber);
         }
 
-        private IEnumerable<OfferDto>? GetOffersByProductName(int countyId, string productName, int pageSize, int pageNumber)
+        private OffersWithTotalCount GetOffersByProductName(int countyId, string productName, int pageSize, int pageNumber)
         {
             var offers = _dbContext
                 .Offers
@@ -64,15 +64,20 @@ namespace MapacenBackend.Services
                         .ThenInclude(a => a.County)
                 .Where(o => o.SalesPoint.Address.CountyId == countyId)
                 .Where(o => EF.Functions
-                    .Like(o.Product.Name, $"%{productName}%"))
-                .Skip(pageSize * (pageNumber - 1))
-                .Take(pageSize);
+                    .Like(o.Product.Name, $"%{productName}%"));
 
-            return _mapper.Map<List<OfferDto>>(offers);
+            var count = offers.Count();
+
+            offers.Skip(pageSize * (pageNumber - 1))
+            .Take(pageSize);
+
+            var offersDto = _mapper.Map<List<OfferDto>>(offers);
+
+            return new OffersWithTotalCount { Count = count, Offers = offersDto };
 
         }
 
-        private IEnumerable<OfferDto>? GetOffersByProductNameAndCategory(int countyId, string productName, int categoryId, int pageSize, int pageNumber)
+        private OffersWithTotalCount GetOffersByProductNameAndCategory(int countyId, string productName, int categoryId, int pageSize, int pageNumber)
         {
             var offers = _dbContext
                 .Offers
@@ -84,12 +89,16 @@ namespace MapacenBackend.Services
                 .Where(o => o.SalesPoint.Address.CountyId == countyId)
                 .Where(o => o.Product.CategoryId == categoryId)
                 .Where(o => EF.Functions
-                    .Like(o.Product.Name, $"%{productName}%"))
-                .Skip(pageSize * (pageNumber - 1))
-                .Take(pageSize)
-                .ToList();
+                    .Like(o.Product.Name, $"%{productName}%"));
 
-            return _mapper.Map<List<OfferDto>>(offers);
+            var count = offers.Count();
+
+            offers.Skip(pageSize * (pageNumber - 1))
+            .Take(pageSize)
+            .ToList();
+
+            var offersDto = _mapper.Map<List<OfferDto>>(offers);
+            return new OffersWithTotalCount { Count = count, Offers = offersDto };
         }
 
         public IEnumerable<CommentDto>? GetAllComments(int offerId)

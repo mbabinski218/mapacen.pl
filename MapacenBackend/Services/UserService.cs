@@ -166,7 +166,7 @@ public class UserService : IUserService
                 new(type:"name", user.Name),
                 new(type:"email", user.Email),
                 new(type:"countyId", user.CountyId.ToString()),
-                new(type:"canComment", user.CanComment.ToString()),
+                new(type:"canComment", user.CanComment.ToString().ToLower()),
                 new(type:"favoritesId", user.FavouritesId.ToString())
             },
             expires: DateTime.Now.AddDays(1),
