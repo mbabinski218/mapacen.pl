@@ -68,7 +68,7 @@ namespace MapacenBackend.Services
 
             var count = offers.Count();
 
-            offers.Skip(pageSize * (pageNumber - 1))
+            offers = offers.Skip(pageSize * (pageNumber - 1))
             .Take(pageSize);
 
             var offersDto = _mapper.Map<List<OfferDto>>(offers);
@@ -93,9 +93,8 @@ namespace MapacenBackend.Services
 
             var count = offers.Count();
 
-            offers.Skip(pageSize * (pageNumber - 1))
-            .Take(pageSize)
-            .ToList();
+            offers = offers.Skip(pageSize * (pageNumber - 1))
+            .Take(pageSize);
 
             var offersDto = _mapper.Map<List<OfferDto>>(offers);
             return new OffersWithTotalCount { Count = count, Offers = offersDto };
