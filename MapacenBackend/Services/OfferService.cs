@@ -19,7 +19,7 @@ namespace MapacenBackend.Services
         void AddOfferToFavourites(int offerId, int favoritesId);
         IEnumerable<CommentDto>? GetAllComments(int offerId);
         IEnumerable<OfferDto>? GetFavouritesOffers(int favouritesId);
-        IEnumerable<OfferDto>? GetOffers(int countyId, string productName, int? categoryId, int pageSize, int pageNumber);
+        IEnumerable<OfferDto>? GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber);
         void UpdateOffer(int id, UpdateOfferDto dt);
     }
 
@@ -46,11 +46,11 @@ namespace MapacenBackend.Services
             return offer.Id;
         }
 
-        public IEnumerable<OfferDto>? GetOffers(int countyId, string productName, int? categoryId, int pageSize, int pageNumber)
+        public IEnumerable<OfferDto>? GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber)
         {
             return categoryId == null
-                ? GetOffersByProductName(countyId, productName, pageSize, pageNumber)
-                : GetOffersByProductNameAndCategory(countyId, productName, (int)categoryId, pageSize, pageNumber);
+                ? GetOffersByProductName(countyId, productName ?? "", pageSize, pageNumber)
+                : GetOffersByProductNameAndCategory(countyId, productName ?? "", categoryId.Value, pageSize, pageNumber);
         }
 
         private IEnumerable<OfferDto>? GetOffersByProductName(int countyId, string productName, int pageSize, int pageNumber)
