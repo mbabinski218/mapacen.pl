@@ -1,7 +1,10 @@
-<app-top-menu></app-top-menu>
+<app-top-menu (refreshOffers)="refreshOffers($event)"></app-top-menu>
 
-<app-offers class="offer"></app-offers>
-
+<app-offers
+  class="offer"
+  [filterOffers]="offer"
+>
+</app-offers>
 
 <button
   *ngIf="admin"

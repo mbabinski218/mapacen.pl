@@ -10,92 +10,63 @@
     [formGroup]="form"
     class="container"
   >
-    <div class="button backgroundColor">
+    <div
+      class="button backgroundColor"
+      [ngClass]="logged ? '' : 'disable'"
+    >
       <mat-icon class="icon">favorite_outlined</mat-icon>
     </div>
 
     <mat-form-field
       appearance="outline"
       class="backgroundColor powiat"
-      (click)="openState('county')"
     >
       <mat-label>Powiat</mat-label>
-      <input
-        type="text"
-        placeholder="Wybierz powiat"
-        matInput
-        [formControl]="myCountyControl"
-        [matAutocomplete]="powiat"
-        (click)="openState('county')"
-        (keyup.enter)="chooseFirstOption()"
-        [value]="userCounty"
-      >
-      <mat-icon
-        matSuffix
-        (click)="openState('county')"
-      >
-        <span *ngIf="openedCounties">keyboard_arrow_up</span>
-        <span *ngIf="!openedCounties">keyboard_arrow_down</span>
-      </mat-icon>
-      <mat-autocomplete
-        #powiat="matAutocomplete"
-        (optionSelected)="selectedCounty($event)"
-        (closed)="closeState('county')"
+      <mat-select
+        [value]="userLocalCounty"
+        formControlName="county"
+        (selectionChange)="selectedCounty()"
       >
         <mat-option
-          *ngFor="let option of filteredCounties | async"
-          [value]="option"
+          *ngFor="let item of filteredCounties"
+          [value]="item"
         >
-          {{ option }}
+          {{ item }}
         </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-
-    <div class="produkt backgroundColor">
-      <my-input
-        controlName="product"
-        type="text"
-        label="Wyszukaj produkt"
-      >
-      </my-input>
-    </div>
-    <mat-form-field
-      appearance="outline"
-      class="backgroundColor kategoria"
-      (click)="openState('category')"
-    >
-      <mat-label>Kategoria</mat-label>
-      <input
-        type="text"
-        placeholder="Wybierz kategorię"
-        matInput
-        [formControl]="myCategoryControl"
-        [matAutocomplete]="kategoria"
-        (click)="openState('category')"
-        (keyup.enter)="chooseFirstOption()"
-      >
-      <mat-icon
-        matSuffix
-        (click)="openState('category')"
-      >
-        <span *ngIf="openedCategories">keyboard_arrow_up</span>
-        <span *ngIf="!openedCategories">keyboard_arrow_down</span>
-      </mat-icon>
-      <mat-autocomplete
-        #kategoria="matAutocomplete"
-        (optionSelected)="selectedCategory($event)"
-        (closed)="closeState('category')"
-      >
-        <mat-option
-          *ngFor="let option of filteredCategories | async"
-          [value]="option"
-        >
-          {{ option }}
-        </mat-option>
-      </mat-autocomplete>
+      </mat-select>
     </mat-form-field>
 
     <div
+      class="produkt backgroundColor"
+      [ngClass]="logged ? '' : 'disable'"
+    >
+      <my-input
+        controlName="product"
+        type="text"
+        label="Wpisz nazwę produktu"
+      >
+      </my-input>
+    </div>
+
+    <mat-form-field
+      class="backgroundColor kategoria"
+      appearance="outline"
+      [ngClass]="logged ? '' : 'disable'"
+    >
+      <mat-label>Kategorie</mat-label>
+      <mat-select formControlName="category">
+        <mat-option>Wyczyść</mat-option>
+        <mat-option
+          *ngFor="let item of filteredCategories"
+          [value]="item"
+        >
+          {{ item }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div
+      [ngClass]="logged ? '' : 'disable'"
       class="button find secondaryColor"
       (click)="search()"
     >
@@ -135,7 +106,7 @@
       <div class="info">
         <span>Pseudonim: {{ userName }}</span>
         <span>E-mail: {{ userEmail }}</span>
-        <span>Powiat: {{ userCounty }}</span><br>
+        <span>Powiat: {{ userProfileCounty }}</span><br>
       </div>
     </mat-card-content>
     <mat-card-actions>
