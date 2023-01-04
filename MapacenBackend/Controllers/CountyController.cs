@@ -18,13 +18,13 @@ namespace MapacenBackend.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<County>> GetAll()
         {
-            return Ok(_dbContext.Counties);
+            return Ok(_dbContext.Counties.OrderBy(c => c.Name));
         }
 
         [HttpGet("{id}")]
         public ActionResult<County> Get([FromRoute] int id)
         {
-            return Ok(_dbContext.Counties.FirstOrDefault(c=>c.Id == id));
+            return Ok(_dbContext.Counties.FirstOrDefault(c => c.Id == id));
         }
     }
 }
