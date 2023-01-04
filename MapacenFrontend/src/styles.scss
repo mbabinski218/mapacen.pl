@@ -1,17 +1,15 @@
 @use '@angular/material' as mat;
 @include mat.core();
 
-$my-primary: mat.define-palette(mat.$deep-purple-palette, 400);
-$my-accent: mat.define-palette(mat.$gray-palette, 50);
-$my-theme: mat.define-dark-theme((color: (primary: $my-primary,
-        accent: $my-accent,
-      ),
-      typography: mat.define-typography-config(),
-      density: 0,
-    ));
+@font-face {
+  font-family: 'SiteTitle';
+  src: url(assets/fonts/Berlin-Sans-FB-Regular.ttf);
+}
 
-@include mat.all-component-themes($my-theme);
-
+@font-face {
+  font-family: 'Labels';
+  src: url(assets/fonts/ErasDemiITC.ttf);
+}
 
 .backgroundColor {
   background-color: rgb(10, 17, 36);
@@ -31,6 +29,7 @@ $my-theme: mat.define-dark-theme((color: (primary: $my-primary,
 html,
 body {
   background-color: rgb(10, 17, 36);
+  color: white;
 }
 
 .loginDialog {
@@ -43,6 +42,10 @@ body {
 }
 
 .cdk-overlay-pane:not(.mat-mdc-autocomplete-panel-above) .mdc-menu-surface.mat-mdc-autocomplete-panel {
+  background-color: rgb(96, 72, 156);
+}
+
+.cdk-overlay-pane:not(.mat-mdc-select-panel-above) .mdc-menu-surface.mat-mdc-select-panel {
   background-color: rgb(96, 72, 156);
 }
 

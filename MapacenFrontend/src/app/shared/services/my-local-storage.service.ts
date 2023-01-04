@@ -14,22 +14,28 @@ export class MyLocalStorageService {
     localStorage.setItem('userName', tokenData.name);
     localStorage.setItem('userEmail', tokenData.email);
     localStorage.setItem('userRole', tokenData.role);
-    localStorage.setItem('userCountyId', tokenData.countyId);
+    localStorage.setItem('userProfileCountyId', tokenData.countyId);
     localStorage.setItem('userId', tokenData.userId);
     localStorage.setItem('userCommenting', tokenData.canComment);
+    localStorage.setItem('favoritesId', tokenData.favoritesId);
   }
 
   removeStorage() {
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userCountyId');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userCommenting');
+    localStorage.clear();
   }
 
   getRole(): string {
     return localStorage.getItem('userRole');
+  }
+
+  isAdmin(): boolean {
+    if (this.getRole() === 'Local Administrator' || this.getRole() === 'Service Administrator') {
+      return true;
+    }
+    return false;
+  }
+
+  isLogged(): boolean {
+    return !!localStorage.getItem('userToken');
   }
 }

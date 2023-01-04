@@ -1,13 +1,10 @@
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { startWith, map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { TopMenuService } from '@modules/top-menu/api/top-menu.service';
-import { idNameOnly } from '@modules/top-menu/interfaces/top-menu.interface';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MyLocalStorageService } from '@shared/services/my-local-storage.service';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { idNameOnly, OfferContent } from '@modules/top-menu/interfaces/top-menu.interface';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { LoginDialogComponent } from '@modules/top-menu/components/login-dialog/login-dialog.component';
 
 @Component({
@@ -18,24 +15,18 @@ import { LoginDialogComponent } from '@modules/top-menu/components/login-dialog/
 })
 export class TopMenuComponent implements OnInit {
 
-  @ViewChild(MatAutocomplete) matAutocomplete: MatAutocomplete;
+  @Output() refreshOffers = new EventEmitter<OfferContent>();
   counties: idNameOnly[] = []
   categories: idNameOnly[] = []
   form: FormGroup;
   userName = '';
   userEmail = '';
-  userCounty = '';
+  userLocalCounty = '';
+  userProfileCounty = '';
 
-  mySelectedCounty: string;
-  filteredCounties: Observable<string[]>;
-  myCountyControl = new FormControl('');
+  filteredCounties: string[];
+  filteredCategories: string[];
 
-  mySelectedCategory: string;
-  filteredCategories: Observable<string[]>;
-  myCategoryControl = new FormControl('');
-
-  openedCategories = false;
-  openedCounties = false;
   showUserInfo = false;
   logged: boolean;
 
@@ -50,51 +41,52 @@ export class TopMenuComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       product: [null],
+      category: [null],
+      county: [null],
     });
 
     this.topMenuService.getAllCounties().subscribe((res) => {
       if (res) {
-        this.filteredCounties = this.myCountyControl.valueChanges.pipe(
-          startWith(''),
-          map(value => this._filter(value || '', 'counties')),
-        );
+        this.filteredCounties = res.map((result) => result.name);
+        this.counties = res;
 
-        this.counties = res
-        this.userCounty = this.counties.find((res) => res.id.toString() === localStorage.getItem('userCountyId'))?.name;
+        this.userProfileCounty = this.counties.find((res) => res.id.toString() === localStorage.getItem('userProfileCountyId'))?.name;
+        const localCounty = this.counties.find((res) => res.id.toString() === localStorage.getItem('userLocalCountyId'))?.name;
         this.userName = localStorage.getItem('userName');
         this.userEmail = localStorage.getItem('userEmail');
 
-        this.userCounty = this.userCounty ? this.userCounty : '';
+        this.userLocalCounty = localCounty ? localCounty : this.userProfileCounty;
+
+        if (!this.userLocalCounty) {
+          this.userLocalCounty = '';
+        }
       }
     })
 
     this.topMenuService.getAllCategories().subscribe((res) => {
       if (res) {
-        this.categories = res
-        this.filteredCategories = this.myCategoryControl.valueChanges.pipe(
-          startWith(''),
-          map(value => this._filter(value || '', 'categories')),
-        );
+        this.filteredCategories = res.map((result) => result.name)
+        this.categories = res;
       }
     })
 
     this.logged = !!localStorage.getItem('userToken');
   }
 
-  selectedCounty(selected: MatAutocompleteSelectedEvent): void {
-    this.userCounty = selected.option.value;
-    localStorage.setItem('userCountyId', this.counties.find((res) => res.name === this.userCounty)?.id.toString());
-    this.topMenuService.updateCounty(localStorage.getItem('userId'), localStorage.getItem('userCountyId')).subscribe((res) => console.log(res));
-  }
+  selectedCounty(): void {
+    localStorage.setItem('userLocalCountyId', this.counties.find((res) => res.name === this.form.get('county').value)?.id.toString());
 
-  selectedCategory(selected: MatAutocompleteSelectedEvent): void {
-    this.mySelectedCategory = selected.option.value;
+    this.refreshOffers.emit({
+      search: this.form.get('product').value,
+      category: this.categories.find((res) => res.name === this.form.get('category').value)?.id.toString(),
+    })
   }
 
   search() {
-    const searchValue = this.form.get('product').value;
-    //szuka przedmiotów filtrując po powiacie, wyszukiwaniu i jak jest to też po kategorii
-
+    this.refreshOffers.emit({
+      search: this.form.get('product').value,
+      category: this.categories.find((res) => res.name === this.form.get('category').value)?.id.toString(),
+    })
   }
 
   reload() {
@@ -111,8 +103,8 @@ export class TopMenuComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'logged') {
-        this.userCounty = this.counties.find((res) => res.id.toString() === localStorage.getItem('userCountyId'))?.name;
-        this.userCounty = this.userCounty ? this.userCounty : '';
+        const county = this.counties.find((res) => res.id.toString() === localStorage.getItem('userLocalCountyId'))?.name;
+        this.userLocalCounty = county ? county : '';
         this.userName = localStorage.getItem('userName');
         this.userEmail = localStorage.getItem('userEmail');
       }
@@ -122,24 +114,6 @@ export class TopMenuComponent implements OnInit {
   logout() {
     this.myLocalStorageService.removeStorage();
     this.logged = false;
-    window.location.reload();
-  }
-
-  openState(where: string): void {
-    where === 'category' ? this.openedCategories = true : this.openedCounties = true;
-  }
-
-  closeState(where: string): void {
-    where === 'category' ? this.openedCategories = false : this.openedCounties = false;
-  }
-
-  chooseFirstOption(): void {
-    this.matAutocomplete.options.first.select();
-  }
-
-  private _filter(value: string, which: string): string[] {
-    const filterValue = value.toLowerCase();
-    const option = which === 'counties' ? this.counties.map((res) => res.name) : this.categories.map((res) => res.name);
-    return option.filter(option => option.toLowerCase().includes(filterValue));
+    this.reload();
   }
 }

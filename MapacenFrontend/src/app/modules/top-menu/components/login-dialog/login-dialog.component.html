@@ -54,42 +54,22 @@
           >
           </my-input>
         </div>
+
         <mat-form-field
           appearance="outline"
           class="backgroundColor fix"
-          (click)="openState()"
         >
           <mat-label>Powiat</mat-label>
-          <input
-            type="text"
-            placeholder="Wybierz powiat"
-            matInput
-            [formControl]="myCountyControl"
-            [matAutocomplete]="powiat"
-            (ngModelChange)="checkCountyInput($event)"
-            (click)="openState()"
-            (keyup.enter)="chooseFirstOption()"
-          >
-          <mat-icon
-            matSuffix
-            (click)="openState()"
-          >
-            <span *ngIf="openedCounties">keyboard_arrow_up</span>
-            <span *ngIf="!openedCounties">keyboard_arrow_down</span>
-          </mat-icon>
-          <mat-autocomplete
-            #powiat="matAutocomplete"
-            (optionSelected)="selectedCounty($event)"
-            (closed)="closeState()"
-          >
+          <mat-select formControlName="countyId">
             <mat-option
-              *ngFor="let option of filteredCounties | async"
-              [value]="option"
+              *ngFor="let item of filteredCounties"
+              [value]="item"
             >
-              {{ option }}
+              {{ item }}
             </mat-option>
-          </mat-autocomplete>
+          </mat-select>
         </mat-form-field>
+
         <div class="fix backgroundColor">
           <my-input
             controlName="password"

@@ -1,1 +1,75 @@
-<p>offers works!</p>
+<div class="container">
+  <disable-area *ngIf="isNotLogged && !countyId"></disable-area>
+  <div
+    class="disclaimer"
+    *ngIf="isNotLogged && !countyId"
+  >
+    Aby korzystać ze strony wybierz najpierw interesujący Cię region lub zaloguj się
+  </div>
+  <div
+    class="isData"
+    *ngIf="offer?.length; else noData"
+  >
+    <div
+      class="item"
+      *ngFor="let item of offer"
+    >
+      <div class="data">
+        <div class="data--side">
+          Zdjęcie
+        </div>
+
+        <span class="data--center">
+          <span class="name">
+            {{ item.product.name }}
+          </span>
+          <span class="info">
+            {{ item.salesPoint.name }}, {{ item.salesPoint.address.city }} ul. {{ item.salesPoint.address.street }}
+            {{ item.salesPoint.address.number }}
+          </span>
+        </span>
+
+        <div class="data--side">
+          <span class="price">
+            {{ item.price | setPrecision }} zł
+          </span>
+          <div class="dropdown">
+            <mat-icon>expand_more</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="paging">
+      <span *ngIf="isNotLogged">
+        Aby odblokować wszystkie możliwości strony proszę się zalogować
+      </span>
+      <button
+        [disabled]="page <= 1 || isNotLogged"
+        mat-icon-button
+        (click)="changePage(-1)"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      Strona: {{ page }} z {{ totalSites }}
+      <button
+        [disabled]="page >= totalSites || isNotLogged"
+        mat-icon-button
+        (click)="changePage(1)"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <div class="noData">
+      <span>
+        Brak ofert :(
+      </span>
+      <span>
+        Proszę zmienić filtrację produktów lub sprawdzić w innym powiacie
+      </span>
+    </div>
+  </ng-template>
+</div>

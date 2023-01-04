@@ -27,5 +27,11 @@ export interface TokenContent {
   countyId: string,
   userId: string,
   canComment: string,
+  favoritesId: string,
   exp: number,
+}
+
+export interface OfferContent {
+  search: string,
+  category: string,
 }

@@ -1,14 +1,13 @@
 import { Inject } from '@angular/core';
-import { map, Observable, startWith } from 'rxjs';
+import { MatAutocomplete } from '@angular/material/autocomplete';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TopMenuService } from '@modules/top-menu/api/top-menu.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { idNameOnly } from '@modules/top-menu/interfaces/top-menu.interface';
 import { USERNAME_PATTERN } from '@core/constants/validation-patterns.conts';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MyLocalStorageService } from '@shared/services/my-local-storage.service';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@core/constants/validation-patterns.conts';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ToastMessageService } from '@shared/modules/toast-message/services/toast-message.service';
 
 @Component({
@@ -23,15 +22,11 @@ export class LoginDialogComponent {
   loginForm: FormGroup;
   registerForm: FormGroup;
   login = true;
-  countyInput = '';
 
-  currentCounty: string;
-  filteredCounties: Observable<string[]>;
-  myCountyControl = new FormControl('');
+  filteredCounties: string[];
 
   hiddenPassword = true;
   passwordMode = 'password';
-  openedCounties = false;
 
   registerValid = false;
   loginValid = false;
@@ -58,10 +53,7 @@ export class LoginDialogComponent {
       countyId: [null, [Validators.required]],
     });
 
-    this.filteredCounties = this.myCountyControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
+    this.filteredCounties = this.counties.map((result) => result.name);
 
     this.registerForm.valueChanges.subscribe((res) => {
       if (res.password === res.confirmedPassword) {
@@ -86,12 +78,6 @@ export class LoginDialogComponent {
 
     this.loginForm.reset();
     this.registerForm.reset();
-    this.myCountyControl.reset();
-  }
-
-  selectedCounty(selected: MatAutocompleteSelectedEvent): void {
-    this.currentCounty = selected.option.value;
-    this.registerForm.get('countyId').setValue(this.counties.find((res) => res.name === this.currentCounty).id);
   }
 
   handleFormSubmit() {
@@ -106,19 +92,11 @@ export class LoginDialogComponent {
       return;
     }
 
-    if (this.registerForm.valid && this.myCountyControl.valid) {
+    if (this.registerForm.valid) {
       this.topMenuService.registerUser(this.registerForm.value).subscribe(() => {
         this.toastMessageService.notifyOfSuccess('Rejestracja powiodła się! Teraz możesz się zalogować')
         this.change();
       })
-    }
-  }
-
-  checkCountyInput(value: string) {
-    this.myCountyControl.setErrors(null);
-
-    if (!this.counties.find((res) => res.name === value)) {
-      this.myCountyControl.setErrors({ 'incorrect': true })
     }
   }
 
@@ -127,25 +105,7 @@ export class LoginDialogComponent {
     this.passwordMode = this.hiddenPassword ? 'password' : '';
   }
 
-  openState(): void {
-    this.openedCounties = true;
-  }
-
-  closeState(): void {
-    this.openedCounties = false;
-  }
-
-  chooseFirstOption(): void {
-    this.matAutocomplete.options.first.select();
-  }
-
   private refresh() {
     setTimeout(() => window.location.reload(), 10)
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    const option = this.counties.map((res) => res.name);
-    return option.filter(option => option.toLowerCase().includes(filterValue));
   }
 }
