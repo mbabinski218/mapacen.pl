@@ -18,7 +18,7 @@ namespace MapacenBackend.Services
         public int AddOffer(CreateOfferDto dto);
         void AddOfferToFavourites(int offerId, int favoritesId);
         IEnumerable<CommentDto>? GetAllComments(int offerId);
-        IEnumerable<OfferDto>? GetFavouritesOffers(int favouritesId);
+        OffersWithTotalCount GetFavouritesOffers(int favouritesId, int pageSize, int pageNumber);
         OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber);
         void UpdateOffer(int id, UpdateOfferDto dt);
     }
@@ -102,11 +102,12 @@ namespace MapacenBackend.Services
 
         public IEnumerable<CommentDto>? GetAllComments(int offerId)
         {
-            return _dbContext
+            var comments = _dbContext
                 .Comments
                 .Where(c => c.OfferId == offerId)
-                .Include(c => c.User)
-                .Select(c => _mapper.Map<CommentDto>(c));
+                .Include(c => c.User);
+
+            return _mapper.Map<List<CommentDto>>(comments);
         }
 
         public void AddOfferToFavourites(int offerId, int favoritesId)
@@ -121,15 +122,8 @@ namespace MapacenBackend.Services
             _dbContext.SaveChanges();
         }
 
-        public IEnumerable<OfferDto>? GetFavouritesOffers(int favouritesId)
+        public OffersWithTotalCount GetFavouritesOffers(int favouritesId, int pageSize, int pageNumber)
         {
-            //var offers = _dbContext
-            //    .Favourites
-            //    .Where(f => f.Id == favouritesId)
-            //    .Include(f => f.FavouritesOffer)
-            //    .ThenInclude(f => f.Offer)
-            //    .Select(f => f.);
-
             var offers = _dbContext
                 .FavouritesOffer
                 .Where(fo => fo.FavouritesId == favouritesId)
@@ -139,10 +133,15 @@ namespace MapacenBackend.Services
                 .Include(fo => fo.Offer.SalesPoint)
                 .ThenInclude(s => s.Address)
                 .ThenInclude(a => a.County)
-                .Select(fo => fo.Offer)
-                .ToList();
+                .Select(fo => fo.Offer);
 
-            return _mapper.Map<List<OfferDto>>(offers);
+            var count = offers.Count();
+
+            offers = offers.Skip(pageSize * (pageNumber - 1))
+           .Take(pageSize);
+
+            var offersDto = _mapper.Map<List<OfferDto>>(offers);
+            return new OffersWithTotalCount { Count = count, Offers = offersDto };
 
         }
 

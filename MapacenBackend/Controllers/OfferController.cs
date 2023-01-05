@@ -45,9 +45,9 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpGet("favourites/{favouritesId}")]
-        public ActionResult<IEnumerable<OfferDto>?> GetFavouritesOffers([FromRoute] int favouritesId)
+        public ActionResult<OffersWithTotalCount> GetFavouritesOffers(int favouritesId, int pageSize, int pageNumber)
         {
-            return Ok(_service.GetFavouritesOffers(favouritesId));
+            return Ok(_service.GetFavouritesOffers(favouritesId,pageSize,pageNumber));
         }
     }
 }
