@@ -14,7 +14,6 @@ namespace MapacenBackend.Services
         Product? GetProductById(int id);
         Product CreateProduct(CreateProductDto dto);
         void UpdateProduct(int id, UpdateProductDto dto);
-        IEnumerable<ProductDto>? GetProductsByName(string name);
     }
 
     public class ProductService : IProductService
@@ -74,17 +73,6 @@ namespace MapacenBackend.Services
 
             _dbContext.SaveChanges();
         }
-
-        public IEnumerable<ProductDto>? GetProductsByName(string name)
-        {
-            return _dbContext.
-                Products
-                .Where(p => EF
-                .Functions
-                .Like(p.Name, $"%{name}%"))
-                .Select(p => _mapper.Map<ProductDto>(p));
-        }
-
     }
 
 }

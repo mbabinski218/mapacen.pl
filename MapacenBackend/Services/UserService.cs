@@ -52,9 +52,9 @@ public class UserService : IUserService
         if (_dbContext.Users.Any(u => u != null && u.Email == dto.Email))
             throw new EmailAlreadyUsedException("Wpisany email jest już zajęty");
 
-        var f = _dbContext.Favourites.Add(new Favourites());
+        var favourites = _dbContext.Favourites.Add(new Favourites());
         _dbContext.SaveChanges();
-        var f1 = f.Entity.Id;
+        var favouritesId = favourites.Entity.Id;
 
         _dbContext.Users.Add(new User
         {
@@ -65,7 +65,7 @@ public class UserService : IUserService
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
             RoleID = dto.RoleId,
-            FavouritesId = f1
+            FavouritesId = favouritesId
         });
         _dbContext.SaveChanges();
     }
@@ -76,12 +76,9 @@ public class UserService : IUserService
 
         if (dto.Password == null ||
             !VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
-        {
             throw new InvalidLoginDataException("Niepoprawny login lub hasło");
-        }
 
         string generatedNewToken = GenerateNewTokensForUser(user);
-
         return new TokenToReturn(generatedNewToken);
     }
 

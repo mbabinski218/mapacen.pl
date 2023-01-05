@@ -70,11 +70,13 @@ namespace MapacenBackend.Services
 
         public IEnumerable<SalesPointDto>? GetSalesPointsByCounty(int countyId)
         {
-            return _dbContext
+            var salesPoints = _dbContext
                 .SalesPoints
                 .Include(s => s.Address)
-                .Where(s => s.Address.CountyId == countyId)
-                .Select(s => _mapper.Map<SalesPointDto>(s));
+                .Where(s => s.Address.CountyId == countyId);
+
+            return _mapper.Map<List<SalesPointDto>>(salesPoints);
+
         }
     }
 }

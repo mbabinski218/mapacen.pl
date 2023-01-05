@@ -26,7 +26,7 @@ namespace MapacenBackend.Services
 
         public IEnumerable<CategoryDto>? GetCategories()
         {
-            var categories = _dbContext.Categories.OrderBy(c => c.Name).ToList();
+            var categories = _dbContext.Categories.OrderBy(c => c.Name);
             return _mapper.Map<List<CategoryDto>>(categories);
         }
 

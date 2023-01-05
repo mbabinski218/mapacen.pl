@@ -42,11 +42,5 @@ namespace MapacenBackend.Controllers
             _service.UpdateProduct(id, dto);
             return Ok();
         }
-
-        [HttpGet("{name}")]
-        public ActionResult<IEnumerable<ProductDto>?> GetProductsByName([FromRoute] string name)
-        {
-            return Ok(_service.GetProductsByName(name));
-        }
     }
 }
