@@ -1,7 +1,101 @@
+.return {
+  min-height: 57px;
+  border: 2px solid rgb(245, 245, 245) !important;
+  background-color: rgb(96, 72, 156);
+  border-radius: 16px;
+}
+
+.arrow-back {
+  font-size: 200%;
+}
+
+.top {
+  padding: 7px 16px;
+  margin: 5px 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 16px;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 38px;
+  font-weight: 700;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: rgb(245, 245, 245);
+}
+
+.button {
+  cursor: pointer;
+  border: 2px solid rgb(245, 245, 245);
+  border-radius: 12px;
+  min-height: 45px;
+  min-width: 45px;
+  height: 45px;
+  width: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  color: rgb(245, 245, 245);
+}
+
+.mat-mdc-form-field {
+  flex-direction: unset !important;
+  display: flex !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  width: 0 !important;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.powiat {
+  cursor: pointer;
+  min-width: 240px;
+  border-radius: 4px;
+}
+
+.kategoria {
+  cursor: pointer;
+  min-width: 220px;
+  border-radius: 4px;
+  position: relative;
+  right: 40px;
+}
+
+.produkt {
+  min-width: 320px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.login {
+  min-height: 45px;
+  border: 2px solid rgb(245, 245, 245) !important;
+  background-color: rgb(96, 72, 156);
+  border-radius: 16px;
+}
+
+.find {
+  position: relative;
+  right: 40px;
+}
+
+/* end  */
+
 body {
   min-height: 100%;
   height: fit-content;
-  background-image: linear-gradient(to right, #333, #444, #555);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,27 +107,24 @@ body {
   margin-top: 50px;
 }
 
-button {
+.admin-button {
   width: 500px;
   height: 180px;
-  background-image: linear-gradient(to right, #196880, #1f7d99, #269fc4);
-  border: none;
+  background-color: rgb(22, 32, 65);
   border-radius: 25px;
+  border: solid 2.2px white;
   color: white;
   font-size: 42px;
-  font-style: italic;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-weight: bold;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s;
 }
 
-button:hover {
+.admin-button:hover {
   cursor: pointer;
-  background-image: linear-gradient(to right, #1e7c99, #238dad, #31c2ee);
+  background-color: rgb(46, 60, 105);
 }
 
-button:active {
+.admin-button:active {
   transform: translateY(3px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -42,22 +133,29 @@ button:active {
   margin-top: 50px;
 }
 
-input {
+.admin-input {
+  background-color: rgb(32, 43, 82);
+  color: white;
   border-radius: 25px;
   width: 1050px;
   height: 50px;
-  border: 1px solid #ccc;
+  border: solid 2.2px white;
   border-radius: 5px;
   padding: 0 10px;
   font-size: 32px;
 }
 
+.admin-input::placeholder {
+  color: white
+}
+
 .top-text {
-  margin-top: 10%;
-  text-align: center;
+  font-size: 38px;
+  font-weight: 700;
+  height: 100%;
+  display: flex;
   align-items: center;
-  font-size: 56px;
-  color: white;
+  color: rgb(245, 245, 245);
 }
 
 .button-grid {

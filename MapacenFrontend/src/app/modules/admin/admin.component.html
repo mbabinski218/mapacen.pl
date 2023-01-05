@@ -1,15 +1,72 @@
-<body>
-  <div [hidden]="isHidden">
-    <div class="top-text">{{adviceText}}</div>
+<div class="top mainColor">
+  <div class="title--move">
+    <span class="title">mapacen.pl</span>
   </div>
+
+  <form class="container">
+    <!-- <div class="button backgroundColor">
+      <mat-icon class="icon">favorite_outlined</mat-icon>
+    </div> -->
+
+    <div [hidden]="isHidden">
+      <div class="top-text">{{adviceText}}</div>
+    </div>
+
+    <!-- <mat-icon matSuffix>keyboard_arrow_down</mat-icon> -->
+
+    <!-- <div class="produkt backgroundColor">
+    </div>
+      <input
+        type="text"
+        placeholder="Wybierz kategorię"
+        matInput
+        controlName="category"
+      > -->
+    <!-- <mat-icon matSuffix>keyboard_arrow_down</mat-icon> -->
+
+    <!-- <div
+      class="button find secondaryColor"
+    >
+      <mat-icon>search</mat-icon>
+    </div> -->
+  </form>
+
+  <button
+    (click)="returnButton()"
+    class="return"
+    mat-stroked-button
+  >
+    <span class="material-icons">
+      home
+    </span>
+  </button>
+</div>
+
+
+<!--- -->
+
+<body>
   <div class="button-grid">
-    <button (click)="banUser()">Zbanuj użytkownika</button>
-    <button (click)="unbanUser()">Odblokuj użytkownika</button>
-    <button (click)="addCategory()">Dodaj kategorię</button>
-    <button (click)="deleteCategory()">Usuń kategorię</button>
+    <button
+      class="admin-button"
+      (click)="banUser()"
+    >Zbanuj użytkownika</button>
+    <button
+      class="admin-button"
+      (click)="unbanUser()"
+    >Odblokuj użytkownika</button>
+    <button
+      class="admin-button"
+      (click)="addCategory()"
+    >Dodaj kategorię</button>
+    <button
+      class="admin-button"
+      (click)="deleteCategory()"
+    >Usuń kategorię</button>
   </div>
   <div class="input-container">
     <input
+      class="admin-input"
       [value]="text"
       (input)="saveInput($event)"
       placeholder="Wpisz tekst..."
@@ -18,13 +75,11 @@
   <div *ngIf="actionsArray.length > 0; else noActions">
     <div class="frame">
       <ng-container *ngFor="let action of actionsArray.reverse(); let i = index">
-
         <li>
           {{action.formattedDate}}
           {{action.action}}
         </li>
         <br>
-
       </ng-container>
     </div>
   </div>

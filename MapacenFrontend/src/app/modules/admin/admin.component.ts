@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -11,7 +14,7 @@ export class AdminComponent {
 
   categories = new Array<string>
 
-  constructor() {
+  constructor(private router: Router) {
     this.users = [new User('Adam_Kowalski', false), new User('Monika16', false), new User('Łowca-okazji', false)]
     this.categories = ['Alkohole', 'Drób', 'Meble']
   }
@@ -24,6 +27,10 @@ export class AdminComponent {
   isHidden = true
 
   actionsArray = new Array<Actions>
+
+  returnButton() {
+    this.router.navigateByUrl('/home')
+  }
 
   saveInput(event: any) {
     this.text = event.target.value
