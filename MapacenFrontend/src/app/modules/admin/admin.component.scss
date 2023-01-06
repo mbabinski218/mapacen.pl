@@ -1,8 +1,17 @@
 .return {
-  min-height: 57px;
+  min-height: 50px;
+  min-width: 50px;
   border: 2px solid rgb(245, 245, 245) !important;
   background-color: rgb(96, 72, 156);
   border-radius: 16px;
+  margin-top: 5px;
+  margin-left: 10px;
+  color: white;
+}
+
+.return:hover {
+  cursor: pointer;
+  background-color: rgb(114, 88, 179);
 }
 
 .arrow-back {
@@ -19,12 +28,25 @@
 }
 
 .title {
+  position: relative;
+  bottom: 5px;
+  font-family: "SiteTitle";
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  color: rgb(245, 245, 245);
+}
+
+.title-admin {
   font-size: 38px;
   font-weight: 700;
   height: 100%;
   display: flex;
   align-items: center;
   color: rgb(245, 245, 245);
+  margin-right: 150px;
+  font-family: "SiteTitle";
+  position: relative;
 }
 
 .button {
@@ -57,6 +79,7 @@
   display: flex;
   align-items: center;
   gap: 40px;
+  height: 58px;
 }
 
 .powiat {
