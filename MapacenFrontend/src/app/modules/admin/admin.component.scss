@@ -17,7 +17,7 @@ button {
   height: 180px;
   background-image: linear-gradient(to right, #196880, #1f7d99, #269fc4);
   border: none;
-  border-radius: 25px;
+  border-radius: 24px;
   color: white;
   font-size: 42px;
   font-style: italic;
@@ -40,11 +40,11 @@ button:active {
 }
 
 input {
-  border-radius: 25px;
+  border-radius: 24px;
   width: 1050px;
   height: 50px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 24px;
   padding: 0 10px;
   font-size: 32px;
 }
@@ -74,5 +74,5 @@ input {
   margin-top: 20px;
   font-size: 20px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 24px;
 }

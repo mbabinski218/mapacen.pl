@@ -15,6 +15,8 @@
       <div mat-dialog-content>
         <div class="fix backgroundColor">
           <my-input
+            class="fix-input"
+            appearance="fill"
             controlName="email"
             type="email"
             label="E-mail"
@@ -23,6 +25,8 @@
         </div>
         <div class="fix backgroundColor">
           <my-input
+            class="fix-input"
+            appearance="fill"
             controlName="password"
             type="text"
             label="Hasło"
@@ -39,6 +43,8 @@
       <div mat-dialog-content>
         <div class="fix backgroundColor">
           <my-input
+            class="fix-input"
+            appearance="fill"
             controlName="email"
             type="email"
             label="E-mail"
@@ -47,6 +53,8 @@
         </div>
         <div class="fix backgroundColor">
           <my-input
+            class="fix-input"
+            appearance="fill"
             controlName="name"
             type="text"
             label="Nazwa użytkownika"
@@ -56,10 +64,10 @@
         </div>
 
         <mat-form-field
-          appearance="outline"
-          class="backgroundColor fix"
+          class="fix-input backgroundColor fix"
+          appearance="fill"
         >
-          <mat-label>Powiat</mat-label>
+          <mat-label>Wybierz powiat</mat-label>
           <mat-select (selectionChange)="countyChange($event)">
             <mat-option
               *ngFor="let item of filteredCounties"
@@ -72,6 +80,8 @@
 
         <div class="fix backgroundColor">
           <my-input
+            appearance="fill"
+            class="fix-input"
             controlName="password"
             type="text"
             label="Hasło"
@@ -83,6 +93,8 @@
         </div>
         <div class="fix backgroundColor">
           <my-input
+            appearance="fill"
+            class="fix-input"
             controlName="confirmedPassword"
             type="text"
             label="Powtórz hasło"

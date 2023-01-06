@@ -6,71 +6,72 @@
     mapacen.pl
   </span>
 
-  <form
-    [formGroup]="form"
-    class="container"
-  >
-    <div
-      class="button backgroundColor"
-      [ngClass]="logged ? '' : 'disable'"
-      (click)="emitFavourites()"
+  <div class="wbok">
+    <form
+      [formGroup]="form"
+      class="container"
     >
-      <mat-icon class="icon">favorite_outlined</mat-icon>
-    </div>
-
-    <mat-form-field class="chuj backgroundColor powiat">
-      <mat-label>Powiat</mat-label>
-      <mat-select
-        [value]="userLocalCounty"
-        formControlName="county"
-        (selectionChange)="selectedCounty()"
+      <div
+        class="button backgroundColor"
+        [ngClass]="logged ? '' : 'disable'"
+        (click)="emitFavourites()"
       >
-        <mat-option
-          *ngFor="let item of filteredCounties"
-          [value]="item"
+        <mat-icon class="iconLogged fix-icon">favorite_outlined</mat-icon>
+      </div>
+
+      <mat-form-field class="fix fix--powiat backgroundColor powiat">
+        <mat-label>Wybierz powiat</mat-label>
+        <mat-select
+          [value]="userLocalCounty"
+          formControlName="county"
+          (selectionChange)="selectedCounty()"
         >
-          {{ item }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div
-      class="produkt backgroundColor"
-      [ngClass]="logged ? '' : 'disable'"
-    >
-      <my-input
-        controlName="product"
-        type="text"
-        label="Wpisz nazwę produktu"
+          <mat-option
+            *ngFor="let item of filteredCounties"
+            [value]="item"
+          >
+            {{ item }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div
+        class="fix fix--produkt produkt backgroundColor"
+        [ngClass]="logged ? '' : 'disable'"
       >
-      </my-input>
-    </div>
-
-    <mat-form-field
-      class="backgroundColor kategoria"
-      appearance="outline"
-      [ngClass]="logged ? '' : 'disable'"
-    >
-      <mat-label>Kategorie</mat-label>
-      <mat-select formControlName="category">
-        <mat-option>Wyczyść</mat-option>
-        <mat-option
-          *ngFor="let item of filteredCategories"
-          [value]="item"
+        <my-input
+          appearance="fill"
+          controlName="product"
+          type="text"
+          label="Wpisz nazwę produktu"
         >
-          {{ item }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        </my-input>
+      </div>
 
-    <div
-      [ngClass]="logged ? '' : 'disable'"
-      class="button find secondaryColor"
-      (click)="search()"
-    >
-      <mat-icon>search</mat-icon>
-    </div>
-  </form>
+      <mat-form-field
+        class="fix fix--kategoria backgroundColor kategoria"
+        [ngClass]="logged ? '' : 'disable'"
+      >
+        <mat-label>Wybierz kategorię</mat-label>
+        <mat-select formControlName="category">
+          <mat-option>Wyczyść</mat-option>
+          <mat-option
+            *ngFor="let item of filteredCategories"
+            [value]="item"
+          >
+            {{ item }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
+      <div
+        [ngClass]="logged ? '' : 'disable'"
+        class="button find secondaryColor"
+        (click)="search()"
+      >
+        <mat-icon class="iconLogged">search</mat-icon>
+      </div>
+    </form>
+  </div>
   <button
     *ngIf="!logged; else log"
     mat-stroked-button
@@ -80,16 +81,15 @@
     Zaloguj
   </button>
 
-  <ng-template
-    #log
-    class="logowanie"
-  >
-    <button
-      class="login logowanie"
-      (click)="showUserInfo = !showUserInfo"
-    >
-      <mat-icon class="iconLogged">face_5</mat-icon>
-    </button>
+  <ng-template #log>
+    <div class="oszukanie">
+      <button
+        class="login logowanie"
+        (click)="showUserInfo = !showUserInfo"
+      >
+        <mat-icon class="iconLogged">face_5</mat-icon>
+      </button>
+    </div>
   </ng-template>
 
   <mat-card
