@@ -60,7 +60,7 @@
           class="backgroundColor fix"
         >
           <mat-label>Powiat</mat-label>
-          <mat-select formControlName="countyId">
+          <mat-select (selectionChange)="countyChange($event)">
             <mat-option
               *ngFor="let item of filteredCounties"
               [value]="item"

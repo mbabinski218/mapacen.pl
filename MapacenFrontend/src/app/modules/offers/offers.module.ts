@@ -6,10 +6,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { OffersService } from '@modules/offers/api/offers.service';
 import { OffersComponent } from '@modules/offers/offers.component';
 import { DisableAreaModule } from '@shared/modules/disable-area/disable-area.module';
+import { OfferExpandedComponent } from './components/offer-expanded/offer-expanded.component';
 
 @NgModule({
   declarations: [
     OffersComponent,
+    OfferExpandedComponent,
   ],
   imports: [
     CommonModule,
