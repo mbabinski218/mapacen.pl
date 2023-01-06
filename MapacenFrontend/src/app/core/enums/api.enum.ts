@@ -6,6 +6,8 @@ export enum Api {
   COUNTY = '/api/county/:id',
   OFFERS = '/api/offer',
   OFFER_COMMENTS = '/api/offer/comments/:offerId',
+  FAVOURITES = '/api/offer/favourites',
+  FAVOURITES_UPDATE = '/api/offer/favourites/:favouritesId',
   PRODUCTS = '/api/product',
   PRODUCT = '/api/product/:name',
   PRODUCT_UPDATE = '/api/product/:id',

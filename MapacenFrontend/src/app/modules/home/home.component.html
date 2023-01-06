@@ -1,8 +1,10 @@
-<app-top-menu (refreshOffers)="refreshOffers($event)"></app-top-menu>
+<app-top-menu (refreshOffers)="refreshOffers($event)" (getFavourites)="getFavourites($event)"></app-top-menu>
 
 <app-offers
   class="offer"
   [filterOffers]="offer"
+  [getFavourites]="favouritesId"
+  (resetFavourites)="getFavourites($event)"
 >
 </app-offers>
 

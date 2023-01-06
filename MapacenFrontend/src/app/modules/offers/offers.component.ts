@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
 import { OffersService } from '@modules/offers/api/offers.service';
 import { Offers } from '@modules/offers/interfaces/offers.interface';
 import { OfferContent } from '@modules/top-menu/interfaces/top-menu.interface';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MyLocalStorageService } from '@shared/services/my-local-storage.service';
 
 @Component({
@@ -12,13 +12,28 @@ import { MyLocalStorageService } from '@shared/services/my-local-storage.service
 export class OffersComponent implements OnInit {
 
   @Input() set filterOffers(value: OfferContent) {
+    this.isFavourites = false;
+    this.page = 1;
     if (value) {
-      this.countyId = Number(localStorage.getItem('userLocalCountyId'));
       this.search = value.search;
       this.categoryId = Number(value.category);
       this.refreshOffers();
     }
   }
+
+  @Input() set getFavourites(value: string) {
+    this.isFavourites = true;
+    this.page = 1;
+    if (value) {
+      this.offersService.getFavourites(Number(value), this.page, this.pageSize).subscribe((res) => {
+        this.offer = res.offers;
+        this.totalSites = Math.ceil(res.count / this.pageSize);
+        this.resetFavourites.emit('');
+      });
+    }
+  }
+
+  @Output() resetFavourites = new EventEmitter<string>();
 
   countyId: number;
   search: string;
@@ -28,6 +43,8 @@ export class OffersComponent implements OnInit {
   totalSites: number;
   isAdmin: boolean;
   isNotLogged: boolean;
+  isFavourites = false;
+  pageSize = 5;
 
   constructor(
     private offersService: OffersService,
@@ -37,8 +54,7 @@ export class OffersComponent implements OnInit {
   ngOnInit(): void {
     this.isAdmin = this.myLocalStorageService.isAdmin();
     this.isNotLogged = !this.myLocalStorageService.isLogged();
-    const county = Number(localStorage.getItem('userLocalCountyId'));
-    this.countyId = county ? county : Number(localStorage.getItem('userProfileCountyId'))
+    this.isFavourites = false;
     this.refreshOffers();
   }
 
@@ -48,11 +64,11 @@ export class OffersComponent implements OnInit {
   }
 
   private refreshOffers(): void {
-    const pageSize = 5;
-    this.offersService.getAllOffers(this.countyId, this.search, this.categoryId, this.page, pageSize).subscribe((res) => {
+    const county = Number(localStorage.getItem('userLocalCountyId'));
+    this.countyId = county ? county : Number(localStorage.getItem('userProfileCountyId'));
+    this.offersService.getAllOffers(this.countyId, this.search, this.categoryId, this.page, this.pageSize).subscribe((res) => {
       this.offer = res.offers;
-      this.totalSites = Math.ceil(res.count / pageSize);
-      console.log(this.offer);
+      this.totalSites = Math.ceil(res.count / this.pageSize);
     });
   }
 }

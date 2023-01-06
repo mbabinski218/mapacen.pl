@@ -10,6 +10,12 @@
     class="isData"
     *ngIf="offer?.length; else noData"
   >
+    <span
+      class="favourites-title"
+      *ngIf="isFavourites"
+    >
+      Ulubione
+    </span>
     <div
       class="item"
       *ngFor="let item of offer"
@@ -63,12 +69,26 @@
   </div>
 
   <ng-template #noData>
-    <div class="noData">
+    <div
+      *ngIf="!isFavourites"
+      class="noData"
+    >
       <span>
         Brak ofert :(
       </span>
       <span>
         Proszę zmienić filtrację produktów lub sprawdzić w innym powiacie
+      </span>
+    </div>
+    <div
+      *ngIf="isFavourites"
+      class="noData"
+    >
+      <span>
+        Brak ulubionych :(
+      </span>
+      <span>
+        Proszę dodać jakieś oferty do ulubionych
       </span>
     </div>
   </ng-template>

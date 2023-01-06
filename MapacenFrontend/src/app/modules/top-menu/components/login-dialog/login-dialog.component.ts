@@ -9,6 +9,7 @@ import { USERNAME_PATTERN } from '@core/constants/validation-patterns.conts';
 import { MyLocalStorageService } from '@shared/services/my-local-storage.service';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@core/constants/validation-patterns.conts';
 import { ToastMessageService } from '@shared/modules/toast-message/services/toast-message.service';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-login-dialog',
@@ -73,9 +74,12 @@ export class LoginDialogComponent {
     })
   }
 
+  countyChange(county: MatSelectChange): void {
+    this.registerForm.get('countyId').setValue(this.counties.find((res) => res.name === county.value).id);
+  }
+
   change(): void {
     this.login = !this.login;
-
     this.loginForm.reset();
     this.registerForm.reset();
   }
@@ -93,6 +97,9 @@ export class LoginDialogComponent {
     }
 
     if (this.registerForm.valid) {
+
+      this.registerForm.get('countyId').setValue(this.counties.find((res) => res.name === this.registerForm.get('countyId').value)?.id)
+
       this.topMenuService.registerUser(this.registerForm.value).subscribe(() => {
         this.toastMessageService.notifyOfSuccess('Rejestracja powiodła się! Teraz możesz się zalogować')
         this.change();

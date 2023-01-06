@@ -122,4 +122,13 @@ app-top-menu {
   .disable {
     pointer-events: none;
   }
+
+  .chuj {
+    border: solid 2px white;
+    border-radius: 22px;
+    
+    :hover {
+      background-color: rgba(255, 255, 255, 0.829);
+    }
+  }
 }

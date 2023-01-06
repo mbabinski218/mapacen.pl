@@ -13,14 +13,12 @@
     <div
       class="button backgroundColor"
       [ngClass]="logged ? '' : 'disable'"
+      (click)="emitFavourites()"
     >
       <mat-icon class="icon">favorite_outlined</mat-icon>
     </div>
 
-    <mat-form-field
-      appearance="outline"
-      class="backgroundColor powiat"
-    >
+    <mat-form-field class="chuj backgroundColor powiat">
       <mat-label>Powiat</mat-label>
       <mat-select
         [value]="userLocalCounty"
@@ -35,7 +33,6 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-
     <div
       class="produkt backgroundColor"
       [ngClass]="logged ? '' : 'disable'"
