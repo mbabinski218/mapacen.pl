@@ -1,36 +1,78 @@
-<body>
-  <div [hidden]="isHidden">
-    <div class="top-text">{{adviceText}}</div>
+<div>
+  <div class="top mainColor">
+    <span class="title">
+      mapacen.pl
+    </span>
+    <span class="title">
+      Panel administratora
+    </span>
+    <span> </span>
   </div>
-  <div class="button-grid">
-    <button (click)="banUser()">Zbanuj użytkownika</button>
-    <button (click)="unbanUser()">Odblokuj użytkownika</button>
-    <button (click)="addCategory()">Dodaj kategorię</button>
-    <button (click)="deleteCategory()">Usuń kategorię</button>
-  </div>
-  <div class="input-container">
-    <input
-      [value]="text"
-      (input)="saveInput($event)"
-      placeholder="Wpisz tekst..."
-    >
-  </div>
-  <div *ngIf="actionsArray.length > 0; else noActions">
-    <div class="frame">
-      <ng-container *ngFor="let action of actionsArray.reverse(); let i = index">
 
-        <li>
-          {{action.formattedDate}}
-          {{action.action}}
-        </li>
-        <br>
+  <button
+    class="return"
+    mat-fab
+    (click)="returnButton()"
+  >
+    <mat-icon>arrow_back</mat-icon>
+  </button>
 
-      </ng-container>
+  <div class="container">
+    <div class="chuj">
+      <div>
+        <span class="center">
+          chuj1
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj2
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj3
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj4
+        </span>
+        <div class="item"></div>
+      </div>
     </div>
+
+    <div class="chuj">
+      <div>
+        <span class="center">
+          chuj1
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj2
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj3
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj4
+        </span>
+        <div class="item"></div>
+      </div>
+    </div>
+
+
   </div>
-</body>
-<ng-template #noActions>
-  <div class="frame">
-    Brak akcji w ostatnim czasie...
-  </div>
-</ng-template>
+
+</div>
