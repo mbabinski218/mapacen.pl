@@ -1,73 +1,78 @@
-<div class="top mainColor">
-  <div class="title--move">
-    <span class="title">mapacen.pl</span>
+<div>
+  <div class="top mainColor">
+    <span class="title">
+      mapacen.pl
+    </span>
+    <span class="title">
+      Panel administratora
+    </span>
+    <span> </span>
   </div>
 
-  <div class="title--move">
-    <span class="title-admin">Panel administratora</span>
-  </div>
+  <button
+    class="return"
+    mat-fab
+    (click)="returnButton()"
+  >
+    <mat-icon>arrow_back</mat-icon>
+  </button>
 
-  <form class="container">
-    <div [hidden]="isHidden">
-      <div class="top-text">{{adviceText}}</div>
+  <div class="container">
+    <div class="chuj">
+      <div>
+        <span class="center">
+          chuj1
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj2
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj3
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj4
+        </span>
+        <div class="item"></div>
+      </div>
     </div>
-  </form>
+
+    <div class="chuj">
+      <div>
+        <span class="center">
+          chuj1
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj2
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj3
+        </span>
+        <div class="item"></div>
+      </div>
+      <div>
+        <span class="center">
+          chuj4
+        </span>
+        <div class="item"></div>
+      </div>
+    </div>
+
+
+  </div>
 
 </div>
-
-<button
-  (click)="returnButton()"
-  class="return"
-  mat-fab
-  aria-label="Example icon button with a bookmark icon"
->
-  <span class="material-icons">
-    arrow_back
-  </span>
-</button>
-<!--- -->
-
-<body>
-  <div class="button-grid">
-    <button
-      class="admin-button"
-      (click)="banUser()"
-    >Zbanuj użytkownika</button>
-    <button
-      class="admin-button"
-      (click)="unbanUser()"
-    >Odblokuj użytkownika</button>
-    <button
-      class="admin-button"
-      (click)="addCategory()"
-    >Dodaj kategorię</button>
-    <button
-      class="admin-button"
-      (click)="deleteCategory()"
-    >Usuń kategorię</button>
-  </div>
-  <div class="input-container">
-    <input
-      class="admin-input"
-      [value]="text"
-      (input)="saveInput($event)"
-      placeholder="Wpisz tekst..."
-    >
-  </div>
-  <div *ngIf="actionsArray.length > 0; else noActions">
-    <div class="frame">
-      <ng-container *ngFor="let action of actionsArray.reverse(); let i = index">
-        <li>
-          {{action.formattedDate}}
-          {{action.action}}
-        </li>
-        <br>
-      </ng-container>
-    </div>
-  </div>
-</body>
-<ng-template #noActions>
-  <div class="frame">
-    Brak akcji w ostatnim czasie...
-  </div>
-</ng-template>

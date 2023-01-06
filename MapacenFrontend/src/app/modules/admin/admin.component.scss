@@ -1,202 +1,45 @@
-.return {
-  min-height: 50px;
-  min-width: 50px;
-  border: 2px solid rgb(245, 245, 245) !important;
-  background-color: rgb(96, 72, 156);
-  border-radius: 16px;
-  margin-top: 5px;
-  margin-left: 10px;
-  color: white;
-}
-
-.return:hover {
-  cursor: pointer;
-  background-color: rgb(114, 88, 179);
-}
-
-.arrow-back {
-  font-size: 200%;
-}
-
 .top {
-  padding: 7px 16px;
+  height: 58px;
+  padding: 8px 16px;
   margin: 5px 10px;
   display: flex;
   align-items: center;
-  border-radius: 16px;
+  border-radius: 24px;
   justify-content: space-between;
+}
+
+.return {
+  position: absolute;
 }
 
 .title {
   position: relative;
   bottom: 5px;
-  font-family: "SiteTitle";
+  cursor: pointer;
+  font-family: 'SiteTitle';
   font-size: 40px;
   display: flex;
   align-items: center;
   color: rgb(245, 245, 245);
 }
 
-.title-admin {
-  font-size: 38px;
-  font-weight: 700;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  color: rgb(245, 245, 245);
-  margin-right: 150px;
-  font-family: "SiteTitle";
-  position: relative;
-}
-
-.button {
-  cursor: pointer;
-  border: 2px solid rgb(245, 245, 245);
-  border-radius: 12px;
-  min-height: 45px;
-  min-width: 45px;
-  height: 45px;
-  width: 45px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.icon {
-  color: rgb(245, 245, 245);
-}
-
-.mat-mdc-form-field {
-  flex-direction: unset !important;
-  display: flex !important;
-}
-
-.mat-mdc-form-field-subscript-wrapper {
-  width: 0 !important;
+.item {
+  border: 1px solid white;
+  border-radius: 24px;
+  width: 310px;
+  height: 400px;
 }
 
 .container {
   display: flex;
-  align-items: center;
-  gap: 40px;
-  height: 58px;
-}
-
-.powiat {
-  cursor: pointer;
-  min-width: 240px;
-  border-radius: 4px;
-}
-
-.kategoria {
-  cursor: pointer;
-  min-width: 220px;
-  border-radius: 4px;
-  position: relative;
-  right: 40px;
-}
-
-.produkt {
-  min-width: 320px;
-  width: 100%;
-  border-radius: 4px;
-}
-
-.login {
-  min-height: 45px;
-  border: 2px solid rgb(245, 245, 245) !important;
-  background-color: rgb(96, 72, 156);
-  border-radius: 16px;
-}
-
-.find {
-  position: relative;
-  right: 40px;
-}
-
-/* end  */
-
-body {
-  min-height: 100%;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.button-container {
-  display: flex;
   justify-content: center;
-  margin-top: 50px;
-}
-
-.admin-button {
-  width: 500px;
-  height: 180px;
-  background-color: rgb(22, 32, 65);
-  border-radius: 25px;
-  border: solid 2.2px white;
-  color: white;
-  font-size: 42px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s;
-}
-
-.admin-button:hover {
-  cursor: pointer;
-  background-color: rgb(46, 60, 105);
-}
-
-.admin-button:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.input-container {
-  margin-top: 50px;
-}
-
-.admin-input {
-  background-color: rgb(32, 43, 82);
-  color: white;
-  border-radius: 25px;
-  width: 1050px;
-  height: 50px;
-  border: solid 2.2px white;
-  border-radius: 5px;
-  padding: 0 10px;
-  font-size: 32px;
-}
-
-.admin-input::placeholder {
-  color: white
-}
-
-.top-text {
-  font-size: 38px;
-  font-weight: 700;
-  height: 100%;
-  display: flex;
   align-items: center;
-  color: rgb(245, 245, 245);
+  flex-direction: column;
+  gap: 30px;
 }
 
-.button-grid {
-  margin-top: 5%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 20px;
-}
-
-.input-container {
-  margin-top: 50px;
-}
-
-.frame {
-  width: 1050px;
-  color: rgb(255, 255, 255);
-  margin-top: 20px;
-  font-size: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.chuj {
+  gap: 30px;
+  display: flex;
+  flex-direction: row;
 }
