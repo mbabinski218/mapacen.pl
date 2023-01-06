@@ -1,26 +1,27 @@
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { AppRoutingModule } from '@app/app-routing.module';
+import { AuthGuard } from '@app/auth/auth.guard';
 import { AppComponent } from '@app/app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from '@app/app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+    RouterModule,
     BrowserModule,
+    InputMaskModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    RouterModule,
-    InputMaskModule,
   ],
   providers: [
-    
+    AuthGuard,
   ],
   bootstrap: [AppComponent]
 })

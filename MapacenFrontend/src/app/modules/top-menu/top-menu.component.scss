@@ -9,22 +9,19 @@ app-top-menu {
   }
 
   .title {
-    font-size: 38px;
-    font-weight: 700;
-    height: 100%;
+    position: relative;
+    bottom: 5px;
+    cursor: pointer;
+    font-family: 'SiteTitle';
+    font-size: 40px;
     display: flex;
     align-items: center;
     color: rgb(245, 245, 245);
-
-    &--move {
-      display: flex;
-      align-items: baseline;
-    }
   }
 
   .button {
     cursor: pointer;
-    border: 2px solid rgb(245, 245, 245);
+    border: 1px solid rgb(245, 245, 245);
     border-radius: 12px;
     min-height: 45px;
     min-width: 45px;
@@ -75,8 +72,9 @@ app-top-menu {
   }
 
   .login {
+    cursor: pointer;
     min-height: 45px;
-    border: 2px solid rgb(245, 245, 245) !important;
+    border: 1px solid rgb(245, 245, 245) !important;
     background-color: rgb(96, 72, 156);
     border-radius: 16px;
   }
@@ -84,5 +82,44 @@ app-top-menu {
   .find {
     position: relative;
     right: 40px;
+  }
+
+  .iconLogged {
+    font-size: 35px;
+    width: fit-content;
+    height: fit-content;
+    color: white;
+  }
+
+  .logowanie {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .user {
+    position: absolute;
+    width: 300px;
+    z-index: 10;
+    top: 9%;
+    right: 2%;
+    display: flex;
+    align-items: center;
+    background-color: rgb(22, 32, 65);
+    border: 1px solid rgb(245, 245, 245);
+    border-radius: 16px;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-size: 17px;
+  }
+
+  .disable {
+    pointer-events: none;
   }
 }

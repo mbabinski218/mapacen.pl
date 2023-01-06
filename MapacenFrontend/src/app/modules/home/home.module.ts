@@ -1,40 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeComponent } from '@modules/home/home.component';
-import { HomeRoutingModule } from '@modules/home/home-routing.module';
-import { AuthenticationModule } from '@modules/authentication/authentication.module';
-import { ShowoffModule } from '@modules/showoff/showoff.module';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { TopMenuModule } from '@modules/top-menu/top-menu.module';
-
-import { AdminComponent } from '../admin/admin.component';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { HomeComponent } from '@modules/home/home.component';
+import { OffersModule } from '@modules/offers/offers.module';
+import { TopMenuModule } from '@modules/top-menu/top-menu.module';
+import { HomeRoutingModule } from '@modules/home/home-routing.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    AdminComponent,
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule,
-    AuthenticationModule,
-    MatSlideToggleModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatToolbarModule,
-    ShowoffModule,
-    MatButtonModule,
+    OffersModule,
     MatIconModule,
     TopMenuModule,
-
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule,
+    HomeRoutingModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule,
   ],
-  providers: [
-    // FormGroupDirective,
-  ]
 })
 export class HomeModule { }

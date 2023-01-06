@@ -1,12 +1,11 @@
-import { Category } from './../showoff/interfaces/showoff.interface';
-import { County } from './interfaces/showoff.interface';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
-import { TopMenuService } from './api/top-menu.service';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { TopMenuService } from '@modules/top-menu/api/top-menu.service';
+import { MyLocalStorageService } from '@shared/services/my-local-storage.service';
+import { idNameOnly, OfferContent } from '@modules/top-menu/interfaces/top-menu.interface';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { LoginDialogComponent } from '@modules/top-menu/components/login-dialog/login-dialog.component';
 
 @Component({
   selector: 'app-top-menu',
@@ -16,83 +15,105 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
 })
 export class TopMenuComponent implements OnInit {
 
-  counties: County[] = []
-  categories: Category[] = []
+  @Output() refreshOffers = new EventEmitter<OfferContent>();
+  counties: idNameOnly[] = []
+  categories: idNameOnly[] = []
   form: FormGroup;
+  userName = '';
+  userEmail = '';
+  userLocalCounty = '';
+  userProfileCounty = '';
 
-  mySelectedCounty: string;
-  mySelectedCategory: string;
-  loginString = 'Zaloguj';
+  filteredCounties: string[];
+  filteredCategories: string[];
 
-  countyPressed = false;
-  categoriesPressed = false;
-
-  filteredCounties: Observable<string[]>;
-  filteredCategories: Observable<string[]>;
+  showUserInfo = false;
+  logged: boolean;
 
   constructor(
-    private topMenuService: TopMenuService,
+    public router: Router,
     private fb: FormBuilder,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private topMenuService: TopMenuService,
+    private myLocalStorageService: MyLocalStorageService,
   ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
-      county: [null],
       product: [null],
       category: [null],
+      county: [null],
     });
 
     this.topMenuService.getAllCounties().subscribe((res) => {
       if (res) {
-        this.counties = res
-        this.filteredCounties = this.form.get('county').valueChanges.pipe(
-          startWith(''),
-          map(value => this._filter(value || '', 'counties')),
-        );
+        this.filteredCounties = res.map((result) => result.name);
+        this.counties = res;
+
+        this.userProfileCounty = this.counties.find((res) => res.id.toString() === localStorage.getItem('userProfileCountyId'))?.name;
+        const localCounty = this.counties.find((res) => res.id.toString() === localStorage.getItem('userLocalCountyId'))?.name;
+        this.userName = localStorage.getItem('userName');
+        this.userEmail = localStorage.getItem('userEmail');
+
+        this.userLocalCounty = localCounty ? localCounty : this.userProfileCounty;
+
+        if (!this.userLocalCounty) {
+          this.userLocalCounty = '';
+        }
       }
     })
 
     this.topMenuService.getAllCategories().subscribe((res) => {
       if (res) {
-        this.categories = res
-        this.filteredCategories = this.form.get('category').valueChanges.pipe(
-          startWith(''),
-          map(value => this._filter(value || '', 'categories')),
-        );
+        this.filteredCategories = res.map((result) => result.name)
+        this.categories = res;
       }
+    })
+
+    this.logged = !!localStorage.getItem('userToken');
+  }
+
+  selectedCounty(): void {
+    localStorage.setItem('userLocalCountyId', this.counties.find((res) => res.name === this.form.get('county').value)?.id.toString());
+
+    this.refreshOffers.emit({
+      search: this.form.get('product').value,
+      category: this.categories.find((res) => res.name === this.form.get('category').value)?.id.toString(),
     })
   }
 
-  selectedCounty(selected: string): void {
-    this.mySelectedCounty = selected;
-    console.log(selected)
-    // strzał do api po id, chyba sie wali z tym ostatnim wybranym
-
-  }
-
-  selectedCategory(selected: string): void {
-    this.mySelectedCategory = selected;
-    console.log(selected)
-    // strzał do api po id, chyba sie wali z tym ostatnim wybranym
-  }
-
   search() {
-    //szuka przedmiotów filtrując po wyszukiwaniu i jak jest to też po kategorii
+    this.refreshOffers.emit({
+      search: this.form.get('product').value,
+      category: this.categories.find((res) => res.name === this.form.get('category').value)?.id.toString(),
+    })
+  }
+
+  reload() {
+    window.location.reload();
   }
 
   logIn() {
-    this.dialog.open(LoginDialogComponent, {
+    const dialogRef = this.dialog.open(LoginDialogComponent, {
       width: '450px',
       height: '650px',
       panelClass: 'loginDialog',
       data: this.counties,
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'logged') {
+        const county = this.counties.find((res) => res.id.toString() === localStorage.getItem('userLocalCountyId'))?.name;
+        this.userLocalCounty = county ? county : '';
+        this.userName = localStorage.getItem('userName');
+        this.userEmail = localStorage.getItem('userEmail');
+      }
+    });
   }
 
-  private _filter(value: string, which: string): string[] {
-    const filterValue = value.toLowerCase();
-    const option = which === 'counties' ? this.counties.map((res) => res.name) : this.categories.map((res) => res.name);
-    return option.filter(option => option.toLowerCase().includes(filterValue));
+  logout() {
+    this.myLocalStorageService.removeStorage();
+    this.logged = false;
+    this.reload();
   }
 }

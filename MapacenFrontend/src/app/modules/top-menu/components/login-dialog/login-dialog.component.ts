@@ -1,9 +1,14 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
-import { map, Observable, startWith } from 'rxjs';
-import { County } from '@modules/top-menu/interfaces/showoff.interface';
+import { MatAutocomplete } from '@angular/material/autocomplete';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { TopMenuService } from '@modules/top-menu/api/top-menu.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { idNameOnly } from '@modules/top-menu/interfaces/top-menu.interface';
+import { USERNAME_PATTERN } from '@core/constants/validation-patterns.conts';
+import { MyLocalStorageService } from '@shared/services/my-local-storage.service';
+import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@core/constants/validation-patterns.conts';
+import { ToastMessageService } from '@shared/modules/toast-message/services/toast-message.service';
 
 @Component({
   selector: 'app-login-dialog',
@@ -13,63 +18,94 @@ import { County } from '@modules/top-menu/interfaces/showoff.interface';
 })
 export class LoginDialogComponent {
 
+  @ViewChild(MatAutocomplete) matAutocomplete: MatAutocomplete;
   loginForm: FormGroup;
   registerForm: FormGroup;
   login = true;
-  currentCounty: string;
 
-  filteredCounties: Observable<string[]>;
+  filteredCounties: string[];
+
+  hiddenPassword = true;
+  passwordMode = 'password';
+
+  registerValid = false;
+  loginValid = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public counties: County[],
-    public dialogRef: MatDialogRef<LoginDialogComponent>,
     private fb: FormBuilder,
+    private topMenuService: TopMenuService,
+    private toastMessageService: ToastMessageService,
+    public dialogRef: MatDialogRef<LoginDialogComponent>,
+    private myLocalStorageService: MyLocalStorageService,
+    @Inject(MAT_DIALOG_DATA) public counties: idNameOnly[],
   ) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      email: [null, [Validators.required]],
-      password: [null, [Validators.required]],
+      email: [null, Validators.compose([Validators.required, Validators.pattern(EMAIL_PATTERN)])],
+      password: [null, Validators.compose([Validators.required, Validators.pattern(PASSWORD_PATTERN)])],
     });
     this.registerForm = this.fb.group({
-      email: [null, [Validators.required]],
-      userName: [null, [Validators.required]],
-      county: [null, [Validators.required]],
-      password: [null, [Validators.required]],
-      passwordAgain: [null, [Validators.required]],
+      name: [null, Validators.compose([Validators.required, Validators.pattern(USERNAME_PATTERN)])],
+      email: [null, Validators.compose([Validators.required, Validators.pattern(EMAIL_PATTERN)])],
+      password: [null, Validators.compose([Validators.required, Validators.pattern(PASSWORD_PATTERN)])],
+      confirmedPassword: [null, Validators.compose([Validators.required, Validators.pattern(PASSWORD_PATTERN)])],
+      countyId: [null, [Validators.required]],
     });
 
-    this.filteredCounties = this.registerForm.get('county').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
+    this.filteredCounties = this.counties.map((result) => result.name);
+
+    this.registerForm.valueChanges.subscribe((res) => {
+      if (res.password === res.confirmedPassword) {
+        this.registerForm.get('confirmedPassword').setErrors(null)
+        this.registerForm.setErrors(null)
+      }
+      else {
+        this.registerForm.get('confirmedPassword').setErrors({ 'incorrect': true })
+        this.registerForm.setErrors({ 'incorrect': true })
+      }
+
+      this.registerValid = this.registerForm.valid;
+    })
+
+    this.loginForm.valueChanges.subscribe(() => {
+      this.loginValid = this.loginForm.valid;
+    })
   }
 
   change(): void {
     this.login = !this.login;
-  }
 
-  selectedCounty(chosen: string): void {
-    this.currentCounty = chosen;
+    this.loginForm.reset();
+    this.registerForm.reset();
   }
 
   handleFormSubmit() {
     if (this.login) {
       if (this.loginForm.valid) {
-        const formValue = this.loginForm.value;
-        this.dialogRef.close(formValue);
+        this.topMenuService.loginUser(this.loginForm.value).subscribe((res) => {
+          this.myLocalStorageService.setStorage(res)
+          this.dialogRef.close();
+          this.refresh();
+        })
       }
       return;
     }
+
     if (this.registerForm.valid) {
-      const formValue = this.registerForm.value;
-      this.dialogRef.close(formValue);
+      this.topMenuService.registerUser(this.registerForm.value).subscribe(() => {
+        this.toastMessageService.notifyOfSuccess('Rejestracja powiodła się! Teraz możesz się zalogować')
+        this.change();
+      })
     }
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    const option = this.counties.map((res) => res.name);
-    return option.filter(option => option.toLowerCase().includes(filterValue));
+  togglePasswordVisibility(): void {
+    this.hiddenPassword = !this.hiddenPassword;
+    this.passwordMode = this.hiddenPassword ? 'password' : '';
+  }
+
+  private refresh() {
+    setTimeout(() => window.location.reload(), 10)
   }
 }

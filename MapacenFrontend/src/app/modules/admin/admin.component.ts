@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent {
   //templates of categories and users only for testing
@@ -17,7 +17,10 @@ export class AdminComponent {
   constructor(private router: Router) {
     this.users = [new User('Adam_Kowalski', false), new User('Monika16', false), new User('Łowca-okazji', false)]
     this.categories = ['Alkohole', 'Drób', 'Meble']
-  }
+  }//TODO KONSTRUKTOR TYLKO DO TWORZENIA OBIEKTOW, JAK CO MA SIE STAC PRZY UTWORZENIU KOMPONENTU TO PISZE SIE W ngOnInit()!
+
+
+
   //end of testing code fragment
 
   adviceText = ''

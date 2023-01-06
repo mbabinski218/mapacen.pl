@@ -1,35 +1,62 @@
-import { Category } from './../../showoff/interfaces/showoff.interface';
+import { Api } from '@core/enums/api.enum';
 import { Injectable } from '@angular/core';
+import { environment } from '@env/environment';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of } from 'rxjs';
-import { environment } from '@env/environment';
-import { Api } from '@core/enums/api.enum';
-import { County } from '../interfaces/showoff.interface';
+import { ToastMessageService } from '@shared/modules/toast-message/services/toast-message.service';
+import { idNameOnly, Login, Register, Token } from '@modules/top-menu/interfaces/top-menu.interface';
 
 @Injectable()
 export class TopMenuService {
 
   constructor(
     private http: HttpClient,
+    private toastMessageService: ToastMessageService,
   ) { }
 
-  getAllCounties(): Observable<County[]> {
-    return this.http.get<County[]>(`${environment.httpBackend}${Api.GET_COUNTY}`).pipe(
-      catchError(() => of([])),
+  getAllCounties(): Observable<idNameOnly[]> {
+    return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.COUNTIES}`).pipe(
+      catchError(() => {
+        this.toastMessageService.notifyOfError("Błąd pobierania powiatów");
+        return of([]);
+      }),
     );
   }
 
-  getAllCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${environment.httpBackend}${Api.GET_CATEGORIES}`).pipe(
-      catchError(() => of([])),
+  getAllCategories(): Observable<idNameOnly[]> {
+    return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.CATEGORIES}`).pipe(
+      catchError(() => {
+        this.toastMessageService.notifyOfError("Błąd pobierania kategorii");
+        return of([]);
+      }),
     );
   }
 
-  loginUser() {
-    
+  loginUser({ email, password }: Login): Observable<Token> {
+    return this.http.post<Token>(`${environment.httpBackend}${Api.LOGIN}`, { email, password }).pipe(
+      catchError(() => {
+        this.toastMessageService.notifyOfError("Zły email lub hasło");
+        return of();
+      }),
+    );
   }
 
-  registerUser() {
+  registerUser({ name, email, password, confirmedPassword, countyId }: Register): Observable<Register> {
+    return this.http.post<Register>(`${environment.httpBackend}${Api.REGISTER}`, { name, email, password, confirmedPassword, countyId }).pipe(
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
+        return of();
+      }),
+    );
+  }
 
+  updateCounty(userId: string, countyId: string): Observable<any> {
+    return this.http.post<any>(`${environment.httpBackend}${Api.UPDATE_USER_COUNTY.replace(':userId', userId).replace(':countyId', countyId)}`, {})
+      .pipe(
+        catchError((err) => {
+          this.toastMessageService.notifyOfError(err.error);
+          return of();
+        }),
+      );
   }
 }

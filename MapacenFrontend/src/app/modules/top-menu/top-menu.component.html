@@ -1,17 +1,19 @@
 <div class="top mainColor">
-  <div class="title--move">
-    <span class="title">mapacen.pl</span>
-  </div>
-
-  <!-- <div class="button backgroundColor">
-    <mat-icon class="icon">public</mat-icon>
-  </div> -->
+  <span
+    (click)="reload()"
+    class="title"
+  >
+    mapacen.pl
+  </span>
 
   <form
     [formGroup]="form"
     class="container"
   >
-    <div class="button backgroundColor">
+    <div
+      class="button backgroundColor"
+      [ngClass]="logged ? '' : 'disable'"
+    >
       <mat-icon class="icon">favorite_outlined</mat-icon>
     </div>
 
@@ -20,70 +22,101 @@
       class="backgroundColor powiat"
     >
       <mat-label>Powiat</mat-label>
-      <input
-        type="text"
-        placeholder="Wybierz powiat"
-        matInput
-        controlName="county"
-        [matAutocomplete]="powiat"
+      <mat-select
+        [value]="userLocalCounty"
+        formControlName="county"
+        (selectionChange)="selectedCounty()"
       >
-      <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      <mat-autocomplete #powiat="matAutocomplete">
         <mat-option
-          *ngFor="let option of filteredCounties | async"
-          [value]="option"
-          (onSelectionChange)="selectedCounty(option)"
+          *ngFor="let item of filteredCounties"
+          [value]="item"
         >
-          {{ option }}
+          {{ item }}
         </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-
-    <div class="produkt backgroundColor">
-      <my-input
-        controlName="product"
-        type="text"
-        label="Wyszukaj produkt"
-      >
-      </my-input>
-    </div>
-    <mat-form-field
-      appearance="outline"
-      class="backgroundColor kategoria"
-    >
-      <mat-label>Kategoria</mat-label>
-      <input
-        type="text"
-        placeholder="Wybierz kategorię"
-        matInput
-        controlName="category"
-        [matAutocomplete]="kategoria"
-      >
-      <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      <mat-autocomplete #kategoria="matAutocomplete">
-        <mat-option
-          *ngFor="let option of filteredCategories | async"
-          [value]="option"
-          (onSelectionChange)="selectedCategory(option)"
-        >
-          {{ option }}
-        </mat-option>
-      </mat-autocomplete>
+      </mat-select>
     </mat-form-field>
 
     <div
-      (click)="search()"
+      class="produkt backgroundColor"
+      [ngClass]="logged ? '' : 'disable'"
+    >
+      <my-input
+        controlName="product"
+        type="text"
+        label="Wpisz nazwę produktu"
+      >
+      </my-input>
+    </div>
+
+    <mat-form-field
+      class="backgroundColor kategoria"
+      appearance="outline"
+      [ngClass]="logged ? '' : 'disable'"
+    >
+      <mat-label>Kategorie</mat-label>
+      <mat-select formControlName="category">
+        <mat-option>Wyczyść</mat-option>
+        <mat-option
+          *ngFor="let item of filteredCategories"
+          [value]="item"
+        >
+          {{ item }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div
+      [ngClass]="logged ? '' : 'disable'"
       class="button find secondaryColor"
+      (click)="search()"
     >
       <mat-icon>search</mat-icon>
     </div>
   </form>
 
   <button
+    *ngIf="!logged; else log"
     mat-stroked-button
-    (click)="logIn()"
     class="login"
+    (click)="logIn()"
   >
-    {{ loginString }}
+    Zaloguj
   </button>
+
+  <ng-template
+    #log
+    class="logowanie"
+  >
+    <button
+      class="login logowanie"
+      (click)="showUserInfo = !showUserInfo"
+    >
+      <mat-icon class="iconLogged">face_5</mat-icon>
+    </button>
+  </ng-template>
+
+  <mat-card
+    class="user"
+    *ngIf="showUserInfo"
+  >
+    <mat-card-header>
+      <mat-card-title>Informacje o koncie</mat-card-title>
+    </mat-card-header><br>
+    <mat-card-content>
+      <div class="info">
+        <span>Pseudonim: {{ userName }}</span>
+        <span>E-mail: {{ userEmail }}</span>
+        <span>Powiat: {{ userProfileCounty }}</span><br>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        class="login"
+        mat-button
+        (click)="logout()"
+      >
+        Wyloguj
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

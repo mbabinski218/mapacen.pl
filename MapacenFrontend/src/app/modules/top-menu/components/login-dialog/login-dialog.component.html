@@ -3,7 +3,12 @@
     mat-dialog-title
     class="title"
   >
-    Logowanie
+    <span *ngIf="login">
+      Logowanie
+    </span>
+    <span *ngIf="!login">
+      Rejestracja
+    </span>
   </h1>
   <div *ngIf="login; else register">
     <form [formGroup]="loginForm">
@@ -21,6 +26,8 @@
             controlName="password"
             type="text"
             label="Hasło"
+            [type]="passwordMode"
+            [suffixTemplate]="icon"
           >
           </my-input>
         </div>
@@ -40,48 +47,47 @@
         </div>
         <div class="fix backgroundColor">
           <my-input
-            controlName="userName"
+            controlName="name"
             type="text"
             label="Nazwa użytkownika"
+            placeholder="5-18 znaków"
           >
           </my-input>
         </div>
+
         <mat-form-field
           appearance="outline"
           class="backgroundColor fix"
         >
           <mat-label>Powiat</mat-label>
-          <input
-            type="text"
-            placeholder="Wybierz powiat"
-            matInput
-            controlName="county"
-            [matAutocomplete]="powiat"
-          >
-          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-          <mat-autocomplete #powiat="matAutocomplete">
+          <mat-select formControlName="countyId">
             <mat-option
-              *ngFor="let option of filteredCounties | async"
-              [value]="option"
-              (onSelectionChange)="selectedCounty(option)"
+              *ngFor="let item of filteredCounties"
+              [value]="item"
             >
-              {{ option }}
+              {{ item }}
             </mat-option>
-          </mat-autocomplete>
+          </mat-select>
         </mat-form-field>
+
         <div class="fix backgroundColor">
           <my-input
             controlName="password"
             type="text"
             label="Hasło"
+            [type]="passwordMode"
+            [suffixTemplate]="icon"
+            placeholder="8-30 znaków"
           >
           </my-input>
         </div>
         <div class="fix backgroundColor">
           <my-input
-            controlName="passwordAgain"
+            controlName="confirmedPassword"
             type="text"
             label="Powtórz hasło"
+            [type]="passwordMode"
+            [suffixTemplate]="icon"
           >
           </my-input>
         </div>
@@ -90,38 +96,56 @@
   </ng-template>
   <div class="position">
     <button
+      *ngIf="login"
+      [disabled]="!loginValid"
+      class="button"
+      mat-stroked-button
+      (click)="handleFormSubmit()"
+      [mat-dialog-close]="'logged'"
+    >
+      Zaloguj się
+    </button>
+    <button
+      *ngIf="!login"
+      [disabled]="!registerValid"
       class="button"
       mat-stroked-button
       (click)="handleFormSubmit()"
     >
-      <span *ngIf="!login">
-        Zarejestruj się
-      </span>
-      <span *ngIf="login">
-        Zaloguj się
-      </span>
+      Zarejestruj się
     </button>
   </div>
-  <div class="position--gap"></div>
-  <hr>
-  <div class="position position--gap">
-    <span *ngIf="login">
-      Nie masz konta w serwisie?
-    </span>
-    <span *ngIf="!login">
-      Masz już konto?
-    </span>
-    <button
-      class="changeButton"
-      mat-stroked-button
-      (click)="change()"
-    >
+  <div class="position--gap">
+    <hr>
+    <div class="position position--gap">
       <span *ngIf="login">
-        Zarejestruj się
+        Nie masz konta w serwisie?
       </span>
       <span *ngIf="!login">
-        Zaloguj się
+        Masz już konto?
       </span>
-    </button>
+      <button
+        class="changeButton"
+        mat-stroked-button
+        (click)="change()"
+      >
+        <span *ngIf="login">
+          Zarejestruj się
+        </span>
+        <span *ngIf="!login">
+          Zaloguj się
+        </span>
+      </button>
+    </div>
   </div>
 </div>
+
+<ng-template #icon>
+  <mat-icon
+    class="icon"
+    matSuffix
+    (click)="togglePasswordVisibility()"
+  >
+    {{ hiddenPassword ? 'visibility_off' : 'visibility' }}
+  </mat-icon>
+</ng-template>

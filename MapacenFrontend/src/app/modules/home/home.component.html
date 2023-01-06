@@ -1,16 +1,16 @@
-<app-top-menu></app-top-menu>
+<app-top-menu (refreshOffers)="refreshOffers($event)"></app-top-menu>
 
-<div class="content mainColor">
+<app-offers
+  class="offer"
+  [filterOffers]="offer"
+>
+</app-offers>
 
-
-  </div>
-
-  <button
-    class="admin-button"
-    (click)="onAdminButtonClick();"
-    mat-fab
-    color="primary"
-    aria-label="Example icon button with a delete icon"
-  >
-    <mat-icon>construction</mat-icon>
-  </button>
+<button
+  *ngIf="admin"
+  mat-fab
+  class="admin-button"
+  (click)="onAdminButtonClick();"
+>
+  <mat-icon>construction</mat-icon>
+</button>

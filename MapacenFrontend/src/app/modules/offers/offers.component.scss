@@ -1,0 +1,122 @@
+.paging {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.item {
+  background-color: rgb(10, 17, 36);
+  border: 1px solid white;
+  border-radius: 22px;
+  width: 95%;
+  height: 100px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.name {
+  font-family: Labels;
+  font-size: 25px;
+  height: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.info {
+  font-size: 19px;
+  height: 50%;
+  color: grey;
+  display: flex;
+  align-items: center;
+}
+
+.data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  &--side {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 20%;
+  }
+
+  &--center {
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 60%;
+  }
+}
+
+.price {
+  font-family: Labels;
+  height: 50%;
+  width: 100%;
+  font-size: 32px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-right: 40px;
+}
+
+.dropdown {
+  height: 50%;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-right: 40px;
+}
+
+.disclaimer {
+  z-index: 11;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 30%;
+  color: rgb(235, 25, 25);
+  font-size: 22px;
+  font-weight: 500;
+  width: 380px;
+  height: 170px;
+  background-color: rgb(22, 32, 65);
+  border: 1px solid white;
+  border-radius: 22px;
+  padding: 15px;
+  letter-spacing: 2px;
+  line-height: 26px;
+}
+
+.isData {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.noData {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-size: 18px;
+  font-weight: 500;
+}

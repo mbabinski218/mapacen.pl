@@ -1,5 +1,4 @@
 export enum RoutesPath {
-  AUTH = 'auth',
-  LOGIN = 'login',
   HOME = 'home',
+  ADMIN_PANEL = 'home/admin-panel',
 }
