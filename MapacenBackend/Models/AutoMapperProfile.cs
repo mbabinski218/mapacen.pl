@@ -24,7 +24,8 @@ namespace MapacenBackend.Models
 
             // Comment
             CreateMap<Comment, CommentDto>()
-                .ForMember(dto => dto.Author, c => c.MapFrom(c => c.User.Name));
+                .ForMember(dto => dto.Author, c => c.MapFrom(c => c.User.Name))
+            .ForMember(dto => dto.AuthorId, c => c.MapFrom(c => c.User.Id));
             CreateMap<CreateCommentDto, Comment>();
 
             //Offer

@@ -105,6 +105,7 @@ namespace MapacenBackend.Services
             var comments = _dbContext
                 .Comments
                 .Where(c => c.OfferId == offerId)
+                .OrderByDescending(c=>c.CreationDate)
                 .Include(c => c.User);
 
             return _mapper.Map<List<CommentDto>>(comments);
