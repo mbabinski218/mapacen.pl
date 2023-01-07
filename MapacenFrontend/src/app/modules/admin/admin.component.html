@@ -18,61 +18,506 @@
   </button>
 
   <div class="container">
-    <div class="chuj">
+    <div class="admin-grid">
       <div>
-        <span class="center">
-          chuj1
+        <span class="text">
+          Dodaj produkt
         </span>
-        <div class="item"></div>
+        <div class="item-short">
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz kategorię</option>
+            <option
+              class="options"
+              value="volvo"
+            >Volvo</option>
+            <option
+              class="options"
+              value="saab"
+            >Saab</option>
+            <option
+              class="options"
+              value="fiat"
+            >Fiat</option>
+            <option
+              class="options"
+              value="audi"
+            >Audi</option>
+          </select>
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nazwę produktu"
+          >
+          <button class="admin-button">
+            Dodaj
+          </button>
+        </div>
       </div>
       <div>
-        <span class="center">
-          chuj2
+        <span class="text">
+          Dodaj kategorie
         </span>
-        <div class="item"></div>
+        <div class="item-short">
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nazwę kategorii"
+          >
+          <button class="admin-button">
+            Dodaj
+          </button>
+
+        </div>
       </div>
       <div>
-        <span class="center">
-          chuj3
+        <span class="text">
+          Dodaj oferte
         </span>
-        <div class="item"></div>
+        <div class="item">
+          <input
+            type="text"
+            id="wprowadz_cene_oferty"
+            class="admin-input"
+            placeholder="Wprowadź cenę oferty"
+          >
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz produkt</option>
+            <option
+              class="options"
+              value="
+                    volvo"
+            >Volvo</option>
+            <option
+              class="options"
+              value="saab"
+            >Saab</option>
+            <option
+              class="options"
+              value="fiat"
+            >Fiat</option>
+            <option
+              class="options"
+              value="audi"
+            >Audi</option>
+          </select>
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz punkt sprzedaży</option>
+            <option
+              class="options"
+              value="volvo"
+            >Volvo</option>
+            <option
+              class="options"
+              value="saab"
+            >Saab</option>
+            <option
+              class="options"
+              value="fiat"
+            >Fiat</option>
+            <option
+              class="options"
+              value="audi"
+            >Audi</option>
+          </select>
+          <button class="admin-button">
+            Dodaj
+          </button>
+        </div>
       </div>
       <div>
-        <span class="center">
-          chuj4
+        <span class="text">
+          Zarzadzaj uzytkownikami
         </span>
-        <div class="item"></div>
+        <div class="item-short">
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nazwę użytkownika"
+          >
+          <button class="admin-button">
+            Zablokuj
+          </button>
+          <button class="admin-button-second">
+            Odblokuj
+          </button>
+        </div>
+      </div>
+      <div>
+        <span class="text">
+          Modyfikuj kategorie
+        </span>
+        <div class="item-short">
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz kategorię</option>
+            <option
+              class="options"
+              value="volvo"
+            >Volvo</option>
+            <option
+              class="options"
+              value="saab"
+            >Saab</option>
+            <option
+              class="options"
+              value="fiat"
+            >Fiat</option>
+            <option
+              class="options"
+              value="audi"
+            >Audi</option>
+          </select>
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nazwę ketegorii"
+          >
+          <button class="admin-button">
+            Modyfikuj
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="chuj">
+    <div class="admin-grid">
       <div>
-        <span class="center">
-          chuj1
+        <span class="text">
+          Modyfikuj produkt
         </span>
-        <div class="item"></div>
+        <div class="item-long">
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz kategorię</option>
+            <option
+              class="options"
+              value="volvo"
+            >Volvo</option>
+            <option
+              class="options"
+              value="saab"
+            >Saab</option>
+            <option
+              class="options"
+              value="fiat"
+            >Fiat</option>
+            <option
+              class="options"
+              value="audi"
+            >Audi</option>
+          </select>
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nazwę produktu"
+          >
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz nową kategorię</option>
+            <option
+              class="options"
+              value="volvo"
+            >Volvo</option>
+            <option
+              class="options"
+              value="saab"
+            >Saab</option>
+            <option
+              class="options"
+              value="fiat"
+            >Fiat</option>
+            <option
+              class="options"
+              value="audi"
+            >Audi</option>
+          </select>
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nową nazwę"
+          >
+          <button class="admin-button">
+            Zablokuj
+          </button>
+        </div>
       </div>
       <div>
-        <span class="center">
-          chuj2
+        <span class="text">
+          Modyfikuj oferte
         </span>
-        <div class="item"></div>
+        <div class="item-long">
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz ofertę</option>
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="fiat">Fiat</option>
+            <option value="audi">Audi</option>
+          </select>
+          <input
+            class="admin-input"
+            placeholder="Wprowadź cenę oferty"
+          >
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="options"
+              value=""
+              disabled
+              selected
+            >Wybierz produkt</option>
+            <option
+              class="options"
+              value="
+                        volvo"
+            >Volvo</option>
+            <option
+              class="options"
+              value="saab"
+            >Saab</option>
+            <option
+              class="options"
+              value="fiat"
+            >Fiat</option>
+            <option
+              class="options"
+              value="audi"
+            >Audi</option>
+          </select>
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz punkt sprzedaży</option>
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="fiat">Fiat</option>
+            <option value="audi">Audi</option>
+          </select>
+          <button class="admin-button">
+            Modyfikuj
+          </button>
+
+        </div>
       </div>
       <div>
-        <span class="center">
-          chuj3
+        <span class="text">
+          Zarzadzaj uprawnieniami
         </span>
-        <div class="item"></div>
-      </div>
-      <div>
-        <span class="center">
-          chuj4
-        </span>
-        <div class="item"></div>
+        <div class="item-long">
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nazwę użytkownika"
+          >
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz powiat</option>
+            <option
+              class="options"
+              value="volvo"
+            >Volvo</option>
+            <option
+              class="options"
+              value="saab"
+            >Saab</option>
+            <option
+              class="options"
+              value="fiat"
+            >Fiat</option>
+            <option
+              class="options"
+              value="audi"
+            >Audi</option>
+          </select>
+          <button class="admin-button">
+            Dodaj uprawnienia administratora
+          </button>
+          <button class="admin-button-second">
+            Odbierz uprawnienia administratora
+          </button>
+        </div>
       </div>
     </div>
 
+    <div class="admin-grid">
+      <div>
+        <span class="text">
+          Dodaj punkt sprzedaży
+        </span>
+        <div class="item-long-long">
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nazwę punktu"
+          >
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nazwę miasta"
+          >
+          <input
+            class="admin-input"
+            placeholder="Wprowadź ulicę"
+          >
+          <input
+            class="admin-input"
+            placeholder="Wprowadź kod pocztowy"
+          >
+          <input
+            class="admin-input"
+            placeholder="Wprowadź numer budynku"
+          >
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz powiat</option>
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="fiat">Fiat</option>
+            <option value="audi">Audi</option>
+          </select>
+          <button class="admin-button">
+            Dodaj
+          </button>
+        </div>
+      </div>
+      <div>
+        <span class="text">
+          Modyfikuj punkt sprzedaży
+        </span>
+        <div class="item-long-long">
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz punkt sprzedaży</option>
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="fiat">Fiat</option>
+            <option value="audi">Audi</option>
+          </select>
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nazwę punktu"
+          >
+          <input
+            class="admin-input"
+            placeholder="Wprowadź nazwę miasta"
+          >
+          <input
+            class="admin-input"
+            placeholder="Wprowadź ulicę"
+          >
+          <input
+            class="admin-input"
+            placeholder="Wprowadź kod pocztowy"
+          >
+          <input
+            class="admin-input"
+            placeholder="Wprowadź numer budynku"
+          >
+          <select
+            class="admin-dropdown"
+            name="Produkt"
+            id="Produkt"
+          >
+            <option
+              class="item"
+              value=""
+              disabled
+              selected
+            >Wybierz powiat</option>
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="fiat">Fiat</option>
+            <option value="audi">Audi</option>
+          </select>
+          <button class="admin-button">
+            Modyfikuj
+          </button>
+        </div>
+      </div>
+
+    </div>
 
   </div>
-
-</div>
