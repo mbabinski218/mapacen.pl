@@ -11,7 +11,7 @@ using MapacenBackend.Models.UserDtos;
 namespace MapacenBackend.Models
 {
     public class AutoMapperProfile : Profile
-    { 
+    {
         public AutoMapperProfile()
         {
             // Address
@@ -23,7 +23,8 @@ namespace MapacenBackend.Models
             CreateMap<CreateCategoryDto, Category>();
 
             // Comment
-            CreateMap<Comment, CommentDto>();
+            CreateMap<Comment, CommentDto>()
+                .ForMember(dto => dto.Author, c => c.MapFrom(c => c.User.Name));
             CreateMap<CreateCommentDto, Comment>();
 
             //Offer
