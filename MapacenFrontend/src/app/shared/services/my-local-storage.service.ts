@@ -17,7 +17,7 @@ export class MyLocalStorageService {
     localStorage.setItem('userProfileCountyId', tokenData.countyId);
     localStorage.setItem('userId', tokenData.userId);
     localStorage.setItem('userCommenting', tokenData.canComment);
-    localStorage.setItem('favoritesId', tokenData.favoritesId);
+    localStorage.setItem('favouritesId', tokenData.favouritesId);
   }
 
   removeStorage() {

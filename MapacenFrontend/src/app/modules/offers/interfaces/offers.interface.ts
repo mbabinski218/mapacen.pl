@@ -1,4 +1,4 @@
-export interface Offer {
+export interface MainOffer {
   count: number,
   offers: Offers[],
 }
@@ -8,6 +8,9 @@ export interface Offers {
   price: number,
   product: Product,
   salesPoint: SalesPoint,
+  opened?: boolean,
+  comments?: MyComment[],
+  favourite?: boolean,
 }
 
 export interface Product {
@@ -37,4 +40,13 @@ export interface Address {
 export interface County {
   id: number,
   name: string,
+}
+
+export interface MyComment {
+  likes: number,
+  disLikes: number,
+  content: string,
+  author: string,
+  authorId: number,
+  id: number,
 }
