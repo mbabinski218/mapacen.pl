@@ -38,9 +38,9 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPost("favourites")]
-        public ActionResult AddOfferToFavorites([FromQuery] int offerId, [FromQuery] int favoritesId)
+        public ActionResult AddOfferToFavorites([FromQuery] int offerId, [FromQuery] int favouritesId)
         {
-            _service.AddOfferToFavourites(offerId, favoritesId);
+            _service.AddOfferToFavourites(offerId, favouritesId);
             return Ok();
         }
 

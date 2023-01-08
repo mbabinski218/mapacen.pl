@@ -19,7 +19,7 @@ namespace MapacenBackend.Controllers
         public ActionResult<int> CreateComment([FromBody] CreateCommentDto dto)
         {
             var commentId = _service.CreateComment(dto);
-            return Created($"/api/comment/{commentId}", null);
+            return Created($"/api/comment/{commentId}", commentId);
         }
 
         [HttpPut("like/{id}")]

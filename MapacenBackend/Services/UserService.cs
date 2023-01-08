@@ -164,7 +164,7 @@ public class UserService : IUserService
                 new(type:"email", user.Email),
                 new(type:"countyId", user.CountyId.ToString()),
                 new(type:"canComment", user.CanComment.ToString().ToLower()),
-                new(type:"favoritesId", user.FavouritesId.ToString())
+                new(type:"favouritesId", user.FavouritesId.ToString())
             },
             expires: DateTime.Now.AddDays(1),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature)
