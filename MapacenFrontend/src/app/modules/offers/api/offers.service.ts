@@ -3,7 +3,7 @@ import { Api } from '@core/enums/api.enum';
 import { environment } from '@env/environment';
 import { catchError, Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Offer, Offers } from '@modules/offers/interfaces/offers.interface';
+import { MyComment, MainOffer } from '@modules/offers/interfaces/offers.interface';
 import { ToastMessageService } from '@shared/modules/toast-message/services/toast-message.service';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class OffersService {
     private toastMessageService: ToastMessageService,
   ) { }
 
-  getAllOffers(countyId: number, search: string, categoryId: number, page: number, pageSize: number): Observable<Offer> {
+  getAllOffers(countyId: number, search: string, categoryId: number, page: number, pageSize: number): Observable<MainOffer> {
     const params = new HttpParams()
       .set('countyId', countyId)
       .set('productName', search ? search : '')
@@ -22,7 +22,7 @@ export class OffersService {
       .set('pageSize', pageSize)
       .set('pageNumber', page)
 
-    return this.http.get<Offer>(`${environment.httpBackend}${Api.OFFERS}`, { params }).pipe(
+    return this.http.get<MainOffer>(`${environment.httpBackend}${Api.OFFERS}`, { params }).pipe(
       catchError(() => {
         this.toastMessageService.notifyOfError("Błąd pobierania ofert");
         return of();
@@ -30,29 +30,66 @@ export class OffersService {
     );
   }
 
-  getFavourites(favouritesId: number, page: number, pageSize: number): Observable<Offer> {
+  getFavourites(favouritesId: number, page: number, pageSize: number): Observable<MainOffer> {
     const params = new HttpParams()
       .set('pageSize', pageSize)
       .set('pageNumber', page)
 
-    return this.http.get<Offer>(`${environment.httpBackend}${Api.FAVOURITES_UPDATE}`
+    return this.http.get<MainOffer>(`${environment.httpBackend}${Api.FAVOURITES}`
       .replace(':favouritesId', favouritesId.toString()), { params })
       .pipe(
         catchError(() => {
-          this.toastMessageService.notifyOfError("Błąd pobierania ulubionych");
+          this.toastMessageService.notifyOfError("Błąd aktualizacji ulubionych");
           return of();
         }),
       );
   }
 
-  updateFavourites(favouritesId: number, offerId: number): Observable<any> {
+  updateFavourites(offerId: number, favouritesId: number): Observable<any> {
     const params = new HttpParams()
-      .set('favouritesId', favouritesId)
       .set('offerId', offerId)
+      .set('favouritesId', favouritesId)
 
-    return this.http.post<any>(`${environment.httpBackend}${Api.FAVOURITES}`, { params }).pipe(
+    return this.http.post<any>(`${environment.httpBackend}${Api.FAVOURITES_UPDATE}`, { params }).pipe(
       catchError(() => {
-        this.toastMessageService.notifyOfError("Błąd aktualizacji ulubionych");
+        this.toastMessageService.notifyOfError("Błąd pobierania ulubionych");
+        return of();
+      }),
+    );
+  }
+
+  getComments(offerId: number): Observable<MyComment[]> {
+    return this.http.get<MyComment[]>(`${environment.httpBackend}${Api.OFFER_COMMENTS}`.replace(':offerId', offerId.toString())).pipe(
+      catchError(() => {
+        this.toastMessageService.notifyOfError("Błąd pobierania komentarzy");
+        return of([]);
+      }),
+    );
+  }
+
+  addComment(content: string, userId: number, offerId: number): Observable<any> {
+    const creationDate = new Date().toISOString();
+    return this.http.post<any>(`${environment.httpBackend}${Api.COMMENT}`, { content, userId, offerId, creationDate }).pipe(
+      catchError(() => {
+        this.toastMessageService.notifyOfError("Błąd dodawania komentarza");
+        return of();
+      }),
+    );
+  }
+
+  like(commentId: number): Observable<any> {
+    return this.http.put<any>(`${environment.httpBackend}${Api.COMMENT_LIKE}`.replace(':id', commentId.toString()), {}).pipe(
+      catchError(() => {
+        this.toastMessageService.notifyOfError("Błąd polubienia");
+        return of();
+      }),
+    );
+  }
+
+  dislike(commentId: number): Observable<any> {
+    return this.http.put<any>(`${environment.httpBackend}${Api.COMMENT_DISLIKE}`.replace(':id', commentId.toString()), {}).pipe(
+      catchError(() => {
+        this.toastMessageService.notifyOfError("Błąd polubienia");
         return of();
       }),
     );

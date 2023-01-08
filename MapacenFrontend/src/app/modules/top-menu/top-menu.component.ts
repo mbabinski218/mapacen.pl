@@ -91,7 +91,7 @@ export class TopMenuComponent implements OnInit {
   }
 
   emitFavourites() {
-    this.getFavourites.emit(localStorage.getItem('favoritesId'));
+    this.getFavourites.emit(localStorage.getItem('favouritesId'));
   }
 
   reload() {

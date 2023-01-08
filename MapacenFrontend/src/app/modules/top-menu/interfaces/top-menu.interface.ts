@@ -27,7 +27,7 @@ export interface TokenContent {
   countyId: string,
   userId: string,
   canComment: string,
-  favoritesId: string,
+  favouritesId: string,
   exp: number,
 }
 
