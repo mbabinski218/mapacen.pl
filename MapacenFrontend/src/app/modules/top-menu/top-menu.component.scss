@@ -4,11 +4,12 @@ app-top-menu {
     margin: 5px 10px;
     display: flex;
     align-items: center;
-    border-radius: 16px;
+    border-radius: 24px;
     justify-content: space-between;
   }
 
   .title {
+    width: 200px;
     position: relative;
     bottom: 5px;
     cursor: pointer;
@@ -22,27 +23,12 @@ app-top-menu {
   .button {
     cursor: pointer;
     border: 1px solid rgb(245, 245, 245);
-    border-radius: 12px;
-    min-height: 45px;
-    min-width: 45px;
-    height: 45px;
-    width: 45px;
+    border-radius: 16px;
+    min-height: 55px;
+    min-width: 55px;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .icon {
-    color: rgb(245, 245, 245);
-  }
-
-  .mat-mdc-form-field {
-    flex-direction: unset !important;
-    display: flex !important;
-  }
-
-  .mat-mdc-form-field-subscript-wrapper {
-    width: 0 !important;
   }
 
   .container {
@@ -54,29 +40,20 @@ app-top-menu {
   .powiat {
     cursor: pointer;
     min-width: 240px;
-    border-radius: 4px;
   }
 
   .kategoria {
     cursor: pointer;
     min-width: 220px;
-    border-radius: 4px;
     position: relative;
-    right: 40px;
+    right: 41px;
   }
 
-  .produkt {
-    min-width: 320px;
-    width: 100%;
-    border-radius: 4px;
-  }
-
-  .login {
-    cursor: pointer;
-    min-height: 45px;
-    border: 1px solid rgb(245, 245, 245) !important;
-    background-color: rgb(96, 72, 156);
-    border-radius: 16px;
+  .fix-icon {
+    position: relative;
+    left: 10px;
+    display: flex;
+    justify-content: flex-start !important;
   }
 
   .find {
@@ -84,11 +61,28 @@ app-top-menu {
     right: 40px;
   }
 
+  .produkt {
+    min-width: 250px;
+    width: 100%;
+  }
+
+  .login {
+    cursor: pointer;
+    height: 55px !important;
+    border: 1px solid rgb(245, 245, 245) !important;
+    background-color: rgb(96, 72, 156);
+    border-radius: 16px;
+    font-size: 18px;
+  }
+
   .iconLogged {
     font-size: 35px;
     width: fit-content;
     height: fit-content;
-    color: white;
+    color: rgb(245, 245, 245);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .logowanie {
@@ -109,7 +103,7 @@ app-top-menu {
     align-items: center;
     background-color: rgb(22, 32, 65);
     border: 1px solid rgb(245, 245, 245);
-    border-radius: 16px;
+    border-radius: 24px;
   }
 
   .info {
@@ -121,5 +115,34 @@ app-top-menu {
 
   .disable {
     pointer-events: none;
+  }
+
+  .fix {
+    border: solid 1px white;
+
+    &--powiat {
+      border-radius: 16px;
+    }
+
+    &--produkt {
+      border-radius: 16px 0 0 16px;
+    }
+
+    &--kategoria {
+      border-radius: 0 16px 16px 0;
+    }
+  }
+
+  .oszukanie {
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .wbok {
+    position: relative;
+    left: 20px;
   }
 }

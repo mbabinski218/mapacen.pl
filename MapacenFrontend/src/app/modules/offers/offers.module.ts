@@ -1,22 +1,32 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { OffersService } from '@modules/offers/api/offers.service';
 import { OffersComponent } from '@modules/offers/offers.component';
+import { MyInputModule } from '@shared/modules/my-input/my-input.module';
 import { DisableAreaModule } from '@shared/modules/disable-area/disable-area.module';
+import { OfferExpandedComponent } from '@modules/offers/components/offer-expanded/offer-expanded.component';
 
 @NgModule({
   declarations: [
     OffersComponent,
+    OfferExpandedComponent,
   ],
   imports: [
     CommonModule,
     SharedModule,
-    MatButtonModule,
     MatIconModule,
+    MyInputModule,
+    MatMenuModule,
+    MatButtonModule,
     DisableAreaModule,
+    MatExpansionModule,
+    ReactiveFormsModule,
   ],
   exports: [
     OffersComponent,

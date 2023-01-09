@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
 
   admin = false;
   offer: OfferContent;
+  favouritesId: string;
 
   constructor(
     private router: Router,
@@ -29,5 +30,9 @@ export class HomeComponent implements OnInit {
 
   refreshOffers(offer: OfferContent): void {
     this.offer = offer;
+  }
+
+  getFavourites(favouritesId: string): void {
+    this.favouritesId = favouritesId;
   }
 }
