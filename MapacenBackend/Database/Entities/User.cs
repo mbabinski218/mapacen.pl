@@ -20,4 +20,6 @@ public class User
     public virtual List<Comment> Comments { get; set; }
     public int FavouritesId { get; set; }
     public virtual Favourites Favourites { get; set; }
+    public virtual List<Likers>? Likers { get; set; }
+    public virtual List<Dislikers>? Dislikers { get; set; }
 }

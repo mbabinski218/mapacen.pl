@@ -10,5 +10,6 @@ namespace MapacenBackend.Models.CommentDtos
         public string Content { get; set; }
         public string Author { get; set; }
         public int AuthorId { get; set; }
+        public bool? IsLikedOrDislikedByUser { get; set; }
     }
 }

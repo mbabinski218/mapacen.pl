@@ -21,6 +21,8 @@ public class MapacenDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Favourites> Favourites { get; set; }
     public DbSet<FavouritesOffer> FavouritesOffer { get; set; }
+    public DbSet<Likers> Likers { get; set; }
+    public DbSet<Dislikers> Dislikers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,7 +41,7 @@ public class MapacenDbContext : DbContext
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<FavouritesOffer>()
-        .HasKey(fo => new { fo.OfferId, fo.FavouritesId });
+            .HasKey(fo => new { fo.OfferId, fo.FavouritesId });
         modelBuilder.Entity<FavouritesOffer>()
             .HasOne(fo => fo.Favourites)
             .WithMany(b => b.FavouritesOffer)
@@ -48,6 +50,32 @@ public class MapacenDbContext : DbContext
             .HasOne(fo => fo.Offer)
             .WithMany(c => c.FavouritesOffer)
             .HasForeignKey(fo => fo.OfferId);
+
+        modelBuilder.Entity<Likers>()
+            .HasKey(l => new { l.UserId, l.CommentId });
+        modelBuilder.Entity<Likers>()
+            .HasOne(l => l.User)
+            .WithMany(u => u.Likers)
+            .HasForeignKey(l => l.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<Likers>()
+            .HasOne(l => l.Comment)
+            .WithMany(c => c.Likers)
+            .HasForeignKey(l => l.CommentId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Dislikers>()
+            .HasKey(l => new { l.UserId, l.CommentId });
+        modelBuilder.Entity<Dislikers>()
+            .HasOne(l => l.User)
+            .WithMany(u => u.Dislikers)
+            .HasForeignKey(l => l.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<Dislikers>()
+            .HasOne(l => l.Comment)
+            .WithMany(c => c.Dislikers)
+            .HasForeignKey(l => l.CommentId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         //modelBuilder.Entity<User>()
         //    .HasMany(u => u.Comments)

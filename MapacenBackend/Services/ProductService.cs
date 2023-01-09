@@ -10,9 +10,9 @@ namespace MapacenBackend.Services
 {
     public interface IProductService
     {
-        IEnumerable<ProductDto>? GetProductsByCategory(CategoryDto category);
         Product CreateProduct(CreateProductDto dto);
         void UpdateProduct(int id, UpdateProductDto dto);
+        IEnumerable<ProductDto>? GetAllProducts();
     }
 
     public class ProductService : IProductService
@@ -39,16 +39,10 @@ namespace MapacenBackend.Services
             return product;
         }
 
-        public IEnumerable<ProductDto>? GetProductsByCategory(CategoryDto dto)
+        public IEnumerable<ProductDto>? GetAllProducts()
         {
-            var category = GetProductCategory(dto);
-
-            if (category == null)
-                throw new NotFoundException("Requested category does not exist");
-
-            return category
-                .Products
-                .Select(product => _mapper.Map<ProductDto>(product));
+            var products = _dbContext.Products.OrderBy(p => p.Name);
+            return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
         private Category? GetProductCategory(CategoryDto category)
@@ -69,6 +63,7 @@ namespace MapacenBackend.Services
 
             _dbContext.SaveChanges();
         }
+
     }
 
 }

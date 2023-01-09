@@ -37,6 +37,12 @@ namespace MapacenBackend.Controllers
             return Ok(_service.GetAllComments(offerId));
         }
 
+        [HttpGet("comments")]
+        public ActionResult<IEnumerable<CommentDto>> GetAllComments([FromQuery] int offerId, [FromQuery] int userId)
+        {
+            return Ok(_service.GetAllComments(offerId, userId));
+        }
+
         [HttpPost("favourites")]
         public ActionResult AddOfferToFavorites([FromQuery] int offerId, [FromQuery] int favouritesId)
         {

@@ -18,6 +18,7 @@ namespace MapacenBackend.Services
         public int AddOffer(CreateOfferDto dto);
         void AddOfferToFavourites(int offerId, int favoritesId);
         IEnumerable<CommentDto>? GetAllComments(int offerId);
+        IEnumerable<CommentDto>? GetAllComments(int offerId, int userId);
         OffersWithTotalCount GetFavouritesOffers(int favouritesId, int pageSize, int pageNumber);
         OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber);
         void UpdateOffer(int id, UpdateOfferDto dt);
@@ -100,12 +101,42 @@ namespace MapacenBackend.Services
             return new OffersWithTotalCount { Count = count, Offers = offersDto };
         }
 
+        public IEnumerable<CommentDto>? GetAllComments(int offerId, int userId)
+        {
+            var comments = _dbContext
+                .Comments
+                .Where(c => c.OfferId == offerId)
+                .OrderByDescending(c => c.CreationDate)
+                .Include(c => c.User);
+
+            var commentsDto = _mapper.Map<List<CommentDto>>(comments);
+            foreach (var c in commentsDto)
+            {
+                var liker = _dbContext
+                .Likers
+                .Where(l => l.CommentId == c.Id)
+                .FirstOrDefault(l => l.UserId == userId);
+
+                Dislikers? disliker = null;
+                if(liker == null)
+                {
+                    disliker = _dbContext
+                    .Dislikers
+                    .Where(l => l.CommentId == c.Id)
+                    .FirstOrDefault(l => l.UserId == userId);
+                }
+
+                c.IsLikedOrDislikedByUser = liker == null ? (disliker == null ? null : false) : true;
+                yield return c;
+            };
+        }
+
         public IEnumerable<CommentDto>? GetAllComments(int offerId)
         {
             var comments = _dbContext
                 .Comments
                 .Where(c => c.OfferId == offerId)
-                .OrderByDescending(c=>c.CreationDate)
+                .OrderByDescending(c => c.CreationDate)
                 .Include(c => c.User);
 
             return _mapper.Map<List<CommentDto>>(comments);

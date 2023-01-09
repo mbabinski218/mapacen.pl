@@ -22,17 +22,17 @@ namespace MapacenBackend.Controllers
             return Created($"/api/comment/{commentId}", commentId);
         }
 
-        [HttpPut("like/{id}")]
-        public ActionResult LikeComment([FromRoute] int id)
+        [HttpPut("like/{commentId}/{userId}")]
+        public ActionResult LikeComment([FromRoute] int commentId, [FromRoute] int userId)
         {
-            _service.LikeComment(id);
+            _service.LikeComment(commentId, userId);
             return Ok();
         }
 
-        [HttpPut("dislike/{id}")]
-        public ActionResult DislikeComment([FromRoute] int id)
+        [HttpPut("dislike/{commentId}/{userId}")]
+        public ActionResult DislikeComment([FromRoute] int commentId, [FromRoute] int userId)
         {
-            _service.DislikeComment(id);
+            _service.DislikeComment(commentId, userId);
             return Ok();
         }
     }
