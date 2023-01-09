@@ -11,7 +11,6 @@ namespace MapacenBackend.Services
     public interface IProductService
     {
         IEnumerable<ProductDto>? GetProductsByCategory(CategoryDto category);
-        Product? GetProductById(int id);
         Product CreateProduct(CreateProductDto dto);
         void UpdateProduct(int id, UpdateProductDto dto);
     }
@@ -29,7 +28,9 @@ namespace MapacenBackend.Services
 
         public Product CreateProduct(CreateProductDto dto)
         {
-            //TODO not found exception
+            if (_dbContext.Products.Any(p => p.Name == dto.Name))
+                throw new NotUniqueElementException("Produkt o podanej nazwie już istnieje");
+
             var product = _mapper.Map<Product>(dto);
 
             _dbContext.Products.Add(product);
@@ -56,11 +57,6 @@ namespace MapacenBackend.Services
                 .Categories
                 .Include(c => c.Products)
                 .FirstOrDefault(c => c.Id == category.Id);
-        }
-
-        public Product? GetProductById(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public void UpdateProduct(int id, UpdateProductDto dto)

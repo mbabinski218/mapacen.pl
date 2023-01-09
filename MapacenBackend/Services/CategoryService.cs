@@ -38,7 +38,11 @@ namespace MapacenBackend.Services
 
         public CategoryDto CreateCategory(CreateCategoryDto dto)
         {
+            if (_dbContext.Categories.Any(c => c.Name == dto.Name))
+                throw new NotUniqueElementException("Kateogria o podanej nazwie już istnieje");
+
             var category = _mapper.Map<Category>(dto);
+
             _dbContext.Categories.Add(category);
             _dbContext.SaveChanges();
 

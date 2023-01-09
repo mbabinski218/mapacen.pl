@@ -129,11 +129,11 @@ namespace MapacenBackend.Services
                 .FavouritesOffer
                 .Where(fo => fo.FavouritesId == favouritesId)
                 .Include(fo => fo.Offer)
-                .ThenInclude(o => o.Product)
-                .ThenInclude(p => p.Category)
+                    .ThenInclude(o => o.Product)
+                        .ThenInclude(p => p.Category)
                 .Include(fo => fo.Offer.SalesPoint)
-                .ThenInclude(s => s.Address)
-                .ThenInclude(a => a.County)
+                    .ThenInclude(s => s.Address)
+                        .ThenInclude(a => a.County)
                 .Select(fo => fo.Offer);
 
             var count = offers.Count();
