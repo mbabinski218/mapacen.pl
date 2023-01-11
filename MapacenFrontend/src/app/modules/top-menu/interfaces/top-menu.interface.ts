@@ -1,3 +1,5 @@
+import { County } from "@modules/offers/interfaces/offers.interface";
+
 export interface idNameOnly {
   id: number,
   name: string,
@@ -34,4 +36,12 @@ export interface TokenContent {
 export interface OfferContent {
   search: string,
   category: string,
+}
+
+export interface UserInfo {
+  email: string,
+  name: string,
+  canComment: boolean,
+  roleName: string,
+  county: County,
 }

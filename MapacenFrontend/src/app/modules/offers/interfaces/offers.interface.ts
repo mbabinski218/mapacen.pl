@@ -14,6 +14,7 @@ export interface Offers {
 }
 
 export interface Product {
+  id: number,
   name: string,
   category: Category,
 }
@@ -43,10 +44,13 @@ export interface County {
 }
 
 export interface MyComment {
+  id: number,
   likes: number,
   disLikes: number,
   content: string,
   author: string,
   authorId: number,
-  id: number,
+  isLikedOrDislikedByUser: boolean,
+  userLiked?: boolean,
+  userDisliked?: boolean,
 }

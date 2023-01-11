@@ -1,0 +1,22 @@
+<div class="forms">
+  <my-input
+    appearance="fill"
+    class="fix backgroundColor"
+    label="Cena"
+    type="text"
+    controlName="price"
+  >
+  </my-input>
+
+  <mat-form-field class="fix backgroundColor">
+    <mat-label>Punkt sprzedaży</mat-label>
+    <mat-select formControlName="salePoint">
+      <mat-option
+        *ngFor="let item of salePoints"
+        [value]="item"
+      >
+        {{ item }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

@@ -7,7 +7,7 @@ export enum Api {
   COUNTIES = '/api/county',
   COUNTY = '/api/county/:id',
   OFFERS = '/api/offer',
-  OFFER_COMMENTS = '/api/offer/comments/:offerId',
+  OFFER_COMMENTS = '/api/offer/comments',
   FAVOURITES_UPDATE = '/api/offer/favourites',
   FAVOURITES = '/api/offer/favourites/:favouritesId',
   PRODUCTS = '/api/product',
@@ -20,6 +20,7 @@ export enum Api {
   SALE_POINT = '/api/salesPoint/:countyId',
   LOGIN = '/api/user/login',
   REGISTER = '/api/user/register',
+  USERS = '/api/user',
   USER = '/api/user/:id',
   UPDATE_USER_COUNTY = '/api/user/userCounty/:userId/:countyId',
 }

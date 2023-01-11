@@ -67,23 +67,14 @@ export class OffersComponent implements OnInit {
   }
 
   getComments(offer: Offers): void {
-    this.offersService.getComments(offer.id).subscribe((res) => offer.comments = res);
+    this.offersService.getComments(offer.id, Number(localStorage.getItem('userId'))).subscribe((res) => offer.comments = res);
   }
 
   comment(offer: Offers): void {
     const value = this.form.get('comment').value;
     const userId = Number(localStorage.getItem('userId'));
     if (value) {
-      this.offersService.addComment(value, userId, offer.id).subscribe((res) => {
-        offer.comments.unshift({
-          likes: 0,
-          disLikes: 0,
-          content: value,
-          author: localStorage.getItem('userName'),
-          authorId: userId,
-          id: res,
-        })
-      });
+      this.offersService.addComment(value, userId, offer.id).subscribe((res) => this.getComments(offer));
       this.form.reset();
     }
   }
@@ -108,12 +99,30 @@ export class OffersComponent implements OnInit {
 
   like(comment: MyComment): void {
     // this.offersService.like(comment.id).subscribe();
-    comment.likes = comment.likes + 1;
+
+    if (!comment.userLiked) {
+      comment.likes = comment.likes + 1;
+      comment.userLiked = true;
+      comment.userDisliked = false;
+    }
+    else {
+      comment.likes = comment.likes - 1;
+      comment.userLiked = false;
+    }
   }
 
   dislike(comment: MyComment): void {
     // this.offersService.dislike(comment.id).subscribe();
-    comment.disLikes = comment.disLikes + 1;
+    
+    if (!comment.userDisliked) {
+      comment.disLikes = comment.disLikes + 1;
+      comment.userDisliked = true;
+      comment.userLiked = false;
+    }
+    else {
+      comment.disLikes = comment.disLikes - 1;
+      comment.userDisliked = false;
+    }
   }
 
 

@@ -17,8 +17,8 @@ export class TopMenuComponent implements OnInit {
 
   @Output() refreshOffers = new EventEmitter<OfferContent>();
   @Output() getFavourites = new EventEmitter<string>();
-  counties: idNameOnly[] = []
-  categories: idNameOnly[] = []
+  counties: idNameOnly[] = [];
+  categories: idNameOnly[] = [];
   form: FormGroup;
   userName = '';
   userEmail = '';
@@ -48,7 +48,6 @@ export class TopMenuComponent implements OnInit {
 
     this.topMenuService.getAllCounties().subscribe((res) => {
       if (res) {
-        this.filteredCounties = res.map((result) => result.name);
         this.counties = res;
 
         this.userProfileCounty = this.counties.find((res) => res.id.toString() === localStorage.getItem('userProfileCountyId'))?.name;
@@ -65,11 +64,8 @@ export class TopMenuComponent implements OnInit {
     })
 
     this.topMenuService.getAllCategories().subscribe((res) => {
-      if (res) {
-        this.filteredCategories = res.map((result) => result.name)
-        this.categories = res;
-      }
-    })
+      this.categories = res ? res : null;
+    });
 
     this.logged = !!localStorage.getItem('userToken');
   }

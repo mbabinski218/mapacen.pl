@@ -1,0 +1,21 @@
+:host {
+  padding: 0px !important;
+}
+
+.button {
+  height: 56px;
+
+  &:disabled {
+    background-color: rgb(96, 87, 121) !important;
+  }
+}
+
+.icon {
+  padding-left: 8px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

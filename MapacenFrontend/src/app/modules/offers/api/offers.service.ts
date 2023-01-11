@@ -58,8 +58,12 @@ export class OffersService {
     );
   }
 
-  getComments(offerId: number): Observable<MyComment[]> {
-    return this.http.get<MyComment[]>(`${environment.httpBackend}${Api.OFFER_COMMENTS}`.replace(':offerId', offerId.toString())).pipe(
+  getComments(offerId: number, userId: number): Observable<MyComment[]> {
+    const params = new HttpParams()
+      .set('offerId', offerId)
+      .set('userId', userId)
+
+    return this.http.get<MyComment[]>(`${environment.httpBackend}${Api.OFFER_COMMENTS}`, { params }).pipe(
       catchError(() => {
         this.toastMessageService.notifyOfError("Błąd pobierania komentarzy");
         return of([]);
