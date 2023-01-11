@@ -12,7 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 export const customIcons: [string, string][] = [
   ["my-like", "like.svg"],
   ["my-dislike", "dislike.svg"],
-  ["my-heart", "heart.svg"],
+  ["my-heart-red", "heart-red.svg"],
+  ["my-heart-white", "heart-white.svg"],
 ];
 
 @NgModule({
