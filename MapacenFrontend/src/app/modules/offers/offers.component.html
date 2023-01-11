@@ -68,8 +68,7 @@
               mat-icon-button
               (click)="toggleFavourite(offer)"
             >
-              <!-- [class.checked]="offer.favourite" -->
-              <mat-icon svgIcon="my-heart"></mat-icon>
+              <mat-icon [svgIcon]="offer.favourite ? 'my-heart-red' : 'my-heart-white'"></mat-icon>
             </button>
           </div>
           <form
