@@ -97,9 +97,6 @@ export class LoginDialogComponent {
     }
 
     if (this.registerForm.valid) {
-
-      this.registerForm.get('countyId').setValue(this.counties.find((res) => res.name === this.registerForm.get('countyId').value)?.id)
-
       this.topMenuService.registerUser(this.registerForm.value).subscribe(() => {
         this.toastMessageService.notifyOfSuccess('Rejestracja powiodła się! Teraz możesz się zalogować')
         this.change();
