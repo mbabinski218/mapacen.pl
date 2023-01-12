@@ -19,8 +19,7 @@ public class MapacenDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<SalesPoint> SalesPoints { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<Favourites> Favourites { get; set; }
-    public DbSet<FavouritesOffer> FavouritesOffer { get; set; }
+    public DbSet<UserOffer> Favourites { get; set; }
     public DbSet<Likers> Likers { get; set; }
     public DbSet<Dislikers> Dislikers { get; set; }
 
@@ -36,16 +35,18 @@ public class MapacenDbContext : DbContext
             .HasForeignKey(o => o.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<FavouritesOffer>()
-         .HasKey(fo => new { fo.OfferId, fo.FavouritesId });
-        modelBuilder.Entity<FavouritesOffer>()
-            .HasOne(fo => fo.Favourites)
-            .WithMany(b => b.FavouritesOffer)
-            .HasForeignKey(fo => fo.FavouritesId);
-        modelBuilder.Entity<FavouritesOffer>()
-            .HasOne(fo => fo.Offer)
-            .WithMany(c => c.FavouritesOffer)
-            .HasForeignKey(fo => fo.OfferId);
+        modelBuilder.Entity<UserOffer>()
+         .HasKey(uo => new { uo.OfferId, uo.UserId});
+        modelBuilder.Entity<UserOffer>()
+            .HasOne(uo => uo.User)
+            .WithMany(u => u.Favourites)
+            .HasForeignKey(uo => uo.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<UserOffer>()
+            .HasOne(uo => uo.Offer)
+            .WithMany(o => o.Favourites)
+            .HasForeignKey(uo => uo.OfferId)
+            .OnDelete(DeleteBehavior.NoAction);
 
 
         modelBuilder.Entity<County>()

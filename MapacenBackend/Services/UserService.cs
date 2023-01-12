@@ -55,10 +55,6 @@ public class UserService : IUserService
         if (_dbContext.Users.Any(u => u != null && u.Email == dto.Email))
             throw new EmailAlreadyUsedException("Wpisany email jest już zajęty");
 
-        var favourites = _dbContext.Favourites.Add(new Favourites());
-        _dbContext.SaveChanges();
-        var favouritesId = favourites.Entity.Id;
-
         _dbContext.Users.Add(new User
         {
             Name = dto.Name,
@@ -68,7 +64,6 @@ public class UserService : IUserService
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
             RoleID = dto.RoleId,
-            FavouritesId = favouritesId
         });
         _dbContext.SaveChanges();
     }
@@ -167,8 +162,7 @@ public class UserService : IUserService
                 new(type:"name", user.Name),
                 new(type:"email", user.Email),
                 new(type:"countyId", user.CountyId.ToString()),
-                new(type:"canComment", user.CanComment.ToString().ToLower()),
-                new(type:"favouritesId", user.FavouritesId.ToString())
+                new(type:"canComment", user.CanComment.ToString().ToLower())
             },
             expires: DateTime.Now.AddDays(1),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature)

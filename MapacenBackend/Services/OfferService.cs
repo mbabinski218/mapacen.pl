@@ -16,11 +16,11 @@ namespace MapacenBackend.Services
 {
     public interface IOfferService
     {
-        public int AddOffer(CreateOfferDto dto);
-        void AddOfferToFavourites(int offerId, int favoritesId);
+        int AddOffer(CreateOfferDto dto);
+        void AddOfferToFavourites(int offerId, int userId);
         IEnumerable<CommentDto>? GetAllComments(int offerId);
         IEnumerable<CommentDto>? GetAllComments(int offerId, int userId);
-        OffersWithTotalCount GetFavouritesOffers(int favouritesId, int pageSize, int pageNumber);
+        OffersWithTotalCount GetFavouritesOffers(int userId, int pageSize, int pageNumber);
         OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber);
         void UpdateOffer(int id, UpdateOfferDto dt);
         void DeleteOffer(int id);
@@ -145,37 +145,42 @@ namespace MapacenBackend.Services
             return _mapper.Map<List<CommentDto>>(comments);
         }
 
-        public void AddOfferToFavourites(int offerId, int favoritesId)
+        public void AddOfferToFavourites(int offerId, int userId)
         {
-            _dbContext.FavouritesOffer.Add(
-                new FavouritesOffer
+            var user = _dbContext.Users.FirstOrDefault(f => f.Id == userId)
+                ?? throw new NotFoundException("Użytkownik nie istnieje");
+
+            var offer = GetOfferById(offerId);
+
+            _dbContext.Favourites.Add(
+                new UserOffer
                 {
-                    FavouritesId = _dbContext.Favourites.FirstOrDefault(f => f.Id == favoritesId).Id,
-                    OfferId = GetOfferById(offerId).Id
+                    UserId = user.Id,
+                    OfferId = offer.Id
                 });
 
             _dbContext.SaveChanges();
         }
 
-        public OffersWithTotalCount GetFavouritesOffers(int favouritesId, int pageSize, int pageNumber)
+        public OffersWithTotalCount GetFavouritesOffers(int userId, int pageSize, int pageNumber)
         {
             var offers = _dbContext
-                .FavouritesOffer
-                .Where(fo => fo.FavouritesId == favouritesId)
-                .Include(fo => fo.Offer)
+                .Favourites
+                .Where(uo => uo.UserId == userId)
+                .Include(uo => uo.Offer)
                     .ThenInclude(o => o.Product)
                         .ThenInclude(p => p.Category)
-                .Include(fo => fo.Offer.SalesPoint)
+                .Include(uo => uo.Offer.SalesPoint)
                     .ThenInclude(s => s.Address)
                         .ThenInclude(a => a.County)
-                .Select(fo => fo.Offer);
+                .Select(uo => uo.Offer);
 
             var count = offers.Count();
 
-            offers = offers.Skip(pageSize * (pageNumber - 1))
-           .Take(pageSize);
+            offers = offers.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
 
             var offersDto = _mapper.Map<List<OfferDto>>(offers);
+
             return new OffersWithTotalCount { Count = count, Offers = offersDto };
 
         }

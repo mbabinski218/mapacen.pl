@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MapacenBackend.Migrations
 {
-    public partial class droptojestto : Migration
+    public partial class newDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,18 +33,6 @@ namespace MapacenBackend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Counties", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Favourites",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Favourites", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -99,8 +87,7 @@ namespace MapacenBackend.Migrations
                         name: "FK_Addresses_Counties_CountyId",
                         column: x => x.CountyId,
                         principalTable: "Counties",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -118,8 +105,7 @@ namespace MapacenBackend.Migrations
                     CountyId = table.Column<int>(type: "int", nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TokenCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FavouritesId = table.Column<int>(type: "int", nullable: false)
+                    TokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -128,12 +114,6 @@ namespace MapacenBackend.Migrations
                         name: "FK_Users_Counties_CountyId",
                         column: x => x.CountyId,
                         principalTable: "Counties",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Users_Favourites_FavouritesId",
-                        column: x => x.FavouritesId,
-                        principalTable: "Favourites",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -221,27 +201,25 @@ namespace MapacenBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FavouritesOffer",
+                name: "Favourites",
                 columns: table => new
                 {
                     OfferId = table.Column<int>(type: "int", nullable: false),
-                    FavouritesId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FavouritesOffer", x => new { x.OfferId, x.FavouritesId });
+                    table.PrimaryKey("PK_Favourites", x => new { x.OfferId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_FavouritesOffer_Favourites_FavouritesId",
-                        column: x => x.FavouritesId,
-                        principalTable: "Favourites",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FavouritesOffer_Offers_OfferId",
+                        name: "FK_Favourites_Offers_OfferId",
                         column: x => x.OfferId,
                         principalTable: "Offers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Favourites_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -258,7 +236,8 @@ namespace MapacenBackend.Migrations
                         name: "FK_Dislikers_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Dislikers_Users_UserId",
                         column: x => x.UserId,
@@ -280,7 +259,8 @@ namespace MapacenBackend.Migrations
                         name: "FK_Likers_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Likers_Users_UserId",
                         column: x => x.UserId,
@@ -309,9 +289,9 @@ namespace MapacenBackend.Migrations
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FavouritesOffer_FavouritesId",
-                table: "FavouritesOffer",
-                column: "FavouritesId");
+                name: "IX_Favourites_UserId",
+                table: "Favourites",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Likers_CommentId",
@@ -350,11 +330,6 @@ namespace MapacenBackend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_FavouritesId",
-                table: "Users",
-                column: "FavouritesId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleID",
                 table: "Users",
                 column: "RoleID");
@@ -366,7 +341,7 @@ namespace MapacenBackend.Migrations
                 name: "Dislikers");
 
             migrationBuilder.DropTable(
-                name: "FavouritesOffer");
+                name: "Favourites");
 
             migrationBuilder.DropTable(
                 name: "Likers");
@@ -385,9 +360,6 @@ namespace MapacenBackend.Migrations
 
             migrationBuilder.DropTable(
                 name: "SalesPoints");
-
-            migrationBuilder.DropTable(
-                name: "Favourites");
 
             migrationBuilder.DropTable(
                 name: "Roles");

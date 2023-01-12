@@ -44,16 +44,16 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPost("favourites")]
-        public ActionResult AddOfferToFavorites([FromQuery] int offerId, [FromQuery] int favouritesId)
+        public ActionResult AddOfferToFavorites([FromQuery] int offerId, [FromQuery] int userId)
         {
-            _service.AddOfferToFavourites(offerId, favouritesId);
+            _service.AddOfferToFavourites(offerId, userId);
             return Ok();
         }
 
-        [HttpGet("favourites/{favouritesId}")]
-        public ActionResult<OffersWithTotalCount> GetFavouritesOffers(int favouritesId, int pageSize, int pageNumber)
+        [HttpGet("favourites/{userId}")]
+        public ActionResult<OffersWithTotalCount> GetFavouritesOffers(int userId, int pageSize, int pageNumber)
         {
-            return Ok(_service.GetFavouritesOffers(favouritesId, pageSize, pageNumber));
+            return Ok(_service.GetFavouritesOffers(userId, pageSize, pageNumber));
         }
 
         [HttpDelete("{id}")]

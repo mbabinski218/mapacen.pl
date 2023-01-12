@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MapacenBackend.Migrations
 {
     [DbContext(typeof(MapacenDbContext))]
-    [Migration("20230109213537_droptojestto")]
-    partial class droptojestto
+    [Migration("20230112223029_newDb")]
+    partial class newDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -142,34 +142,6 @@ namespace MapacenBackend.Migrations
                     b.ToTable("Dislikers");
                 });
 
-            modelBuilder.Entity("MapacenBackend.Entities.Favourites", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Favourites");
-                });
-
-            modelBuilder.Entity("MapacenBackend.Entities.FavouritesOffer", b =>
-                {
-                    b.Property<int>("OfferId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FavouritesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OfferId", "FavouritesId");
-
-                    b.HasIndex("FavouritesId");
-
-                    b.ToTable("FavouritesOffer");
-                });
-
             modelBuilder.Entity("MapacenBackend.Entities.Likers", b =>
                 {
                     b.Property<int>("UserId")
@@ -290,9 +262,6 @@ namespace MapacenBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("FavouritesId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -324,19 +293,32 @@ namespace MapacenBackend.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("FavouritesId");
-
                     b.HasIndex("RoleID");
 
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("MapacenBackend.Entities.UserOffer", b =>
+                {
+                    b.Property<int>("OfferId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OfferId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favourites");
+                });
+
             modelBuilder.Entity("MapacenBackend.Entities.Address", b =>
                 {
                     b.HasOne("MapacenBackend.Entities.County", "County")
-                        .WithMany()
+                        .WithMany("Addresses")
                         .HasForeignKey("CountyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("County");
@@ -366,7 +348,7 @@ namespace MapacenBackend.Migrations
                     b.HasOne("MapacenBackend.Entities.Comment", "Comment")
                         .WithMany("Dislikers")
                         .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MapacenBackend.Entities.User", "User")
@@ -380,31 +362,12 @@ namespace MapacenBackend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MapacenBackend.Entities.FavouritesOffer", b =>
-                {
-                    b.HasOne("MapacenBackend.Entities.Favourites", "Favourites")
-                        .WithMany("FavouritesOffer")
-                        .HasForeignKey("FavouritesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MapacenBackend.Entities.Offer", "Offer")
-                        .WithMany("FavouritesOffer")
-                        .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Favourites");
-
-                    b.Navigation("Offer");
-                });
-
             modelBuilder.Entity("MapacenBackend.Entities.Likers", b =>
                 {
                     b.HasOne("MapacenBackend.Entities.Comment", "Comment")
                         .WithMany("Likers")
                         .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MapacenBackend.Entities.User", "User")
@@ -421,7 +384,7 @@ namespace MapacenBackend.Migrations
             modelBuilder.Entity("MapacenBackend.Entities.Offer", b =>
                 {
                     b.HasOne("MapacenBackend.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Offers")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -467,12 +430,6 @@ namespace MapacenBackend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MapacenBackend.Entities.Favourites", "Favourites")
-                        .WithMany()
-                        .HasForeignKey("FavouritesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MapacenBackend.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleID")
@@ -481,9 +438,26 @@ namespace MapacenBackend.Migrations
 
                     b.Navigation("County");
 
-                    b.Navigation("Favourites");
-
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("MapacenBackend.Entities.UserOffer", b =>
+                {
+                    b.HasOne("MapacenBackend.Entities.Offer", "Offer")
+                        .WithMany("Favourites")
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MapacenBackend.Entities.User", "User")
+                        .WithMany("Favourites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Offer");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MapacenBackend.Entities.Category", b =>
@@ -498,16 +472,21 @@ namespace MapacenBackend.Migrations
                     b.Navigation("Likers");
                 });
 
-            modelBuilder.Entity("MapacenBackend.Entities.Favourites", b =>
+            modelBuilder.Entity("MapacenBackend.Entities.County", b =>
                 {
-                    b.Navigation("FavouritesOffer");
+                    b.Navigation("Addresses");
                 });
 
             modelBuilder.Entity("MapacenBackend.Entities.Offer", b =>
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("FavouritesOffer");
+                    b.Navigation("Favourites");
+                });
+
+            modelBuilder.Entity("MapacenBackend.Entities.Product", b =>
+                {
+                    b.Navigation("Offers");
                 });
 
             modelBuilder.Entity("MapacenBackend.Entities.SalesPoint", b =>
@@ -520,6 +499,8 @@ namespace MapacenBackend.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Dislikers");
+
+                    b.Navigation("Favourites");
 
                     b.Navigation("Likers");
                 });
