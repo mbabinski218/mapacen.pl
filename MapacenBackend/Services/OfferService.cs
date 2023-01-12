@@ -9,6 +9,7 @@ using MapacenBackend.Models.ProductDtos;
 using MapacenBackend.Models.SalesPointDtos;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 
 namespace MapacenBackend.Services
@@ -20,8 +21,9 @@ namespace MapacenBackend.Services
         IEnumerable<CommentDto>? GetAllComments(int offerId);
         IEnumerable<CommentDto>? GetAllComments(int offerId, int userId);
         OffersWithTotalCount GetFavouritesOffers(int favouritesId, int pageSize, int pageNumber);
-        OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber);
+        OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber);
         void UpdateOffer(int id, UpdateOfferDto dt);
+        void DeleteOffer(int id);
     }
 
     public class OfferService : IOfferService
@@ -47,14 +49,14 @@ namespace MapacenBackend.Services
             return offer.Id;
         }
 
-        public OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber)
+        public OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber)
         {
             return categoryId == null
                 ? GetOffersByProductName(countyId, productName ?? "", pageSize, pageNumber)
                 : GetOffersByProductNameAndCategory(countyId, productName ?? "", categoryId.Value, pageSize, pageNumber);
         }
 
-        private OffersWithTotalCount GetOffersByProductName(int countyId, string productName, int pageSize, int pageNumber)
+        private OffersWithTotalCount GetOffersByProductName(int countyId, string productName, int? pageSize, int? pageNumber)
         {
             var offers = _dbContext
                 .Offers
@@ -69,8 +71,9 @@ namespace MapacenBackend.Services
 
             var count = offers.Count();
 
-            offers = offers.Skip(pageSize * (pageNumber - 1))
-            .Take(pageSize);
+            if (pageSize.HasValue && pageNumber.HasValue)
+                offers = offers.Skip(pageSize.Value * (pageNumber.Value - 1)).Take(pageSize.Value);
+
 
             var offersDto = _mapper.Map<List<OfferDto>>(offers);
 
@@ -78,7 +81,7 @@ namespace MapacenBackend.Services
 
         }
 
-        private OffersWithTotalCount GetOffersByProductNameAndCategory(int countyId, string productName, int categoryId, int pageSize, int pageNumber)
+        private OffersWithTotalCount GetOffersByProductNameAndCategory(int countyId, string productName, int categoryId, int? pageSize, int? pageNumber)
         {
             var offers = _dbContext
                 .Offers
@@ -94,8 +97,8 @@ namespace MapacenBackend.Services
 
             var count = offers.Count();
 
-            offers = offers.Skip(pageSize * (pageNumber - 1))
-            .Take(pageSize);
+            if (pageSize.HasValue && pageNumber.HasValue)
+                offers = offers.Skip(pageSize.Value * (pageNumber.Value - 1)).Take(pageSize.Value);
 
             var offersDto = _mapper.Map<List<OfferDto>>(offers);
             return new OffersWithTotalCount { Count = count, Offers = offersDto };
@@ -118,7 +121,7 @@ namespace MapacenBackend.Services
                 .FirstOrDefault(l => l.UserId == userId);
 
                 Dislikers? disliker = null;
-                if(liker == null)
+                if (liker == null)
                 {
                     disliker = _dbContext
                     .Dislikers
@@ -192,7 +195,7 @@ namespace MapacenBackend.Services
             var offer = _dbContext
                 .Offers
                 .FirstOrDefault(o => o.Id == id);
-            if (offer == null) throw new NotFoundException("Offer with requested id does not exist");
+            if (offer == null) throw new NotFoundException("Wybrana oferta nie istnieje");
             return offer;
         }
 
@@ -203,7 +206,7 @@ namespace MapacenBackend.Services
                 .FirstOrDefault(p => p.Id == id);
 
             if (product == null)
-                throw new NotFoundException("Product with requested id does not exist");
+                throw new NotFoundException("Wybrany produkt nie istnieje");
             return product;
         }
 
@@ -213,9 +216,19 @@ namespace MapacenBackend.Services
                 .FirstOrDefault(s => s.Id == id);
 
             if (salesPoint == null)
-                throw new NotFoundException("SalesPoint with requested id does not exist");
+                throw new NotFoundException("Wybrany punkt sprzedaży nie istnieje");
             return salesPoint;
         }
 
+        public void DeleteOffer(int id)
+        {
+            var offer = _dbContext
+                .Offers
+                .FirstOrDefault(u => u.Id == id)
+                ?? throw new NotFoundException("Produkt nie istnieje");
+
+            _dbContext.Remove(offer);
+            _dbContext.SaveChanges();
+        }
     }
 }

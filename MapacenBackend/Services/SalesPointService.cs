@@ -13,7 +13,7 @@ namespace MapacenBackend.Services
         SalesPoint CreateSalesPoint(CreateSalesPointDto dto);
         void UpdateSalesPoint(int id, UpdateSalesPointDto dto);
         IEnumerable<SalesPointDto>? GetSalesPointsByCounty(int countyId);
-
+        void DeleteSalesPoint(int id);
     }
 
     public class SalesPointService : ISalesPointService
@@ -37,7 +37,7 @@ namespace MapacenBackend.Services
                     a.PostalCode == salesPoint.Address.PostalCode &&
                     a.Number == salesPoint.Address.Number &&
                     a.CountyId == salesPoint.Address.CountyId))
-                throw new NotUniqueElementException("Sales point address must be unique");
+                throw new NotUniqueElementException("Pod tym adresem znajduje się już punkt sprzedaży");
 
             _dbContext.Add(salesPoint);
             _dbContext.SaveChanges();
@@ -52,7 +52,7 @@ namespace MapacenBackend.Services
                 .FirstOrDefault(s => s.Id == id);
 
             if (salesPoint == null)
-                throw new NotFoundException("Sales point with requested id does not exist");
+                throw new NotFoundException("Wybrany punkt sprzedaży nie istnieje");
 
             salesPoint.Name = dto?.Name ?? salesPoint.Name;
 
@@ -73,10 +73,23 @@ namespace MapacenBackend.Services
             var salesPoints = _dbContext
                 .SalesPoints
                 .Include(s => s.Address)
+                .ThenInclude(a => a.County)
                 .Where(s => s.Address.CountyId == countyId);
 
             return _mapper.Map<List<SalesPointDto>>(salesPoints);
 
+        }
+
+        public void DeleteSalesPoint(int id)
+        {
+            var salesPoint = _dbContext
+                .SalesPoints
+                .Include(s => s.Address)
+                .FirstOrDefault(p => p.Id == id)
+                ?? throw new NotFoundException("Produkt nie istnieje");
+
+            _dbContext.Remove(salesPoint.Address);
+            _dbContext.SaveChanges();
         }
     }
 }

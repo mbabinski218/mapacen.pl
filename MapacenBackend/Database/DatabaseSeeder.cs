@@ -1,4 +1,5 @@
 ﻿using MapacenBackend.Entities;
+using MapacenBackend.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 
@@ -42,8 +43,8 @@ namespace MapacenBackend.Database
         {
             var counties = new List<County>();
 
-            using (var sr = new StreamReader(Path.GetFullPath("Database\\Counties.csv")))
-            //using(var sr = new StreamReader(@"Counties.csv"))
+            //using (var sr = new StreamReader(Path.GetFullPath("Database\\Counties.csv")))
+            using (var sr = new StreamReader(@"Counties.csv"))
             {
                 while (!sr.EndOfStream)
                 {

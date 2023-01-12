@@ -22,6 +22,13 @@ namespace MapacenBackend.Controllers
             return Created($"/api/comment/{commentId}", commentId);
         }
 
+        [HttpDelete("{id}")]
+        public ActionResult DeleteComment([FromRoute] int id)
+        {
+            _service.DeleteComment(id);
+            return Ok();
+        }
+
         [HttpPut("like/{commentId}/{userId}")]
         public ActionResult LikeComment([FromRoute] int commentId, [FromRoute] int userId)
         {

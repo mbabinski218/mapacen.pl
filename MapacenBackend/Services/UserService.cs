@@ -15,12 +15,15 @@ namespace MapacenBackend.Services;
 
 public interface IUserService
 {
-    public User GetUser(LoginUserDto dto);
-    public void RegisterUser(CreateUserDto dto);
-    public TokenToReturn LoginUser(LoginUserDto dto);
-    public string GenerateNewTokensForUser(User user);
+    User GetUser(LoginUserDto dto);
+    void RegisterUser(CreateUserDto dto);
+    TokenToReturn LoginUser(LoginUserDto dto);
+    string GenerateNewTokensForUser(User user);
     void ChangeUserCounty(int userId, int countyId);
     UserDto GetUser(int id);
+    IEnumerable<UserDto>? GetAllUsers();
+    void BanUser(int userId);
+    void UnbanUser(int userId);
 }
 
 public class UserService : IUserService
@@ -120,11 +123,12 @@ public class UserService : IUserService
 
         return new UserDto
         {
+            Id = user.Id,
             Name = user.Name,
             RoleName = user.Role.Name,
             Email = user.Email,
             CanComment = user.CanComment,
-            County = new County
+            County = new CountyDto
             {
                 Id = user.County.Id,
                 Name = user.County.Name
@@ -171,5 +175,39 @@ public class UserService : IUserService
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public IEnumerable<UserDto>? GetAllUsers()
+    {
+        var users = _dbContext
+            .Users
+            .Include(u => u.County)
+            .Include(u => u.Role);
+
+        return _mapper.Map<IEnumerable<UserDto>>(users);
+    }
+
+    public void BanUser(int userId)
+    {
+        var user = _dbContext
+            .Users
+            .Include(u => u.Comments)
+            .FirstOrDefault(u => u.Id == userId)
+            ?? throw new NotFoundException("Użytkownik nie istnieje");
+
+        user.CanComment = false;
+        _dbContext.RemoveRange(user.Comments);
+        _dbContext.SaveChanges();
+    }
+
+    public void UnbanUser(int userId)
+    {
+        var user = _dbContext
+            .Users
+            .FirstOrDefault(u => u.Id == userId)
+            ?? throw new NotFoundException("Użytkownik nie istnieje");
+
+        user.CanComment = true;
+        _dbContext.SaveChanges();
     }
 }

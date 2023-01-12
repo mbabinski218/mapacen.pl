@@ -35,6 +35,12 @@ namespace MapacenBackend.Middleware
                 context.Response.StatusCode = 500;
                 await context.Response.WriteAsync(ioe.Message);
             }
+            catch (IllegalOperationException e)
+            {
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(e.Message);
+            }
+
             //catch (Exception e)
             //{
             //    context.Response.StatusCode = 500;

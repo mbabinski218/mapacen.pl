@@ -22,11 +22,11 @@ namespace MapacenBackend.Controllers
         public ActionResult<int> AddOffer([FromBody] CreateOfferDto dto)
         {
             var offerId = _service.AddOffer(dto);
-            return Created($"api/offer/{offerId}", null);
+            return Created($"api/offer/{offerId}", offerId);
         }
 
         [HttpGet]
-        public ActionResult<OffersWithTotalCount> GetOffers(int countyId, string? productName, int? categoryId, int pageSize, int pageNumber)
+        public ActionResult<OffersWithTotalCount> GetOffers(int countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber)
         {
             return Ok(_service.GetOffers(countyId, productName, categoryId, pageSize, pageNumber));
         }
@@ -53,7 +53,14 @@ namespace MapacenBackend.Controllers
         [HttpGet("favourites/{favouritesId}")]
         public ActionResult<OffersWithTotalCount> GetFavouritesOffers(int favouritesId, int pageSize, int pageNumber)
         {
-            return Ok(_service.GetFavouritesOffers(favouritesId,pageSize,pageNumber));
+            return Ok(_service.GetFavouritesOffers(favouritesId, pageSize, pageNumber));
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+            _service.DeleteOffer(id);
+            return Ok();
         }
     }
 }

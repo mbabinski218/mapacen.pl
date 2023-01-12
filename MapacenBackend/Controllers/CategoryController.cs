@@ -47,5 +47,12 @@ namespace MapacenBackend.Controllers
             _service.UpdateCategory(id, dto);
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+            _service.DeleteCategory(id);
+            return Ok();
+        }
     }
 }

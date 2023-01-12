@@ -37,5 +37,12 @@ namespace MapacenBackend.Controllers
         {
             return Ok(_service.GetSalesPointsByCounty(countyId));
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+            _service.DeleteSalesPoint(id);
+            return Ok();
+        }
     }
 }

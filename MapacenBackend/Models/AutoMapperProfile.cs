@@ -32,6 +32,9 @@ namespace MapacenBackend.Models
             CreateMap<Offer, OfferDto>();
             CreateMap<CreateOfferDto, Offer>();
 
+            //County
+            CreateMap<County, CountyDto>();
+
             //Product
             CreateMap<Product, ProductDto>();
             CreateMap<CreateProductDto, Product>();
@@ -42,6 +45,8 @@ namespace MapacenBackend.Models
 
             // User
             CreateMap<User, LoginUserDto>();
+            CreateMap<User, UserDto>()
+                .ForMember(dto => dto.RoleName, u => u.MapFrom(u => u.Role.Name));
         }
     }
 }

@@ -60,5 +60,25 @@ namespace MapacenBackend.Controllers
         {
             return Ok(_service.GetUser(id));
         }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<UserDto>>? GetAllUsers()
+        {
+            return Ok(_service.GetAllUsers());
+        }
+
+        [HttpPut("/ban/{id}")]
+        public ActionResult BanUser([FromRoute] int id)
+        {
+            _service.BanUser(id);
+            return Ok();
+        }
+
+        [HttpPut("/unban/{id}")]
+        public ActionResult UnbanUser([FromRoute] int id)
+        {
+            _service.UnbanUser(id);
+            return Ok();
+        }
     }
 }

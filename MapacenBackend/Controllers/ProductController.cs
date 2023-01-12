@@ -41,5 +41,12 @@ namespace MapacenBackend.Controllers
             _service.UpdateProduct(id, dto);
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+            _service.DeleteProduct(id);
+            return Ok();
+        }
     }
 }

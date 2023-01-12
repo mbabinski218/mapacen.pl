@@ -11,6 +11,7 @@ namespace MapacenBackend.Services
         CategoryDto? GetCategoryById(int id);
         CategoryDto CreateCategory(CreateCategoryDto dto);
         void UpdateCategory(int id, UpdateCategoryDto dto);
+        void DeleteCategory(int id);
     }
 
     public class CategoryService : ICategoryService
@@ -52,7 +53,7 @@ namespace MapacenBackend.Services
         public void UpdateCategory(int id, UpdateCategoryDto dto)
         {
             var category = _dbContext.Categories.FirstOrDefault(c => c.Id == id);
-            if (category == null) throw new NotFoundException("Category with requested id does not exist");
+            if (category == null) throw new NotFoundException("Kategoria nie istnieje");
 
             if (dto.Name != null)
             {
@@ -61,5 +62,15 @@ namespace MapacenBackend.Services
             }
         }
 
+        public void DeleteCategory(int id)
+        {
+             var category = _dbContext
+                .Categories
+                .FirstOrDefault(c => c.Id == id)
+                ?? throw new NotFoundException("Kategoria nie istnieje");
+
+            _dbContext.Remove(category);
+            _dbContext.SaveChanges();
+        }
     }
 }

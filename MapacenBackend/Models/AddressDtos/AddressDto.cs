@@ -8,6 +8,6 @@ namespace MapacenBackend.Models.AddressDtos
         public string Street { get; set; }
         public string PostalCode { get; set; }
         public int Number { get; set; }
-        public County County { get; set; }
+        public CountyDto County { get; set; }
     }
 }

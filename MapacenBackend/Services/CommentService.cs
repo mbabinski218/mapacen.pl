@@ -11,6 +11,7 @@ namespace MapacenBackend.Services
         public int CreateComment(CreateCommentDto dto);
         public void LikeComment(int commentId, int userId);
         public void DislikeComment(int commentId, int userId);
+        public void DeleteComment(int commentId);
     }
 
     public class CommentService : ICommentService
@@ -26,6 +27,12 @@ namespace MapacenBackend.Services
 
         public int CreateComment(CreateCommentDto dto)
         {
+            var user = _dbContext
+                .Users
+                .FirstOrDefault(u => u.Id == dto.UserId) ?? throw new NotFoundException("Użytkownik nie istnieje");
+
+            if (!user.CanComment) throw new IllegalOperationException("Użytkownik nie może komentować");
+
             var comment = _mapper.Map<Comment>(dto);
 
             _dbContext.Add(comment);
@@ -34,12 +41,32 @@ namespace MapacenBackend.Services
             return comment.Id;
         }
 
-        public void LikeComment(int commentId, int userId)
+        public void DeleteComment(int commentId)
         {
             var comment = _dbContext
                 .Comments
+                .Include(c => c.Likers)
+                .Include(c => c.Dislikers)
                 .FirstOrDefault(c => c.Id == commentId)
-                ?? throw new NotFoundException("Comment with requested id does not exist");
+                ?? throw new NotFoundException("Komentarz nie istnieje");
+
+            _dbContext.Remove(comment);
+            _dbContext.SaveChanges();
+        }
+
+        public void LikeComment(int commentId, int userId)
+        {
+            var foundUser = _dbContext
+                .Users
+                .FirstOrDefault(u => u.Id == userId)
+                ?? throw new NotFoundException("Użytkownik nie istnieje");
+
+            var comment = _dbContext
+                .Comments
+                .FirstOrDefault(c => c.Id == commentId)
+                ?? throw new NotFoundException("Komentarz nie istnieje");
+
+            if (!foundUser.CanComment) throw new IllegalOperationException("Użytkownik nie może komentować");
 
             var user = GetLiker(commentId, userId);
 
@@ -72,10 +99,17 @@ namespace MapacenBackend.Services
 
         public void DislikeComment(int commentId, int userId)
         {
+            var foundUser = _dbContext
+                .Users
+                .FirstOrDefault(u => u.Id == userId)
+                ?? throw new NotFoundException("Użytkownik nie istnieje");
+
             var comment = _dbContext
-                 .Comments
-                 .FirstOrDefault(c => c.Id == commentId)
-                 ?? throw new NotFoundException("Comment with requested id does not exist");
+                .Comments
+                .FirstOrDefault(c => c.Id == commentId)
+                ?? throw new NotFoundException("Komentarz nie istnieje");
+
+            if (!foundUser.CanComment) throw new IllegalOperationException("Użytkownik nie może komentować");
 
             var user = GetDisliker(commentId, userId);
 
@@ -112,6 +146,7 @@ namespace MapacenBackend.Services
             return _dbContext
                  .Likers
                  .Where(l => l.CommentId == commentId)
+                 .Include(l => l.User)
                  .FirstOrDefault(l => l.UserId == userId);
         }
 
@@ -120,6 +155,7 @@ namespace MapacenBackend.Services
             return _dbContext
                  .Dislikers
                  .Where(l => l.CommentId == commentId)
+                 .Include(l => l.User)
                  .FirstOrDefault(l => l.UserId == userId);
         }
     }

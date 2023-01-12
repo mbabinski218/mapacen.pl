@@ -26,22 +26,18 @@ public class MapacenDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.Entity<Address>().
-        //    .HasIndex(a => new { a.Street, a.City, a.PostalCode, a.Number })
-        //    .IsUnique();
-
         modelBuilder.Entity<User>()
             .HasIndex(x => x.Email)
             .IsUnique();
 
-        modelBuilder.Entity<Comment>()
-            .HasOne(c => c.User)
-            .WithMany(u => u.Comments)
-            .HasForeignKey(c => c.UserId)
-            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<Offer>()
+            .HasOne(o => o.Product)
+            .WithMany(p => p.Offers)
+            .HasForeignKey(o => o.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<FavouritesOffer>()
-            .HasKey(fo => new { fo.OfferId, fo.FavouritesId });
+         .HasKey(fo => new { fo.OfferId, fo.FavouritesId });
         modelBuilder.Entity<FavouritesOffer>()
             .HasOne(fo => fo.Favourites)
             .WithMany(b => b.FavouritesOffer)
@@ -50,6 +46,39 @@ public class MapacenDbContext : DbContext
             .HasOne(fo => fo.Offer)
             .WithMany(c => c.FavouritesOffer)
             .HasForeignKey(fo => fo.OfferId);
+
+
+        modelBuilder.Entity<County>()
+            .HasMany(c => c.Addresses)
+            .WithOne(a => a.County)
+            .HasForeignKey(a => a.CountyId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+
+        modelBuilder.Entity<Comment>()
+            .HasOne(c => c.User)
+            .WithMany(u => u.Comments)
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Comment>()
+            .HasOne(c => c.Offer)
+            .WithMany(o => o.Comments)
+            .HasForeignKey(c => c.OfferId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Comment>()
+            .HasMany(c => c.Likers)
+            .WithOne(l => l.Comment)
+            .HasForeignKey(l => l.CommentId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Comment>()
+            .HasMany(c => c.Dislikers)
+            .WithOne(l => l.Comment)
+            .HasForeignKey(l => l.CommentId)
+            .OnDelete(DeleteBehavior.NoAction);
+
 
         modelBuilder.Entity<Likers>()
             .HasKey(l => new { l.UserId, l.CommentId });
@@ -62,7 +91,7 @@ public class MapacenDbContext : DbContext
             .HasOne(l => l.Comment)
             .WithMany(c => c.Likers)
             .HasForeignKey(l => l.CommentId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Dislikers>()
             .HasKey(l => new { l.UserId, l.CommentId });
@@ -75,32 +104,6 @@ public class MapacenDbContext : DbContext
             .HasOne(l => l.Comment)
             .WithMany(c => c.Dislikers)
             .HasForeignKey(l => l.CommentId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        //modelBuilder.Entity<User>()
-        //    .HasMany(u => u.Comments)
-        //    .WithOne(c => c.User)
-        //    .HasForeignKey(c => c.UserId)
-        //    .OnDelete(DeleteBehavior.Cascade);
-
-        //modelBuilder.Entity<Comment>()
-        //    .Property(c => c.Content)
-        //    .HasMaxLength(250);
-
-        //modelBuilder.Entity<County>()
-        //    .AllProperties()
-        //    .ForEach(x => x.IsRequired());
-
-        //modelBuilder.Entity<Offer>()
-        //    .AllProperties()
-        //    .ForEach(x => x.IsRequired());
-
-        //modelBuilder.Entity<Product>()
-        //    .AllProperties()
-        //    .ForEach(x => x.IsRequired());
-
-        //modelBuilder.Entity<SalesPoint>()
-        //    .AllProperties()
-        //    .ForEach(x => x.IsRequired());
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

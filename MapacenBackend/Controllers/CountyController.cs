@@ -1,4 +1,5 @@
 ﻿using MapacenBackend.Entities;
+using MapacenBackend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +17,13 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<County>> GetAll()
+        public ActionResult<IEnumerable<CountyDto>> GetAll()
         {
             return Ok(_dbContext.Counties.OrderBy(c => c.Name));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<County> Get([FromRoute] int id)
+        public ActionResult<CountyDto> Get([FromRoute] int id)
         {
             return Ok(_dbContext.Counties.FirstOrDefault(c => c.Id == id));
         }

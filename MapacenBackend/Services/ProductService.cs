@@ -13,6 +13,7 @@ namespace MapacenBackend.Services
         Product CreateProduct(CreateProductDto dto);
         void UpdateProduct(int id, UpdateProductDto dto);
         IEnumerable<ProductDto>? GetAllProducts();
+        void DeleteProduct(int id);
     }
 
     public class ProductService : IProductService
@@ -39,24 +40,28 @@ namespace MapacenBackend.Services
             return product;
         }
 
+        public void DeleteProduct(int id)
+        {
+            var product = _dbContext
+                .Products
+                .FirstOrDefault(p => p.Id == id)
+                ?? throw new NotFoundException("Produkt nie istnieje");
+
+            _dbContext.Remove(product);
+            _dbContext.SaveChanges();
+        }
+
         public IEnumerable<ProductDto>? GetAllProducts()
         {
-            var products = _dbContext.Products.OrderBy(p => p.Name);
+            var products = _dbContext.Products.Include(p => p.Category).OrderBy(p => p.Name);
             return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
-        private Category? GetProductCategory(CategoryDto category)
-        {
-            return _dbContext
-                .Categories
-                .Include(c => c.Products)
-                .FirstOrDefault(c => c.Id == category.Id);
-        }
 
         public void UpdateProduct(int id, UpdateProductDto dto)
         {
             var product = _dbContext.Products.FirstOrDefault(c => c.Id == id);
-            if (product == null) throw new NotFoundException("Product with requested id does not exist");
+            if (product == null) throw new NotFoundException("Wybrany produkt nie istnieje");
 
             product.Name = dto?.Name ?? product.Name;
             product.CategoryId = dto?.CategoryId ?? product.CategoryId;
