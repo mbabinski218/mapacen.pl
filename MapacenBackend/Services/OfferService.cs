@@ -51,17 +51,53 @@ namespace MapacenBackend.Services
 
         public OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber)
         {
+            return categoryId == null
+                ? GetOffersByProductName(countyId, productName ?? "", pageSize, pageNumber)
+                : GetOffersByProductNameAndCategory(countyId, productName ?? "", categoryId.Value, pageSize, pageNumber);
+        }
+
+        private OffersWithTotalCount GetOffersByProductName(int countyId, string productName, int? pageSize, int? pageNumber)
+        {
             var offers = _dbContext
                 .Offers
                 .Include(o => o.Product)
-                .ThenInclude(p => p.Category)
+                    .ThenInclude(p => p.Category)
                 .Include(o => o.SalesPoint)
-                .ThenInclude(s => s.Address)
-                .ThenInclude(a => a.County)
+                    .ThenInclude(s => s.Address)
+                        .ThenInclude(a => a.County)
                 .Where(o => o.SalesPoint.Address.CountyId == countyId)
-                .Where(o => categoryId == null || o.Product.CategoryId == categoryId)
                 .Where(o => EF.Functions
-                    .Like(o.Product.Name, $"%{productName}%"));
+                    .Like(o.Product.Name, $"%{productName}%"))
+                .OrderByDescending(o => o.Id)
+                .Select(o => o);
+
+            var count = offers.Count();
+
+            if (pageSize.HasValue && pageNumber.HasValue)
+                offers = offers.Skip(pageSize.Value * (pageNumber.Value - 1)).Take(pageSize.Value);
+
+
+            var offersDto = _mapper.Map<List<OfferDto>>(offers);
+
+            return new OffersWithTotalCount { Count = count, Offers = offersDto };
+
+        }
+
+        private OffersWithTotalCount GetOffersByProductNameAndCategory(int countyId, string productName, int categoryId, int? pageSize, int? pageNumber)
+        {
+            var offers = _dbContext
+                .Offers
+                .Include(o => o.Product)
+                    .ThenInclude(p => p.Category)
+                .Include(o => o.SalesPoint)
+                    .ThenInclude(s => s.Address)
+                        .ThenInclude(a => a.County)
+                .Where(o => o.SalesPoint.Address.CountyId == countyId)
+                .Where(o => o.Product.CategoryId == categoryId)
+                .Where(o => EF.Functions
+                    .Like(o.Product.Name, $"%{productName}%"))
+                .OrderByDescending(o => o.Id)
+                .Select(o => o);
 
             var count = offers.Count();
 
@@ -78,22 +114,31 @@ namespace MapacenBackend.Services
                 .Comments
                 .Where(c => c.OfferId == offerId)
                 .OrderByDescending(c => c.CreationDate)
-                .Include(c => c.User)
-                .Include(c => c.Likers)
-                .Include(c => c.Dislikers);
-            
-            foreach (var comment in comments)
-            {
-                var liker = comment.Likers?.FirstOrDefault(l => l.UserId == userId);
-                var disliker = comment.Dislikers?.FirstOrDefault(l => l.UserId == userId);
+                .Include(c => c.User);
 
-                var commentDto = _mapper.Map<CommentDto>(comment);
-                commentDto.IsLikedOrDislikedByUser = liker == null ? (disliker == null ? null : false) : true;
-                
-                yield return commentDto;
-            }
+            var commentsDto = _mapper.Map<List<CommentDto>>(comments);
+            foreach (var c in commentsDto)
+            {
+                var liker = _dbContext
+                .Likers
+                .Where(l => l.CommentId == c.Id)
+                .FirstOrDefault(l => l.UserId == userId);
+
+                Dislikers? disliker = null;
+                if (liker == null)
+                {
+                    disliker = _dbContext
+                    .Dislikers
+                    .Where(l => l.CommentId == c.Id)
+                    .FirstOrDefault(l => l.UserId == userId);
+                }
+
+                c.IsLikedOrDislikedByUser = liker == null ? (disliker == null ? null : false) : true;
+                yield return c;
+            };
         }
 
+        //najprawdopodobniej do usunięcia
         public IEnumerable<CommentDto>? GetAllComments(int offerId)
         {
             var comments = _dbContext

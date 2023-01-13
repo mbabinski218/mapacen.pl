@@ -67,14 +67,14 @@ namespace MapacenBackend.Controllers
             return Ok(_service.GetAllUsers());
         }
 
-        [HttpPut("/ban/{id}")]
+        [HttpPut("ban/{id}")]
         public ActionResult BanUser([FromRoute] int id)
         {
             _service.BanUser(id);
             return Ok();
         }
 
-        [HttpPut("/unban/{id}")]
+        [HttpPut("unban/{id}")]
         public ActionResult UnbanUser([FromRoute] int id)
         {
             _service.UnbanUser(id);

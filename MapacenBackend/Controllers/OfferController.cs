@@ -62,5 +62,12 @@ namespace MapacenBackend.Controllers
             _service.DeleteOffer(id);
             return Ok();
         }
+
+        [HttpPut]
+        public ActionResult Update([FromQuery] int id, [FromQuery] UpdateOfferDto dto)
+        {
+            _service.UpdateOffer(id, dto);
+            return Ok();
+        }
     }
 }
