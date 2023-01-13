@@ -114,7 +114,8 @@ public class UserService : IUserService
             .Users
             .Include(u => u.County)
             .Include(u => u.Role)
-            .FirstOrDefault(u => u.Id == id);
+            .FirstOrDefault(u => u.Id == id) 
+            ?? throw new NotFoundException("Użytkownik nie istnieje");
 
         return new UserDto
         {
