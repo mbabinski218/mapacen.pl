@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MapacenBackend.Migrations
 {
     [DbContext(typeof(MapacenDbContext))]
-    [Migration("20230112223029_newDb")]
-    partial class newDb
+    [Migration("20230113181638_nowa")]
+    partial class nowa
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MapacenBackend.Migrations
 {
-    public partial class newDb : Migration
+    public partial class nowa : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

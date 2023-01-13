@@ -67,7 +67,9 @@ namespace MapacenBackend.Services
                         .ThenInclude(a => a.County)
                 .Where(o => o.SalesPoint.Address.CountyId == countyId)
                 .Where(o => EF.Functions
-                    .Like(o.Product.Name, $"%{productName}%"));
+                    .Like(o.Product.Name, $"%{productName}%"))
+                .OrderByDescending(o => o.Id)
+                .Select(o => o);
 
             var count = offers.Count();
 
@@ -93,7 +95,9 @@ namespace MapacenBackend.Services
                 .Where(o => o.SalesPoint.Address.CountyId == countyId)
                 .Where(o => o.Product.CategoryId == categoryId)
                 .Where(o => EF.Functions
-                    .Like(o.Product.Name, $"%{productName}%"));
+                    .Like(o.Product.Name, $"%{productName}%"))
+                .OrderByDescending(o => o.Id)
+                .Select(o => o);
 
             var count = offers.Count();
 
@@ -134,6 +138,7 @@ namespace MapacenBackend.Services
             };
         }
 
+        //najprawdopodobniej do usunięcia
         public IEnumerable<CommentDto>? GetAllComments(int offerId)
         {
             var comments = _dbContext
