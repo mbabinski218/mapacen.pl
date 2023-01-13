@@ -10,12 +10,10 @@ import { OffersService } from '@modules/offers/api/offers.service';
 import { OffersComponent } from '@modules/offers/offers.component';
 import { MyInputModule } from '@shared/modules/my-input/my-input.module';
 import { DisableAreaModule } from '@shared/modules/disable-area/disable-area.module';
-import { OfferExpandedComponent } from '@modules/offers/components/offer-expanded/offer-expanded.component';
 
 @NgModule({
   declarations: [
     OffersComponent,
-    OfferExpandedComponent,
   ],
   imports: [
     CommonModule,

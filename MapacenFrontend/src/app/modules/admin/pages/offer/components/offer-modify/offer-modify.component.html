@@ -19,29 +19,4 @@
     controlName="price"
   >
   </my-input>
-
-  <mat-form-field class="fix backgroundColor">
-    <mat-label>Produkt</mat-label>
-    <mat-select formControlName="product">
-      <mat-option
-        *ngFor="let item of products"
-        [value]="item"
-      >
-      <!--TODO musza dodac zwracanie id produktu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
-        {{ item.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field class="fix backgroundColor">
-    <mat-label>Punkt sprzedaży</mat-label>
-    <mat-select formControlName="salePoint">
-      <mat-option
-        *ngFor="let item of salePointsFixedNames"
-        [value]="item.id"
-      >
-        {{ item.changedName }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
 </div>

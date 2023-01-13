@@ -35,6 +35,13 @@ export class MyLocalStorageService {
     return false;
   }
 
+  isServiceAdmin(): boolean {
+    if (this.getRole() === 'Service Administrator') {
+      return true;
+    }
+    return false;
+  }
+
   isLogged(): boolean {
     return !!localStorage.getItem('userToken');
   }

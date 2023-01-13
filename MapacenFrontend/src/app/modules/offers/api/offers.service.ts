@@ -23,8 +23,8 @@ export class OffersService {
       .set('pageNumber', page)
 
     return this.http.get<MainOffer>(`${environment.httpBackend}${Api.OFFERS}`, { params }).pipe(
-      catchError(() => {
-        this.toastMessageService.notifyOfError("Błąd pobierania ofert");
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
         return of();
       }),
     );
@@ -38,8 +38,8 @@ export class OffersService {
     return this.http.get<MainOffer>(`${environment.httpBackend}${Api.FAVOURITES}`
       .replace(':favouritesId', favouritesId.toString()), { params })
       .pipe(
-        catchError(() => {
-          this.toastMessageService.notifyOfError("Błąd aktualizacji ulubionych");
+        catchError((err) => {
+          this.toastMessageService.notifyOfError(err.error);
           return of();
         }),
       );
@@ -51,8 +51,8 @@ export class OffersService {
       .set('favouritesId', favouritesId)
 
     return this.http.post<any>(`${environment.httpBackend}${Api.FAVOURITES_UPDATE}`, { params }).pipe(
-      catchError(() => {
-        this.toastMessageService.notifyOfError("Błąd pobierania ulubionych");
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
         return of();
       }),
     );
@@ -64,8 +64,8 @@ export class OffersService {
       .set('userId', userId)
 
     return this.http.get<MyComment[]>(`${environment.httpBackend}${Api.OFFER_COMMENTS}`, { params }).pipe(
-      catchError(() => {
-        this.toastMessageService.notifyOfError("Błąd pobierania komentarzy");
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
         return of([]);
       }),
     );
@@ -74,28 +74,52 @@ export class OffersService {
   addComment(content: string, userId: number, offerId: number): Observable<any> {
     const creationDate = new Date().toISOString();
     return this.http.post<any>(`${environment.httpBackend}${Api.COMMENT}`, { content, userId, offerId, creationDate }).pipe(
-      catchError(() => {
-        this.toastMessageService.notifyOfError("Błąd dodawania komentarza");
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
         return of();
       }),
     );
   }
 
-  like(commentId: number): Observable<any> {
-    return this.http.put<any>(`${environment.httpBackend}${Api.COMMENT_LIKE}`.replace(':id', commentId.toString()), {}).pipe(
-      catchError(() => {
-        this.toastMessageService.notifyOfError("Błąd polubienia");
-        return of();
-      }),
-    );
+  like(commentId: number, userId: number): Observable<any> {
+    return this.http.put<any>(`${environment.httpBackend}${Api.COMMENT_LIKE}`
+      .replace(':commentId', commentId.toString())
+      .replace(':userId', userId.toString()), {}).pipe(
+        catchError((err) => {
+          this.toastMessageService.notifyOfError(err.error);
+          return of();
+        }),
+      );
   }
 
-  dislike(commentId: number): Observable<any> {
-    return this.http.put<any>(`${environment.httpBackend}${Api.COMMENT_DISLIKE}`.replace(':id', commentId.toString()), {}).pipe(
-      catchError(() => {
-        this.toastMessageService.notifyOfError("Błąd polubienia");
-        return of();
-      }),
-    );
+  dislike(commentId: number, userId: number): Observable<any> {
+    return this.http.put<any>(`${environment.httpBackend}${Api.COMMENT_DISLIKE}`
+      .replace(':commentId', commentId.toString())
+      .replace(':userId', userId.toString()), {}).pipe(
+        catchError((err) => {
+          this.toastMessageService.notifyOfError(err.error);
+          return of();
+        }),
+      );
+  }
+
+  banUser(id: number): Observable<any> {
+    return this.http.put<any>(`${environment.httpBackend}${Api.BAN}`
+      .replace(':id', id.toString()), {}).pipe(
+        catchError((err) => {
+          this.toastMessageService.notifyOfError(err.error);
+          return of();
+        }),
+      );
+  }
+
+  deleteComment(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.httpBackend}${Api.COMMENT_DELETE}`
+      .replace(':id', id.toString()), {}).pipe(
+        catchError((err) => {
+          this.toastMessageService.notifyOfError(err.error);
+          return of();
+        }),
+      );
   }
 }

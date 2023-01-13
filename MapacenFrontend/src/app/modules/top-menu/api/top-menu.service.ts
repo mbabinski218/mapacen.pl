@@ -16,8 +16,8 @@ export class TopMenuService {
 
   getAllCounties(): Observable<idNameOnly[]> {
     return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.COUNTIES}`).pipe(
-      catchError(() => {
-        this.toastMessageService.notifyOfError("Błąd pobierania powiatów");
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
         return of([]);
       }),
     );
@@ -25,8 +25,8 @@ export class TopMenuService {
 
   getAllCategories(): Observable<idNameOnly[]> {
     return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.CATEGORIES}`).pipe(
-      catchError(() => {
-        this.toastMessageService.notifyOfError("Błąd pobierania kategorii");
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
         return of([]);
       }),
     );
@@ -34,8 +34,8 @@ export class TopMenuService {
 
   loginUser({ email, password }: Login): Observable<Token> {
     return this.http.post<Token>(`${environment.httpBackend}${Api.LOGIN}`, { email, password }).pipe(
-      catchError(() => {
-        this.toastMessageService.notifyOfError("Zły email lub hasło");
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
         return of();
       }),
     );

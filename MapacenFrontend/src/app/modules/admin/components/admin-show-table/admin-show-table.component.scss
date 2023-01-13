@@ -1,0 +1,17 @@
+.mat-mdc-table .mat-mdc-header-cell {
+  width: 190px;
+}
+
+.icon {
+  &:hover {
+    cursor: pointer;
+  }
+
+  &--yes {
+    color: green;
+  }
+
+  &--no {
+    color: red;
+  }
+}

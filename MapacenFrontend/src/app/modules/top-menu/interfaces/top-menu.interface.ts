@@ -39,8 +39,9 @@ export interface OfferContent {
 }
 
 export interface UserInfo {
-  email: string,
+  id: number,
   name: string,
+  email: string,
   canComment: boolean,
   roleName: string,
   county: County,

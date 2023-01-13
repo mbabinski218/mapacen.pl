@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
-import { OfferFormHandlerService } from '@modules/admin/pages/offer/services/offer-form-handler.service';
 import { AdminStorageService } from '@modules/admin/services/admin-storage.service';
+import { ChangedNames } from '@modules/admin/interfaces/admin-form-response.interface';
+import { OfferFormHandlerService } from '@modules/admin/pages/offer/services/offer-form-handler.service';
 import { MainOffer, Product, SalesPoint } from '@modules/offers/interfaces/offers.interface';
 
 @Component({
@@ -20,9 +21,9 @@ export class OfferModifyComponent implements OnInit {
 
   form: FormGroup;
   products: Product[] = [];
-  salePointsFixedNames: changedNames[] = [];
-  offersFixedNames: changedNames[] = [];
-  salePoints: SalesPoint[] = [];
+  salesPointsFixedNames: ChangedNames[] = [];
+  salesPoints: SalesPoint[] = [];
+  offersFixedNames: ChangedNames[] = [];
   offers: MainOffer;
 
   constructor(
@@ -35,27 +36,25 @@ export class OfferModifyComponent implements OnInit {
     this.form = this.controlContainer.control as FormGroup;
     this.offerFormHandlerService.setFormGroupForOfferModify(this.form);
 
-    this.products = this.adminStorageService.products;
     this.offers = this.adminStorageService.offers;
-    this.salePoints = this.adminStorageService.salePoints;
 
     this.offers.offers.map((res) => {
+      let additionalZero = '';
+      let price = res.price.toString();
+      if (price.charAt(price.length - 2) === '.') {
+        additionalZero = '0';
+      }
+      
       this.offersFixedNames.push({
         id: res.id,
-        changedName: 'id: ' + res.id + ', ' + res.product.name + ' ' + res.price + 'zł',
+        changedName: 'id: ' + res.id + ' | ' + res.product.name + ' | ' + res.price + additionalZero + 'zł',
       })
     })
 
-    this.salePoints.map((res) => {
-      this.salePointsFixedNames.push({
-        id: res.id,
-        changedName: res.name + ', ' + res.address.city + ' ul. ' + res.address.street + ' ' + res.address.number,
-      })
+    this.form.get('price').valueChanges.subscribe((res) => {
+      if (Number.isNaN(Number(res))) {
+        this.form.get('price').setErrors({ 'incorrect': true });
+      }
     })
   }
-}
-
-interface changedNames {
-  id: number,
-  changedName: string,
 }
