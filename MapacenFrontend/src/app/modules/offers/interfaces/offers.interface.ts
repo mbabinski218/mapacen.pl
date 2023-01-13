@@ -51,6 +51,4 @@ export interface MyComment {
   author: string,
   authorId: number,
   isLikedOrDislikedByUser: boolean,
-  userLiked?: boolean,
-  userDisliked?: boolean,
 }

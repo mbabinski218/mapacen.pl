@@ -21,6 +21,7 @@
       *ngFor="let offer of offers"
     >
       <mat-expansion-panel
+        [disabled]="isNotLogged"
         class="data"
         (opened)="offer.opened = true; getComments(offer)"
         (closed)="offer.opened = false"
@@ -74,6 +75,7 @@
           <form
             [formGroup]="form"
             class="container"
+            *ngIf="canComment"
           >
             <div class="comment-input mainColor">
               <my-input
@@ -87,6 +89,7 @@
           </form>
           <div class="right">
             <button
+              *ngIf="canComment"
               mat-button
               class="comment-button"
               (click)="comment(offer)"
@@ -94,54 +97,74 @@
               Skomentuj
             </button>
           </div>
-          <div
-            *ngFor="let comment of offer.comments"
-            class="full"
-          >
-            <span class="author">
-              {{ comment.author }}
-            </span>
-            <span class="comment-input comment-body mainColor">
-              <span class="com">
-                {{ comment.content }}
+          <div *ngIf="offer.comments?.length; else noComments">
+            <div
+              *ngFor="let comment of offer.comments"
+              class="full"
+              [ngClass]="canComment ? 'full--is-content' : 'full--no-content'"
+            >
+              <span class="author">
+                {{ comment.author }}
               </span>
+              <span class="comment-input comment-body mainColor">
+                <span class="com">
+                  {{ comment.content }}
+                </span>
 
-              <button
-                mat-icon-button
-                [matMenuTriggerFor]="menu"
-              >
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
                 <button
-                  mat-menu-item
-                  class="menu"
-                  (click)="banUser(comment.authorId)"
+                  *ngIf="isAdmin"
+                  mat-icon-button
+                  [matMenuTriggerFor]="menu"
                 >
-                  <mat-icon>comments_disabled</mat-icon>
-                  <span>Wyłącz komentowanie użytkownikowi</span>
+                  <mat-icon>more_vert</mat-icon>
                 </button>
-              </mat-menu>
-            </span>
-            <div class="likes">
-              {{ comment.likes }}
-              <button
-                mat-icon-button
-                (click)="like(comment)"
-              >
-                <!-- [class.checked]="offer.favourite" -->
-                <mat-icon svgIcon="my-like"></mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                (click)="dislike(comment)"
-              >
-                <!-- [class.checked]="offer.favourite" -->
-                <mat-icon svgIcon="my-dislike"></mat-icon>
-              </button>
-              {{ comment.disLikes }}
+                <mat-menu #menu="matMenu">
+                  <button
+                    mat-menu-item
+                    class="menu"
+                    (click)="banUser(offer, comment.authorId)"
+                  >
+                    <mat-icon>comments_disabled</mat-icon>
+                    <span>Wyłącz komentowanie użytkownikowi</span>
+                  </button>
+                  <button
+                    mat-menu-item
+                    class="menu"
+                    (click)="removeComment(offer, comment)"
+                  >
+                    <mat-icon>delete</mat-icon>
+                    <span>Usuń komentarz</span>
+                  </button>
+                </mat-menu>
+              </span>
+              <div class="likes">
+                {{ comment.likes }}
+                <button
+                  mat-icon-button
+                  (click)="like(comment)"
+                >
+                  <mat-icon
+                    [svgIcon]="comment.isLikedOrDislikedByUser === true ? 'my-like-clicked' : 'my-like-not-clicked'"
+                  ></mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  (click)="dislike(comment)"
+                >
+                  <mat-icon
+                    [svgIcon]="comment.isLikedOrDislikedByUser === false ? 'my-dislike-clicked' : 'my-dislike-not-clicked'"
+                  ></mat-icon>
+                </button>
+                {{ comment.disLikes }}
+              </div>
             </div>
           </div>
+          <ng-template #noComments>
+            <span class="no-comments">
+              Brak komentarzy :(((
+            </span>
+          </ng-template>
+
         </div>
       </mat-expansion-panel>
     </mat-accordion>

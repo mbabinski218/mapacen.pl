@@ -1,20 +1,24 @@
 <form [formGroup]="adminForm">
-  <ng-container *ngComponentOutlet="formResponse.dropdown.data.formComponent"></ng-container>
-  <div class="buttons">
-    <button
-      mat-fab
-      (click)="clearForm()"
-      class="secondaryColor fab"
-    >
-      <mat-icon>delete</mat-icon>
-    </button>
-    <button
-      mat-raised-button
-      class="button secondaryColor"
-      (click)="submitForm()"
-    >
-      Wyślij
-      <mat-icon class="icon">send</mat-icon>
-    </button>
+  <div class="form">
+    <ng-container *ngComponentOutlet="formResponse.dropdown.data.formComponent"></ng-container>
+    <div class="buttons">
+      <button
+        mat-fab
+        (click)="clearForm()"
+        class="secondaryColor fab"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button
+        mat-raised-button
+        class="button secondaryColor"
+        (click)="submitForm()"
+      >
+        Wyślij
+        <mat-icon class="icon">send</mat-icon>
+      </button>
+    </div>
   </div>
 </form>
+
+<app-admin-show-table [operationText]="operationText"></app-admin-show-table>

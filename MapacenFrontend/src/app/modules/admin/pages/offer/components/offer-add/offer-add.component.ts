@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
-import { SalesPoint } from '@modules/offers/interfaces/offers.interface';
-import { OfferFormHandlerService } from '../../services/offer-form-handler.service';
+import { Product, SalesPoint } from '@modules/offers/interfaces/offers.interface';
+import { AdminStorageService } from '@modules/admin/services/admin-storage.service';
+import { ChangedNames } from '@modules/admin/interfaces/admin-form-response.interface';
+import { OfferFormHandlerService } from '@modules/admin/pages/offer/services/offer-form-handler.service';
 
 @Component({
   selector: 'offer-add',
@@ -18,21 +20,34 @@ import { OfferFormHandlerService } from '../../services/offer-form-handler.servi
 export class OfferAddComponent implements OnInit {
 
   form: FormGroup;
-  // offers: FormGroup;
-  // products: FormGroup;
-  salePoints: string[] = [];
+  products: Product[] = [];
+  salesPointsFixedNames: ChangedNames[] = [];
+  salesPoints: SalesPoint[] = [];
 
   constructor(
     private controlContainer: ControlContainer,
     private offerFormHandlerService: OfferFormHandlerService,
+    private adminStorageService: AdminStorageService,
   ) { }
 
   ngOnInit(): void {
     this.form = this.controlContainer.control as FormGroup;
     this.offerFormHandlerService.setFormGroupForOfferAdd(this.form);
-    // this.offerFormHandlerService.getSalePoints(Number(localStorage.getItem('userProfileCountyId'))).subscribe((res) => {
-    //   this.salePoints = res.map((result) => result.name + ', ' + result.address.city + ' ul. ' + result.address.street + ' ' + result.address.number);
-    //   //jeszcze strzal po oferty i produkty
-    // });
+
+    this.products = this.adminStorageService.products;
+    this.salesPoints = this.adminStorageService.salesPoints;
+
+    this.salesPoints.map((res) => {
+      this.salesPointsFixedNames.push({
+        id: res.id,
+        changedName: res.name + ', ' + res.address.city + ' ul. ' + res.address.street + ' ' + res.address.number,
+      })
+    })
+
+    this.form.get('price').valueChanges.subscribe((res) => {
+      if (Number.isNaN(Number(res))) {
+        this.form.get('price').setErrors({ 'incorrect': true });
+      }
+    })
   }
 }

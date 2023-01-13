@@ -1,0 +1,414 @@
+<table
+  mat-table
+  [dataSource]="dataSource"
+>
+  <ng-container
+    *ngIf="displayedColumns.includes('id')"
+    matColumnDef="id"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Id
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.id }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('name')"
+    matColumnDef="name"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Nazwa
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.name }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('price')"
+    matColumnDef="price"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Cena
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.price | setPrecision }} zł
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('product.name')"
+    matColumnDef="product.name"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Produkt
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.product.name }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('product.category.name')"
+    matColumnDef="product.category.name"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Kategoria
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.product.category.name }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('salesPoint.address.city')"
+    matColumnDef="salesPoint.address.city"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Miasto
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.salesPoint.address.city }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('salesPoint.address.street')"
+    matColumnDef="salesPoint.address.street"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Ulica
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.salesPoint.address.street }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('salesPoint.address.number')"
+    matColumnDef="salesPoint.address.number"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Numer budynku
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.salesPoint.address.number }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('salesPoint.address.county.name')"
+    matColumnDef="salesPoint.address.county.name"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Powiat
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.salesPoint.address.county.name }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('address.county.name')"
+    matColumnDef="address.county.name"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Powiat
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.address.county.name }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('category.id')"
+    matColumnDef="category.id"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Id kategorii
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.category.id }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('email')"
+    matColumnDef="email"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Email
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.email }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('canComment')"
+    matColumnDef="canComment"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Komentowanie
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      <mat-icon
+        *ngIf="element.canComment"
+        class="icon--yes"
+      >
+        check_circle
+      </mat-icon>
+      <mat-icon
+        *ngIf="!element.canComment"
+        class="icon--no"
+      >
+        cancel
+      </mat-icon>
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('roleName')"
+    matColumnDef="roleName"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Rola
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.roleName }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('category.name')"
+    matColumnDef="category.name"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Kategoria
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.category.name }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('salesPoint.name')"
+    matColumnDef="salesPoint.name"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Punkt sprzedaży
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.salesPoint.name }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('county.name')"
+    matColumnDef="county.name"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Powiat
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.county.name }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('address.city')"
+    matColumnDef="address.city"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Miasto
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.address.city }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('address.street')"
+    matColumnDef="address.street"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Ulica
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.address.street }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('address.number')"
+    matColumnDef="address.number"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Numer budynku
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      {{ element.address.number }}
+    </td>
+  </ng-container>
+
+  <ng-container
+    *ngIf="displayedColumns.includes('delete')"
+    matColumnDef="delete"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+    >
+      Usuń
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+    >
+      <mat-icon
+        (click)="delete(element)"
+        class="icon icon--no"
+      >
+        delete
+      </mat-icon>
+    </td>
+  </ng-container>
+
+  <tr
+    mat-header-row
+    *matHeaderRowDef="displayedColumns"
+  >
+  </tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns;"
+  >
+  </tr>
+</table>
+<mat-paginator
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+>
+</mat-paginator>

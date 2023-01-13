@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AdminStorageService } from './services/admin-storage.service';
+import { Component, OnInit } from '@angular/core';
+import { AdminStorageService } from '@modules/admin/services/admin-storage.service';
 
 @Component({
   selector: 'app-admin',
@@ -15,7 +15,7 @@ export class AdminComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.adminStorageService.getAll();
+    this.adminStorageService.onInit();
   }
 
   returnButton() {

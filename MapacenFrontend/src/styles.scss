@@ -110,8 +110,23 @@ body {
 
 .mat-mdc-menu-item.mdc-list-item {
   background-color: rgb(96, 72, 156);
-  
-  &:hover{
+
+  &:hover {
     background-color: rgb(96, 72, 156);
   }
+}
+
+.mat-mdc-menu-item.mdc-list-item {
+  &:hover {
+    background-color: rgb(81, 62, 129);
+  }
+}
+
+.mat-mdc-table,
+.mat-mdc-paginator-container {
+  background-color: rgb(66, 51, 104);
+}
+
+.mat-mdc-select-panel-above .mdc-menu-surface.mat-mdc-select-panel {
+  background-color: rgb(81, 62, 129);
 }

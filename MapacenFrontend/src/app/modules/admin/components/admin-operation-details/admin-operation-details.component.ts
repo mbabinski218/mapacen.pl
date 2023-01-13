@@ -1,9 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AdminFormResponse } from '@modules/admin/interfaces/admin-form-response.interface';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AdminFormService } from '@modules/admin/services/admin-form.service';
+import { AdminOperationType } from '@modules/admin/types/admin-operations.types';
 import { ADMIN_RESPONSE_TOKEN } from '@modules/admin/tokens/admin-response.token';
+import { AdminStorageService } from '@modules/admin/services/admin-storage.service';
+import { AdminSubmitFormService } from '@modules/admin/services/admin-submit-form.service';
+import { AdminFormResponse } from '@modules/admin/interfaces/admin-form-response.interface';
 import { ToastMessageService } from '@shared/modules/toast-message/services/toast-message.service';
+import { DropDownText } from '@shared/modules/lz-nested-dropdown/interfaces/nested-dropdown.interface';
 
 @Component({
   selector: 'admin-operation-details',
@@ -13,12 +17,14 @@ import { ToastMessageService } from '@shared/modules/toast-message/services/toas
 export class AdminOperationDetailsComponent implements OnInit {
 
   adminForm: FormGroup;
-  operationText: string;
-  operationType: string[];
+  operationText: DropDownText;
+  operationType: AdminOperationType[];
 
   constructor(
     @Inject(ADMIN_RESPONSE_TOKEN) public formResponse: AdminFormResponse,
     private adminFormService: AdminFormService,
+    private adminSubmitFormService: AdminSubmitFormService,
+    private adminStorageService: AdminStorageService,
     private toastMessageService: ToastMessageService,
   ) { }
 
@@ -28,20 +34,16 @@ export class AdminOperationDetailsComponent implements OnInit {
     this.operationType = this.formResponse.dropdown.data.operationType;
   }
 
-  ngAfterViewInit(): void {
-  }
-
   submitForm(): void {
     if (this.adminForm.valid) {
+      this.adminSubmitFormService.sendForm(this.adminForm, this.adminStorageService.currentAction);
       this.adminForm.reset();
-      //...
       return;
     }
-    this.toastMessageService.notifyOfError("Błąd w wprowadzonych danych");
+    this.toastMessageService.notifyOfError("Źle wprowadzone dane");
   }
 
   clearForm(): void {
     this.adminForm.reset()
   }
-
 }

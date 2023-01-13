@@ -44,6 +44,7 @@ export class OffersComponent implements OnInit {
   totalSites: number;
   isAdmin: boolean;
   isNotLogged: boolean;
+  canComment: boolean;
   isFavourites = false;
   pageSize = 5;
   panelOpenState = false;
@@ -62,76 +63,91 @@ export class OffersComponent implements OnInit {
 
     this.isAdmin = this.myLocalStorageService.isAdmin();
     this.isNotLogged = !this.myLocalStorageService.isLogged();
+    this.canComment = localStorage.getItem('userCommenting') === 'true' ? true : false;
     this.isFavourites = false;
     this.refreshOffers();
   }
 
   getComments(offer: Offers): void {
-    this.offersService.getComments(offer.id, Number(localStorage.getItem('userId'))).subscribe((res) => offer.comments = res);
+    this.offersService.getComments(offer.id, Number(localStorage.getItem('userId'))).subscribe((res) => {
+      offer.comments = res
+    });
   }
 
   comment(offer: Offers): void {
     const value = this.form.get('comment').value;
     const userId = Number(localStorage.getItem('userId'));
     if (value) {
-      this.offersService.addComment(value, userId, offer.id).subscribe((res) => this.getComments(offer));
+      this.offersService.addComment(value, userId, offer.id).subscribe(() => this.getComments(offer));
       this.form.reset();
     }
   }
 
-
-
-
-
-
-
-
-
-
-  banUser(id: number) {
-    //strzał z banem
+  banUser(offer: Offers, id: number) {
+    if (id !== Number(localStorage.getItem('userId'))) {
+      this.offersService.banUser(id).subscribe(() => this.getComments(offer));
+    }
   }
+
+  removeComment(offer: Offers, comment: MyComment) {
+    this.offersService.deleteComment(comment.id).subscribe(() => this.getComments(offer));
+  }
+
+
+
+
+
+
+
 
   toggleFavourite(offer: Offers): void {
     // this.offersService.updateFavourites(offer.id, Number(localStorage.getItem('favouritesId'))).subscribe();
     offer.favourite = !offer.favourite;
   }
 
-  like(comment: MyComment): void {
-    // this.offersService.like(comment.id).subscribe();
 
-    if (!comment.userLiked) {
-      comment.likes = comment.likes + 1;
-      comment.userLiked = true;
-      comment.userDisliked = false;
-    }
-    else {
+
+
+
+
+
+
+
+  like(comment: MyComment): void {
+    this.offersService.like(comment.id, Number(localStorage.getItem('userId'))).subscribe();
+
+    if (comment.isLikedOrDislikedByUser === true) {
       comment.likes = comment.likes - 1;
-      comment.userLiked = false;
+      comment.isLikedOrDislikedByUser = null;
+    }
+    else if (comment.isLikedOrDislikedByUser === false) {
+      comment.likes = comment.likes + 1;
+      comment.disLikes = comment.disLikes - 1;
+      comment.isLikedOrDislikedByUser = true;
+    }
+    else if (comment.isLikedOrDislikedByUser === null) {
+      comment.likes = comment.likes + 1;
+      comment.isLikedOrDislikedByUser = true;
     }
   }
 
   dislike(comment: MyComment): void {
-    // this.offersService.dislike(comment.id).subscribe();
-    
-    if (!comment.userDisliked) {
-      comment.disLikes = comment.disLikes + 1;
-      comment.userDisliked = true;
-      comment.userLiked = false;
-    }
-    else {
+    this.offersService.dislike(comment.id, Number(localStorage.getItem('userId'))).subscribe();
+
+    if (comment.isLikedOrDislikedByUser === false) {
       comment.disLikes = comment.disLikes - 1;
-      comment.userDisliked = false;
+      comment.isLikedOrDislikedByUser = null;
+    }
+    else if (comment.isLikedOrDislikedByUser === true) {
+      comment.disLikes = comment.disLikes + 1;
+      comment.likes = comment.likes - 1;
+      comment.isLikedOrDislikedByUser = false;
+    }
+    else if (comment.isLikedOrDislikedByUser === null) {
+      comment.disLikes = comment.disLikes + 1;
+      comment.isLikedOrDislikedByUser = false;
     }
   }
-
-
-
-
-
-
-
-
 
   changePage(number: number): void {
     this.page = this.page + number;

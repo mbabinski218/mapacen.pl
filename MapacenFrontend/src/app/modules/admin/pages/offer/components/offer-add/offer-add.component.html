@@ -9,13 +9,25 @@
   </my-input>
 
   <mat-form-field class="fix backgroundColor">
-    <mat-label>Punkt sprzedaży</mat-label>
-    <mat-select formControlName="salePoint">
+    <mat-label>Produkt</mat-label>
+    <mat-select formControlName="product">
       <mat-option
-        *ngFor="let item of salePoints"
-        [value]="item"
+        *ngFor="let item of products"
+        [value]="item.id"
       >
-        {{ item }}
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="fix backgroundColor">
+    <mat-label>Punkt sprzedaży</mat-label>
+    <mat-select formControlName="salesPoint">
+      <mat-option
+        *ngFor="let item of salesPointsFixedNames"
+        [value]="item.id"
+      >
+        {{ item.changedName }}
       </mat-option>
     </mat-select>
   </mat-form-field>

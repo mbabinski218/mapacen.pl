@@ -2,19 +2,19 @@
   <mat-button-toggle-group
     name="action-type"
     (change)="handleActionTypeChange($event)"
-    value="Add"
+    value="AddOffer"
   >
     <mat-button-toggle
-      value="Add"
+      value="AddOffer"
       class="button"
-      [ngClass]="prevType === 'Add' ? 'color-clicked' : 'color-default'"
+      [ngClass]="prevType === 'ModifyOffer' ? 'color-clicked' : 'color-default'"
     >
       Dodaj
     </mat-button-toggle>
     <mat-button-toggle
-      value="Modify"
+      value="ModifyOffer"
       class="button"
-      [ngClass]="prevType === 'Modify' ? 'color-clicked' : 'color-default'"
+      [ngClass]="prevType === 'AddOffer' ? 'color-clicked' : 'color-default'"
     >
       Modyfikuj
     </mat-button-toggle>

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AddModifyActionType } from '@modules/admin/types/admin-actions.interface';
+import { AddModifyOfferType } from '@modules/admin/types/admin-actions.types';
 
 @Component({
   selector: 'offer-type-switch',
@@ -8,5 +8,5 @@ import { AddModifyActionType } from '@modules/admin/types/admin-actions.interfac
 })
 
 export class OfferTypeSwitchComponent {
-  @Input() toggleValue: AddModifyActionType;
+  @Input() toggleValue: AddModifyOfferType;
 }

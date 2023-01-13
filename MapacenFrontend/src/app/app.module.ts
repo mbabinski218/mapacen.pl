@@ -10,10 +10,12 @@ import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const customIcons: [string, string][] = [
-  ["my-like", "like.svg"],
-  ["my-dislike", "dislike.svg"],
   ["my-heart-red", "heart-red.svg"],
   ["my-heart-white", "heart-white.svg"],
+  ["my-like-clicked", "like-clicked.svg"],
+  ["my-dislike-clicked", "dislike-clicked.svg"],
+  ["my-like-not-clicked", "like-not-clicked.svg"],
+  ["my-dislike-not-clicked", "dislike-not-clicked.svg"],
 ];
 
 @NgModule({

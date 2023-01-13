@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import { AddModifyActionType } from '@modules/admin/types/admin-actions.interface';
+import { AddModifyOfferType } from '@modules/admin/types/admin-actions.types';
+import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
+import { AdminStorageService } from '@modules/admin/services/admin-storage.service';
+import { OfferFormHandlerService } from '@modules/admin/pages/offer/services/offer-form-handler.service';
 
 @Component({
   selector: 'offer-set-action',
@@ -18,17 +20,23 @@ import { AddModifyActionType } from '@modules/admin/types/admin-actions.interfac
 export class OfferSetActionComponent implements OnInit {
 
   form: FormGroup;
-  prevType: AddModifyActionType = 'Add';
+  prevType: AddModifyOfferType = 'AddOffer';
 
   constructor(
     private controlContainer: ControlContainer,
+    private offerFormHandlerService: OfferFormHandlerService,
+    private adminStorageService: AdminStorageService,
   ) { }
 
   ngOnInit() {
     this.form = this.controlContainer.control as FormGroup;
+    this.adminStorageService.currentAction = 'AddOffer';
   }
 
   handleActionTypeChange(prevType: MatButtonToggleChange) {
-    this.prevType = prevType.value as AddModifyActionType;
+    if (this.prevType) {
+      this.offerFormHandlerService.clearControls(this.form, this.prevType);
+    }
+    this.prevType = prevType.value as AddModifyOfferType;
   }
 }
