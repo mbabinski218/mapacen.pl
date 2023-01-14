@@ -73,7 +73,9 @@ export class AdminShowTableComponent implements OnInit {
     if (event?.id) {
       this.adminStorageService.deleteData(event?.id, this.deleteApi).subscribe(() => {
         const index = this.data.findIndex((res) => res.id === event.id);
-        this.data.splice(index, 1)
+        this.data.splice(index, 1);
+        this.dataSource = new MatTableDataSource(this.data);
+        this.dataSource.paginator = this.paginator;
         this.table.renderRows();
       });
     }
