@@ -10,8 +10,8 @@ namespace MapacenBackend.Services
 {
     public interface IProductService
     {
-        Product CreateProduct(CreateProductDto dto);
-        void UpdateProduct(int id, UpdateProductDto dto);
+        int CreateProduct(CreateProductDto dto);
+        int UpdateProduct(int id, UpdateProductDto dto);
         IEnumerable<ProductDto>? GetAllProducts();
         void DeleteProduct(int id);
     }
@@ -27,7 +27,7 @@ namespace MapacenBackend.Services
             _mapper = mapper;
         }
 
-        public Product CreateProduct(CreateProductDto dto)
+        public int CreateProduct(CreateProductDto dto)
         {
             if (_dbContext.Products.Any(p => p.Name == dto.Name))
                 throw new NotUniqueElementException("Produkt o podanej nazwie już istnieje");
@@ -37,7 +37,7 @@ namespace MapacenBackend.Services
             _dbContext.Products.Add(product);
             _dbContext.SaveChanges();
 
-            return product;
+            return product.Id;
         }
 
         public void DeleteProduct(int id)
@@ -58,7 +58,7 @@ namespace MapacenBackend.Services
         }
 
 
-        public void UpdateProduct(int id, UpdateProductDto dto)
+        public int UpdateProduct(int id, UpdateProductDto dto)
         {
             var product = _dbContext.Products.FirstOrDefault(c => c.Id == id);
             if (product == null) throw new NotFoundException("Wybrany produkt nie istnieje");
@@ -67,6 +67,7 @@ namespace MapacenBackend.Services
             product.CategoryId = dto?.CategoryId ?? product.CategoryId;
 
             _dbContext.SaveChanges();
+            return id;
         }
 
     }

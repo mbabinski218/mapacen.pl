@@ -9,8 +9,8 @@ namespace MapacenBackend.Services
     {
         IEnumerable<CategoryDto>? GetCategories();
         CategoryDto? GetCategoryById(int id);
-        CategoryDto CreateCategory(CreateCategoryDto dto);
-        void UpdateCategory(int id, UpdateCategoryDto dto);
+        int CreateCategory(CreateCategoryDto dto);
+        int UpdateCategory(int id, UpdateCategoryDto dto);
         void DeleteCategory(int id);
     }
 
@@ -37,7 +37,7 @@ namespace MapacenBackend.Services
             return _mapper.Map<CategoryDto>(category);
         }
 
-        public CategoryDto CreateCategory(CreateCategoryDto dto)
+        public int CreateCategory(CreateCategoryDto dto)
         {
             if (_dbContext.Categories.Any(c => c.Name == dto.Name))
                 throw new NotUniqueElementException("Kateogria o podanej nazwie już istnieje");
@@ -47,10 +47,10 @@ namespace MapacenBackend.Services
             _dbContext.Categories.Add(category);
             _dbContext.SaveChanges();
 
-            return _mapper.Map<CategoryDto>(category);
+            return _mapper.Map<CategoryDto>(category).Id;
         }
 
-        public void UpdateCategory(int id, UpdateCategoryDto dto)
+        public int UpdateCategory(int id, UpdateCategoryDto dto)
         {
             var category = _dbContext.Categories.FirstOrDefault(c => c.Id == id);
             if (category == null) throw new NotFoundException("Kategoria nie istnieje");
@@ -60,6 +60,8 @@ namespace MapacenBackend.Services
                 category.Name = dto.Name;
                 _dbContext.SaveChanges();
             }
+
+            return id;
         }
 
         public void DeleteCategory(int id)

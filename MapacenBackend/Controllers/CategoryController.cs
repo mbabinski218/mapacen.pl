@@ -34,18 +34,17 @@ namespace MapacenBackend.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Service Administrator")]
-        public ActionResult<CategoryDto> CreateCategory([FromBody] CreateCategoryDto dto)
+        public ActionResult<int> CreateCategory([FromBody] CreateCategoryDto dto)
         {
-            var category = _service.CreateCategory(dto);
-            return Created($"/api/category/{category.Id}", category);
+            var categoryId = _service.CreateCategory(dto);
+            return Created($"/api/category/{categoryId}", categoryId);
         }
 
         [HttpPut("{id}")]
         //[Authorize(Roles = "Service Administrator")]
-        public ActionResult Update([FromBody] UpdateCategoryDto dto, [FromRoute] int id)
+        public ActionResult<int> Update([FromBody] UpdateCategoryDto dto, [FromRoute] int id)
         {
-            _service.UpdateCategory(id, dto);
-            return Ok();
+            return Ok(_service.UpdateCategory(id, dto));
         }
 
         [HttpDelete("{id}")]

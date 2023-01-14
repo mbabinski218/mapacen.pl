@@ -10,8 +10,8 @@ namespace MapacenBackend.Services
 {
     public interface ISalesPointService
     {
-        SalesPoint CreateSalesPoint(CreateSalesPointDto dto);
-        void UpdateSalesPoint(int id, UpdateSalesPointDto dto);
+        int CreateSalesPoint(CreateSalesPointDto dto);
+        int UpdateSalesPoint(int id, UpdateSalesPointDto dto);
         IEnumerable<SalesPointDto>? GetSalesPointsByCounty(int countyId);
         void DeleteSalesPoint(int id);
     }
@@ -27,7 +27,7 @@ namespace MapacenBackend.Services
             _mapper = mapper;
         }
 
-        public SalesPoint CreateSalesPoint(CreateSalesPointDto dto)
+        public int CreateSalesPoint(CreateSalesPointDto dto)
         {
             var salesPoint = _mapper.Map<SalesPoint>(dto);
 
@@ -41,10 +41,10 @@ namespace MapacenBackend.Services
 
             _dbContext.Add(salesPoint);
             _dbContext.SaveChanges();
-            return salesPoint;
+            return salesPoint.Id;
         }
 
-        public void UpdateSalesPoint(int id, UpdateSalesPointDto dto)
+        public int UpdateSalesPoint(int id, UpdateSalesPointDto dto)
         {
             var salesPoint = _dbContext
                 .SalesPoints
@@ -66,6 +66,7 @@ namespace MapacenBackend.Services
             }
 
             _dbContext.SaveChanges();
+            return id;
         }
 
         public IEnumerable<SalesPointDto>? GetSalesPointsByCounty(int countyId)

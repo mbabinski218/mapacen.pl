@@ -17,10 +17,9 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult Register([FromBody] CreateUserDto dto)
+        public ActionResult<int> Register([FromBody] CreateUserDto dto)
         {
-            _service.RegisterUser(dto);
-            return Ok();
+            return Ok( _service.RegisterUser(dto));
         }
 
         [HttpPost("login")]

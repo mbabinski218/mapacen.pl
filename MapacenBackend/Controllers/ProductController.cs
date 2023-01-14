@@ -22,10 +22,10 @@ namespace MapacenBackend.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Service Administrator, Local Administrator")]
-        public ActionResult<Product> CreateProduct([FromBody] CreateProductDto dto)
+        public ActionResult<int> CreateProduct([FromBody] CreateProductDto dto)
         {
-            var product = _service.CreateProduct(dto);
-            return Created($"/api/product/{product.Id}", product);
+            var productId = _service.CreateProduct(dto);
+            return Created($"/api/product/{productId}", productId);
         }
 
         [HttpGet]
@@ -36,10 +36,9 @@ namespace MapacenBackend.Controllers
 
         [HttpPut("{id}")]
         //[Authorize(Roles = "Service Administrator, Local Administrator")]
-        public ActionResult Update([FromBody] UpdateProductDto dto, [FromRoute] int id)
+        public ActionResult<int> Update([FromBody] UpdateProductDto dto, [FromRoute] int id)
         {
-            _service.UpdateProduct(id, dto);
-            return Ok();
+            return Ok(_service.UpdateProduct(id, dto));
         }
 
         [HttpDelete("{id}")]

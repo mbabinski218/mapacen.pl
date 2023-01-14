@@ -19,17 +19,16 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPost]
-        public ActionResult<SalesPoint> CreateaSalesPoint([FromBody] CreateSalesPointDto dto)
+        public ActionResult<int> CreateSalesPoint([FromBody] CreateSalesPointDto dto)
         {
-            var salesPoint = _service.CreateSalesPoint(dto);
-            return Created($"/api/salesPoint/{salesPoint.Id}", salesPoint);
+            var salesPointId = _service.CreateSalesPoint(dto);
+            return Created($"/api/salesPoint/{salesPointId}", salesPointId);
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateSalesPoint([FromRoute] int id, [FromBody] UpdateSalesPointDto dto)
+        public ActionResult<int> UpdateSalesPoint([FromRoute] int id, [FromBody] UpdateSalesPointDto dto)
         {
-            _service.UpdateSalesPoint(id, dto);
-            return Ok();
+            return Ok(_service.UpdateSalesPoint(id, dto));
         }
 
         [HttpGet("{countyId}")]

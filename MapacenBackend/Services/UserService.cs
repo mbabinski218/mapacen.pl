@@ -16,7 +16,7 @@ namespace MapacenBackend.Services;
 public interface IUserService
 {
     User GetUser(LoginUserDto dto);
-    void RegisterUser(CreateUserDto dto);
+    int RegisterUser(CreateUserDto dto);
     TokenToReturn LoginUser(LoginUserDto dto);
     string GenerateNewTokensForUser(User user);
     void ChangeUserCounty(int userId, int countyId);
@@ -48,14 +48,14 @@ public class UserService : IUserService
             .FirstOrDefault(u => u != null && u.Email == dto.Email) ?? throw new NotFoundException();
     }
 
-    public void RegisterUser(CreateUserDto dto)
+    public int RegisterUser(CreateUserDto dto)
     {
         CreatePasswordHash(dto.Password, out var passwordHash, out var passwordSalt);
 
         if (_dbContext.Users.Any(u => u != null && u.Email == dto.Email))
             throw new EmailAlreadyUsedException("Wpisany email jest już zajęty");
 
-        _dbContext.Users.Add(new User
+        var user = new User
         {
             Name = dto.Name,
             Email = dto.Email,
@@ -64,8 +64,12 @@ public class UserService : IUserService
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
             RoleID = dto.RoleId,
-        });
+        };
+        
+        _dbContext.Users.Add(user);
         _dbContext.SaveChanges();
+        
+        return user.Id;
     }
 
     public TokenToReturn LoginUser(LoginUserDto dto)

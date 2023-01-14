@@ -64,10 +64,9 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpPut]
-        public ActionResult Update([FromQuery] int id, [FromQuery] UpdateOfferDto dto)
+        public ActionResult<int> Update([FromQuery] int id, [FromQuery] UpdateOfferDto dto)
         {
-            _service.UpdateOffer(id, dto);
-            return Ok();
+            return Ok(_service.UpdateOffer(id, dto));
         }
     }
 }

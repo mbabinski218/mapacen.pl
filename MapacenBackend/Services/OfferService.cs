@@ -22,7 +22,7 @@ namespace MapacenBackend.Services
         IEnumerable<CommentDto>? GetAllComments(int offerId, int userId);
         OffersWithTotalCount GetFavouritesOffers(int userId, int pageSize, int pageNumber);
         OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber);
-        void UpdateOffer(int id, UpdateOfferDto dt);
+        int UpdateOffer(int id, UpdateOfferDto dt);
         void DeleteOffer(int id);
     }
 
@@ -148,7 +148,7 @@ namespace MapacenBackend.Services
 
         }
 
-        public void UpdateOffer(int id, UpdateOfferDto dto)
+        public int UpdateOffer(int id, UpdateOfferDto dto)
         {
             if (dto != null)
             {
@@ -156,6 +156,8 @@ namespace MapacenBackend.Services
                 offer.Price = dto?.Price ?? offer.Price;
                 _dbContext.SaveChanges();
             }
+
+            return id;
         }
 
         private Offer GetOfferById(int id)
