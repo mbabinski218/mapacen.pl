@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { AdminDropDown } from '@modules/admin/constants/admin-dropdown.const';
 import { AdminDropdownData } from '@modules/admin/interfaces/admin-dropdown.interface';
@@ -6,7 +6,7 @@ import { AdminFormResponse } from '@modules/admin/interfaces/admin-form-response
 import { AdminFormService } from '@modules/admin/services/admin-form.service';
 import { ADMIN_RESPONSE_TOKEN } from '@modules/admin/tokens/admin-response.token';
 import { NestedDropdown } from '@shared/modules/lz-nested-dropdown/interfaces/nested-dropdown.interface';
-import { AdminOperationDetailsComponent } from '../admin-operation-details/admin-operation-details.component';
+import { AdminOperationDetailsComponent } from '@modules/admin/components/admin-operation-details/admin-operation-details.component';
 
 @Component({
 	selector: 'admin-operation-type',

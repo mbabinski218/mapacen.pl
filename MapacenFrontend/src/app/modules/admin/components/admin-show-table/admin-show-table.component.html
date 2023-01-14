@@ -1,6 +1,17 @@
+<mat-form-field>
+  <mat-label>Filtruj</mat-label>
+  <input
+    matInput
+    (keyup)="applyFilter($event)"
+    placeholder="Wyszukaj"
+    #input
+  >
+</mat-form-field>
+
 <table
   mat-table
   [dataSource]="dataSource"
+  matSort
 >
   <ng-container
     *ngIf="displayedColumns.includes('id')"
@@ -9,6 +20,7 @@
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Id
     </th>
@@ -27,6 +39,7 @@
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Nazwa
     </th>
@@ -45,6 +58,7 @@
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Cena
     </th>
@@ -57,12 +71,13 @@
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('product.name')"
-    matColumnDef="product.name"
+    *ngIf="displayedColumns.includes('productName')"
+    matColumnDef="productName"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Produkt
     </th>
@@ -70,17 +85,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.product.name }}
+      {{ element.productName }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('product.category.name')"
-    matColumnDef="product.category.name"
+    *ngIf="displayedColumns.includes('productCategoryName')"
+    matColumnDef="productCategoryName"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Kategoria
     </th>
@@ -88,17 +104,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.product.category.name }}
+      {{ element.productCategoryName }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('salesPoint.address.city')"
-    matColumnDef="salesPoint.address.city"
+    *ngIf="displayedColumns.includes('salesPointAddressCity')"
+    matColumnDef="salesPointAddressCity"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Miasto
     </th>
@@ -106,17 +123,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.salesPoint.address.city }}
+      {{ element.salesPointAddressCity }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('salesPoint.address.street')"
-    matColumnDef="salesPoint.address.street"
+    *ngIf="displayedColumns.includes('salesPointAddressStreet')"
+    matColumnDef="salesPointAddressStreet"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Ulica
     </th>
@@ -124,17 +142,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.salesPoint.address.street }}
+      {{ element.salesPointAddressStreet }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('salesPoint.address.number')"
-    matColumnDef="salesPoint.address.number"
+    *ngIf="displayedColumns.includes('salesPointAddressNumber')"
+    matColumnDef="salesPointAddressNumber"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Numer budynku
     </th>
@@ -142,17 +161,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.salesPoint.address.number }}
+      {{ element.salesPointAddressNumber }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('salesPoint.address.county.name')"
-    matColumnDef="salesPoint.address.county.name"
+    *ngIf="displayedColumns.includes('salesPointAddressCountyName')"
+    matColumnDef="salesPointAddressCountyName"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Powiat
     </th>
@@ -160,17 +180,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.salesPoint.address.county.name }}
+      {{ element.salesPointAddressCountyName }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('address.county.name')"
-    matColumnDef="address.county.name"
+    *ngIf="displayedColumns.includes('addressCountyName')"
+    matColumnDef="addressCountyName"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Powiat
     </th>
@@ -178,17 +199,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.address.county.name }}
+      {{ element.addressCountyName }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('category.id')"
-    matColumnDef="category.id"
+    *ngIf="displayedColumns.includes('categoryId')"
+    matColumnDef="categoryId"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Id kategorii
     </th>
@@ -196,7 +218,7 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.category.id }}
+      {{ element.categoryId }}
     </td>
   </ng-container>
 
@@ -207,6 +229,7 @@
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Email
     </th>
@@ -225,6 +248,7 @@
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Komentowanie
     </th>
@@ -254,6 +278,7 @@
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Rola
     </th>
@@ -266,12 +291,13 @@
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('category.name')"
-    matColumnDef="category.name"
+    *ngIf="displayedColumns.includes('categoryName')"
+    matColumnDef="categoryName"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Kategoria
     </th>
@@ -279,17 +305,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.category.name }}
+      {{ element.categoryName }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('salesPoint.name')"
-    matColumnDef="salesPoint.name"
+    *ngIf="displayedColumns.includes('salesPointName')"
+    matColumnDef="salesPointName"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Punkt sprzedaży
     </th>
@@ -297,17 +324,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.salesPoint.name }}
+      {{ element.salesPointName }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('county.name')"
-    matColumnDef="county.name"
+    *ngIf="displayedColumns.includes('countyName')"
+    matColumnDef="countyName"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Powiat
     </th>
@@ -315,17 +343,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.county.name }}
+      {{ element.countyName }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('address.city')"
-    matColumnDef="address.city"
+    *ngIf="displayedColumns.includes('addressCity')"
+    matColumnDef="addressCity"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Miasto
     </th>
@@ -333,17 +362,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.address.city }}
+      {{ element.addressCity }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('address.street')"
-    matColumnDef="address.street"
+    *ngIf="displayedColumns.includes('addressStreet')"
+    matColumnDef="addressStreet"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Ulica
     </th>
@@ -351,17 +381,18 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.address.street }}
+      {{ element.addressStreet }}
     </td>
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('address.number')"
-    matColumnDef="address.number"
+    *ngIf="displayedColumns.includes('addressNumber')"
+    matColumnDef="addressNumber"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
+      mat-sort-header
     >
       Numer budynku
     </th>
@@ -369,7 +400,7 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.address.number }}
+      {{ element.addressNumber }}
     </td>
   </ng-container>
 
@@ -405,6 +436,18 @@
     mat-row
     *matRowDef="let row; columns: displayedColumns;"
   >
+  </tr>
+
+  <tr
+    class="mat-row"
+    *matNoDataRow
+  >
+    <td
+      class="mat-cell"
+      colspan="4"
+    >
+      Żadne dane nie odpowiadają filtrowi "{{input.value}}"
+    </td>
   </tr>
 </table>
 <mat-paginator
