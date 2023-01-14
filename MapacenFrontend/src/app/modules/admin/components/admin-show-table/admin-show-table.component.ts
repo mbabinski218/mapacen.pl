@@ -6,6 +6,7 @@ import { UserInfo } from '@modules/top-menu/interfaces/top-menu.interface';
 import { AdminStorageService } from '@modules/admin/services/admin-storage.service';
 import { Category, Offers, Product, SalesPoint } from '@modules/offers/interfaces/offers.interface';
 import { DropDownText } from '@shared/modules/lz-nested-dropdown/interfaces/nested-dropdown.interface';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-admin-show-table',
@@ -17,9 +18,11 @@ export class AdminShowTableComponent implements OnInit {
   @Input() operationText: DropDownText;
   @ViewChild(MatTable) table: MatTable<any[]>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[];
-  data: any[];
+  data: any[] = [];
+  tempData: any[];
   dataSource: MatTableDataSource<any[]>;
   deleteApi: string;
 
@@ -36,26 +39,70 @@ export class AdminShowTableComponent implements OnInit {
         break;
       }
       case 'Oferta': {
-        this.data = this.adminStorageService.getDataForTable(this.operationText) as Offers[];
-        this.displayedColumns = ['id', 'product.name', 'price', 'product.category.name', 'salesPoint.name', 'salesPoint.address.county.name', 'salesPoint.address.city', 'salesPoint.address.street', 'salesPoint.address.number', 'delete'];
+        this.tempData = this.adminStorageService.getDataForTable(this.operationText) as Offers[];
+        this.tempData.map((res) => {
+          this.data.push({
+            id: res.id,
+            price: res.price,
+            productName: res.product.name,
+            productCategoryName: res.product.category.name,
+            salesPointName: res.salesPoint.name,
+            salesPointAddressCountyName: res.salesPoint.address.county.name,
+            salesPointAddressCity: res.salesPoint.address.city,
+            salesPointAddressStreet: res.salesPoint.address.street,
+            salesPointAddressNumber: res.salesPoint.address.number,
+          })
+        });
+
+        this.displayedColumns = ['id', 'productName', 'price', 'productCategoryName', 'salesPointName', 'salesPointAddressCountyName', 'salesPointAddressCity', 'salesPointAddressStreet', 'salesPointAddressNumber', 'delete'];
         this.deleteApi = Api.OFFER_DELETE;
         break;
       }
       case 'Produkt': {
-        this.data = this.adminStorageService.getDataForTable(this.operationText) as Product[];
-        this.displayedColumns = ['id', 'name', 'category.name', 'delete'];
+        this.tempData = this.adminStorageService.getDataForTable(this.operationText) as Product[];
+        this.tempData.map((res) => {
+          this.data.push({
+            id: res.id,
+            name: res.name,
+            categoryName: res.category.name,
+          })
+        });
+
+        this.displayedColumns = ['id', 'name', 'categoryName', 'delete'];
         this.deleteApi = Api.PRODUCT_UPDATE;
         break;
       }
       case 'Punkt sprzedaży': {
-        this.data = this.adminStorageService.getDataForTable(this.operationText) as SalesPoint[];
-        this.displayedColumns = ['id', 'name', 'address.city', 'address.street', 'address.number', 'address.county.name', 'delete'];
+        this.tempData = this.adminStorageService.getDataForTable(this.operationText) as SalesPoint[];
+        this.tempData.map((res) => {
+          this.data.push({
+            id: res.id,
+            name: res.name,
+            addressCity: res.address.city,
+            addressStreet: res.address.street,
+            addressNumber: res.address.number,
+            addressCountyName: res.address.county.name,
+          })
+        });
+
+        this.displayedColumns = ['id', 'name', 'addressCity', 'addressStreet', 'addressNumber', 'addressCountyName', 'delete'];
         this.deleteApi = Api.SALES_POINT_UPDATE;
         break;
       }
       case 'Użytkownik': {
-        this.data = this.adminStorageService.getDataForTable(this.operationText) as UserInfo[];
-        this.displayedColumns = ['id', 'email', 'name', 'canComment', 'roleName', 'county.name'];
+        this.tempData = this.adminStorageService.getDataForTable(this.operationText) as UserInfo[];
+        this.tempData.map((res) => {
+          this.data.push({
+            id: res.id,
+            email: res.email,
+            name: res.name,
+            canComment: res.canComment,
+            roleName: res.roleName,
+            countyName: res.county.name,
+          })
+        });
+
+        this.displayedColumns = ['id', 'email', 'name', 'canComment', 'roleName', 'countyName'];
         break;
       }
       default: {
@@ -67,6 +114,7 @@ export class AdminShowTableComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   delete(event: any) {
@@ -76,8 +124,18 @@ export class AdminShowTableComponent implements OnInit {
         this.data.splice(index, 1);
         this.dataSource = new MatTableDataSource(this.data);
         this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         this.table.renderRows();
       });
+    }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
   }
 }
