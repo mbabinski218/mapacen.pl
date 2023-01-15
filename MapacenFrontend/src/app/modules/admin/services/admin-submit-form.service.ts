@@ -15,32 +15,23 @@ export class AdminSubmitFormService {
     private toastMessageService: ToastMessageService,
   ) { }
 
-  sendForm(form: FormGroup, currentAction: AllAdminActionsType): void {
+  sendForm(form: FormGroup, currentAction: AllAdminActionsType): Observable<any> {
     switch (currentAction) {//średnio zrobione ale nie chce mi sie myśleć nad lepszym sposobem
       case 'AddOffer': {
-        this.addOffer(form).subscribe(() => {
-          this.toastMessageService.notifyOfSuccess('Dodano nową ofertę');
-        });
-        break;
+        return this.addOffer(form);
       }
       case 'ModifyOffer': {
-        this.modifyOffer(form).subscribe(() =>
-          this.toastMessageService.notifyOfSuccess('Zaktualizowano ofertę')
-        );
-        break;
-      }
-      default: {
-        break;
+        return this.modifyOffer(form);
       }
     }
   }
 
-  addOffer(form: FormGroup): Observable<any> {
+  addOffer(form: FormGroup): Observable<number> {
     const price = Number(form.value.price);
     const productId = form.value.product;
     const salesPointId = form.value.salesPoint;
 
-    return this.http.post<any>(`${environment.httpBackend}${Api.OFFERS}`, { price, productId, salesPointId }).pipe(
+    return this.http.post<number>(`${environment.httpBackend}${Api.OFFERS}`, { price, productId, salesPointId }).pipe(
       catchError((err) => {
         this.toastMessageService.notifyOfError(err.error);
         return of();
@@ -48,12 +39,12 @@ export class AdminSubmitFormService {
     );
   }
 
-  modifyOffer(form: FormGroup): Observable<any> {
+  modifyOffer(form: FormGroup): Observable<number> {
     const params = new HttpParams()
       .set('id', form.value.offer)
       .set('price', Number(form.value.price))
 
-    return this.http.put<any>(`${environment.httpBackend}${Api.OFFERS}`, {}, { params }).pipe(
+    return this.http.put<number>(`${environment.httpBackend}${Api.OFFERS}`, {}, { params }).pipe(
       catchError((err) => {
         this.toastMessageService.notifyOfError(err.error);
         return of();

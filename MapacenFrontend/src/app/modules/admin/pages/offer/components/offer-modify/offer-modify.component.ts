@@ -1,9 +1,10 @@
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
+import { Offers } from '@modules/offers/interfaces/offers.interface';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { AdminStorageService } from '@modules/admin/services/admin-storage.service';
 import { ChangedNames } from '@modules/admin/interfaces/admin-form-response.interface';
 import { OfferFormHandlerService } from '@modules/admin/pages/offer/services/offer-form-handler.service';
-import { MainOffer, Product, SalesPoint } from '@modules/offers/interfaces/offers.interface';
 
 @Component({
   selector: 'offer-modify',
@@ -20,11 +21,8 @@ import { MainOffer, Product, SalesPoint } from '@modules/offers/interfaces/offer
 export class OfferModifyComponent implements OnInit {
 
   form: FormGroup;
-  products: Product[] = [];
-  salesPointsFixedNames: ChangedNames[] = [];
-  salesPoints: SalesPoint[] = [];
+  offers: Observable<Offers[]>;
   offersFixedNames: ChangedNames[] = [];
-  offers: MainOffer;
 
   constructor(
     private controlContainer: ControlContainer,
@@ -36,9 +34,9 @@ export class OfferModifyComponent implements OnInit {
     this.form = this.controlContainer.control as FormGroup;
     this.offerFormHandlerService.setFormGroupForOfferModify(this.form);
 
-    this.offers = this.adminStorageService.offers;
+    this.offers = this.adminStorageService.offers$.asObservable();
 
-    this.offers.offers.map((res) => {
+    this.offers.subscribe((result) => result.map((res) => {
       let additionalZero = '';
       let price = res.price.toString();
       if (price.charAt(price.length - 2) === '.') {
@@ -49,12 +47,12 @@ export class OfferModifyComponent implements OnInit {
         id: res.id,
         changedName: 'id: ' + res.id + ' | ' + res.product.name + ' | ' + res.price + additionalZero + 'zł',
       })
-    })
+    }));
 
     this.form.get('price').valueChanges.subscribe((res) => {
       if (Number.isNaN(Number(res))) {
         this.form.get('price').setErrors({ 'incorrect': true });
       }
-    })
+    });
   }
 }

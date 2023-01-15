@@ -6,8 +6,10 @@ import { InputMaskModule } from '@ngneat/input-mask';
 import { HttpClientModule } from '@angular/common/http';
 import { MatIconRegistry } from '@angular/material/icon';
 import { AppRoutingModule } from '@app/app-routing.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastMessageService } from '@shared/modules/toast-message/services/toast-message.service';
 
 export const customIcons: [string, string][] = [
   ["my-heart-red", "heart-red.svg"],
@@ -29,9 +31,11 @@ export const customIcons: [string, string][] = [
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatSnackBarModule,
   ],
   providers: [
     AuthGuard,
+    ToastMessageService,
   ],
   bootstrap: [AppComponent]
 })

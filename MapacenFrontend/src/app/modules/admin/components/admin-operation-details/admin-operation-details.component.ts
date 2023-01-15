@@ -1,6 +1,7 @@
 import { FormGroup } from '@angular/forms';
 import { Component, Inject, OnInit } from '@angular/core';
 import { AdminFormService } from '@modules/admin/services/admin-form.service';
+import { AllAdminActionsType } from '@modules/admin/types/admin-actions.types';
 import { AdminOperationType } from '@modules/admin/types/admin-operations.types';
 import { ADMIN_RESPONSE_TOKEN } from '@modules/admin/tokens/admin-response.token';
 import { AdminStorageService } from '@modules/admin/services/admin-storage.service';
@@ -19,6 +20,7 @@ export class AdminOperationDetailsComponent implements OnInit {
   adminForm: FormGroup;
   operationText: DropDownText;
   operationType: AdminOperationType[];
+  action: AllAdminActionsType;
 
   constructor(
     @Inject(ADMIN_RESPONSE_TOKEN) public formResponse: AdminFormResponse,
@@ -36,7 +38,9 @@ export class AdminOperationDetailsComponent implements OnInit {
 
   submitForm(): void {
     if (this.adminForm.valid) {
-      this.adminSubmitFormService.sendForm(this.adminForm, this.adminStorageService.currentAction);
+      this.adminSubmitFormService.sendForm(this.adminForm, this.adminStorageService.currentAction).subscribe(() => {
+        this.action = this.adminStorageService.currentAction;
+      });
       this.adminForm.reset();
       return;
     }

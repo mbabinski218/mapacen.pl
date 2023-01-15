@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { Product, SalesPoint } from '@modules/offers/interfaces/offers.interface';
@@ -20,9 +21,9 @@ import { OfferFormHandlerService } from '@modules/admin/pages/offer/services/off
 export class OfferAddComponent implements OnInit {
 
   form: FormGroup;
-  products: Product[] = [];
+  products: Observable<Product[]>;
+  salesPoints: Observable<SalesPoint[]>;
   salesPointsFixedNames: ChangedNames[] = [];
-  salesPoints: SalesPoint[] = [];
 
   constructor(
     private controlContainer: ControlContainer,
@@ -34,20 +35,20 @@ export class OfferAddComponent implements OnInit {
     this.form = this.controlContainer.control as FormGroup;
     this.offerFormHandlerService.setFormGroupForOfferAdd(this.form);
 
-    this.products = this.adminStorageService.products;
-    this.salesPoints = this.adminStorageService.salesPoints;
+    this.products = this.adminStorageService.products$.asObservable();
+    this.salesPoints = this.adminStorageService.salesPoints$.asObservable();
 
-    this.salesPoints.map((res) => {
+    this.salesPoints.subscribe((result) => result.map((res) => {
       this.salesPointsFixedNames.push({
         id: res.id,
         changedName: res.name + ', ' + res.address.city + ' ul. ' + res.address.street + ' ' + res.address.number,
       })
-    })
+    }));
 
     this.form.get('price').valueChanges.subscribe((res) => {
       if (Number.isNaN(Number(res))) {
         this.form.get('price').setErrors({ 'incorrect': true });
       }
-    })
+    });
   }
 }

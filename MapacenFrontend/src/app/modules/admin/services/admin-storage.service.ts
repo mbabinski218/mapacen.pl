@@ -1,13 +1,14 @@
 import { Api } from '@core/enums/api.enum';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { catchError, Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { AllAdminActionsType } from '@modules/admin/types/admin-actions.types';
 import { MyLocalStorageService } from '@shared/services/my-local-storage.service';
 import { idNameOnly, UserInfo } from '@modules/top-menu/interfaces/top-menu.interface';
-import { MainOffer, Product, SalesPoint } from '@modules/offers/interfaces/offers.interface';
+import { ToastMessageService } from '@shared/modules/toast-message/services/toast-message.service';
 import { DropDownText } from '@shared/modules/lz-nested-dropdown/interfaces/nested-dropdown.interface';
+import { Category, MainOffer, Offers, Product, SalesPoint } from '@modules/offers/interfaces/offers.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -17,109 +18,47 @@ export class AdminStorageService {
   constructor(
     private http: HttpClient,
     private myLocalStorageService: MyLocalStorageService,
+    private toastMessageService: ToastMessageService,
   ) { }
 
-  salesPoints: SalesPoint[] = [];
   counties: idNameOnly[] = [];
-  categories: idNameOnly[] = [];
-  products: Product[] = [];
-  users: UserInfo[] = [];
-  offers: MainOffer;
+  salesPoints$ = new BehaviorSubject<SalesPoint[]>([]);
+  categories$ = new BehaviorSubject<Category[]>([]);
+  products$ = new BehaviorSubject<Product[]>([]);
+  users$ = new BehaviorSubject<UserInfo[]>([]);
+  offers$ = new BehaviorSubject<Offers[]>([]);
   currentAction: AllAdminActionsType;
   isServiceAdmin: boolean;
 
   onInit(): void {
     this.isServiceAdmin = this.myLocalStorageService.isServiceAdmin();
 
-    this.refreshOffers();
+    this.getAllOffers().subscribe((res) => {
+      this.offers$.next(res);
+    });
 
-    this.refreshSalesPoints();
+    this.getAllProducts().subscribe((res) => {
+      this.products$.next(res);
+    });
 
-    this.refreshCategories();
+    this.getAllCategories().subscribe((res) => {
+      this.categories$.next(res);
+    });
 
-    this.refreshProducts();
-
-    this.getAllCounties().subscribe((res) => {
-      this.counties = res ? res : null;
+    this.getAllSalesPoints().subscribe((res) => {
+      this.salesPoints$.next(res);
     });
 
     this.getAllUsers().subscribe((res) => {
-      this.users = res ? res : null;
+      this.users$.next(res);
+    });
+
+    this.getAllCounties().subscribe((res) => {
+      this.counties = res ? res : [];
     });
   }
 
-  refreshOffers(): void {
-    this.getAllOffers().subscribe((res) => {
-      this.offers = res ? res : null;
-    });
-  }
-
-  refreshProducts(): void {
-    this.getAllProducts().subscribe((res) => {
-      this.products = res ? res : null;
-    });
-  }
-
-  refreshCategories(): void {
-    this.getAllCategories().subscribe((res) => {
-      this.categories = res ? res : null;
-    });
-  }
-
-  refreshSalesPoints(): void {
-    this.getSalesPoints().subscribe((res) => {
-      this.salesPoints = res ? res : null;
-    });
-  }
-
-  getSalesPoints(): Observable<SalesPoint[]> {
-    // if (this.isServiceAdmin) {
-    //strzal po wszystkie salespointy bez countyid
-    // } else {
-    const countyId = localStorage.getItem('userProfileCountyId');
-    return this.http.get<SalesPoint[]>(`${environment.httpBackend}${Api.SALES_POINT}`
-      .replace(':countyId', countyId))
-      .pipe(
-        catchError(() => {
-          return of([]);
-        }),
-      );
-    // }
-  }
-
-  getAllCounties(): Observable<idNameOnly[]> {
-    return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.COUNTIES}`).pipe(
-      catchError(() => {
-        return of([]);
-      }),
-    );
-  }
-
-  getAllCategories(): Observable<idNameOnly[]> {
-    return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.CATEGORIES}`).pipe(
-      catchError(() => {
-        return of([]);
-      }),
-    );
-  }
-
-  getAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${environment.httpBackend}${Api.PRODUCTS}`).pipe(
-      catchError(() => {
-        return of([]);
-      }),
-    );
-  }
-
-  getAllUsers(): Observable<UserInfo[]> {
-    return this.http.get<UserInfo[]>(`${environment.httpBackend}${Api.USERS}`).pipe(
-      catchError(() => {
-        return of([]);
-      }),
-    );
-  }
-
-  getAllOffers(): Observable<MainOffer> {
+  getAllOffers(): Observable<Offers[]> {
     // if (this.isServiceAdmin) {
     //strzal po wszystkie salespointy bez countyid
     // } else {
@@ -127,38 +66,114 @@ export class AdminStorageService {
       .set('countyId', Number(localStorage.getItem('userProfileCountyId')));
 
     return this.http.get<MainOffer>(`${environment.httpBackend}${Api.OFFERS}`, { params }).pipe(
-      catchError(() => {
-        return of();
+      map((res) => res.offers),
+      tap((res) => this.offers$.next(res)),
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
+        return of([]);
       }),
     );
     // }
   }
 
+  getAllSalesPoints(): Observable<SalesPoint[]> {
+    // if (this.isServiceAdmin) {
+    //strzal po wszystkie salespointy bez countyid
+    // } else {
+    const countyId = localStorage.getItem('userProfileCountyId');
+    return this.http.get<SalesPoint[]>(`${environment.httpBackend}${Api.SALES_POINT}`.replace(':countyId', countyId))
+      .pipe(
+        tap((res) => this.salesPoints$.next(res)),
+        catchError((err) => {
+          this.toastMessageService.notifyOfError(err.error);
+          return of([]);
+        }),
+      );
+    // }
+  }
+
+  getAllCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${environment.httpBackend}${Api.CATEGORIES}`).pipe(
+      tap((res) => this.categories$.next(res)),
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
+        return of([]);
+      }),
+    );
+  }
+
+  getAllProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${environment.httpBackend}${Api.PRODUCTS}`).pipe(
+      tap((res) => this.products$.next(res)),
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
+        return of([]);
+      }),
+    );
+  }
+
+  getAllUsers(): Observable<UserInfo[]> {
+    return this.http.get<UserInfo[]>(`${environment.httpBackend}${Api.USERS}`).pipe(
+      tap((res) => this.users$.next(res)),
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
+        return of([]);
+      }),
+    );
+  }
+
+  getAllCounties(): Observable<idNameOnly[]> {
+    return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.COUNTIES}`).pipe(
+      catchError((err) => {
+        this.toastMessageService.notifyOfError(err.error);
+        return of([]);
+      }),
+    );
+  }
+
   deleteData(id: number, deleteApi: string): Observable<any> {
     return this.http.delete<any>(`${environment.httpBackend}${deleteApi}`.replace(':id', id.toString()))
       .pipe(
-        catchError(() => {
+        catchError((err) => {
+          this.toastMessageService.notifyOfError(err.error);
           return of();
         }),
       );
   }
 
-  getDataForTable(operationText: DropDownText): unknown {
+  getData(operationText: DropDownText): Observable<any> {
     if (operationText === 'Oferta') {
-      return this.offers.offers;
-    }
-    else if (operationText === 'Użytkownik') {
-      return this.users;
+      return this.getAllOffers();
     }
     else if (operationText === 'Kategoria') {
-      return this.categories;
+      return this.getAllCategories();
     }
     else if (operationText === 'Produkt') {
-      return this.products;
+      return this.getAllProducts();
     }
     else if (operationText === 'Punkt sprzedaży') {
-      return this.salesPoints;
+      return this.getAllSalesPoints();
     }
-    return;
+    else {
+      return this.getAllUsers();
+    }
+  }
+
+  getDataForTable(operationText: DropDownText): Observable<any> {
+    if (operationText === 'Oferta') {
+      return this.offers$.asObservable();
+    }
+    else if (operationText === 'Kategoria') {
+      return this.categories$.asObservable();
+    }
+    else if (operationText === 'Produkt') {
+      return this.products$.asObservable();
+    }
+    else if (operationText === 'Punkt sprzedaży') {
+      return this.salesPoints$.asObservable();
+    }
+    else {
+      return this.users$.asObservable();
+    }
   }
 }

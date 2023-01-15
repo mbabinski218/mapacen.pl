@@ -33,21 +33,21 @@
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('name')"
-    matColumnDef="name"
+    *ngIf="displayedColumns.includes('userName')"
+    matColumnDef="userName"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
       mat-sort-header
     >
-      Nazwa
+      Nazwa użytkownika
     </th>
     <td
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.name }}
+      {{ element.userName }}
     </td>
   </ng-container>
 
@@ -90,8 +90,8 @@
   </ng-container>
 
   <ng-container
-    *ngIf="displayedColumns.includes('productCategoryName')"
-    matColumnDef="productCategoryName"
+    *ngIf="displayedColumns.includes('categoryName')"
+    matColumnDef="categoryName"
   >
     <th
       mat-header-cell
@@ -104,121 +104,7 @@
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.productCategoryName }}
-    </td>
-  </ng-container>
-
-  <ng-container
-    *ngIf="displayedColumns.includes('salesPointAddressCity')"
-    matColumnDef="salesPointAddressCity"
-  >
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-    >
-      Miasto
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-    >
-      {{ element.salesPointAddressCity }}
-    </td>
-  </ng-container>
-
-  <ng-container
-    *ngIf="displayedColumns.includes('salesPointAddressStreet')"
-    matColumnDef="salesPointAddressStreet"
-  >
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-    >
-      Ulica
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-    >
-      {{ element.salesPointAddressStreet }}
-    </td>
-  </ng-container>
-
-  <ng-container
-    *ngIf="displayedColumns.includes('salesPointAddressNumber')"
-    matColumnDef="salesPointAddressNumber"
-  >
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-    >
-      Numer budynku
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-    >
-      {{ element.salesPointAddressNumber }}
-    </td>
-  </ng-container>
-
-  <ng-container
-    *ngIf="displayedColumns.includes('salesPointAddressCountyName')"
-    matColumnDef="salesPointAddressCountyName"
-  >
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-    >
-      Powiat
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-    >
-      {{ element.salesPointAddressCountyName }}
-    </td>
-  </ng-container>
-
-  <ng-container
-    *ngIf="displayedColumns.includes('addressCountyName')"
-    matColumnDef="addressCountyName"
-  >
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-    >
-      Powiat
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-    >
-      {{ element.addressCountyName }}
-    </td>
-  </ng-container>
-
-  <ng-container
-    *ngIf="displayedColumns.includes('categoryId')"
-    matColumnDef="categoryId"
-  >
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-    >
-      Id kategorii
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-    >
-      {{ element.categoryId }}
+      {{ element.categoryName }}
     </td>
   </ng-container>
 
@@ -287,25 +173,6 @@
       *matCellDef="let element"
     >
       {{ element.roleName }}
-    </td>
-  </ng-container>
-
-  <ng-container
-    *ngIf="displayedColumns.includes('categoryName')"
-    matColumnDef="categoryName"
-  >
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-    >
-      Kategoria
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-    >
-      {{ element.categoryName }}
     </td>
   </ng-container>
 
