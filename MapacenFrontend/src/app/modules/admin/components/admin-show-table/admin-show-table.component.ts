@@ -20,13 +20,38 @@ export class AdminShowTableComponent implements OnInit {
 
   @Input() operationText: DropDownText;
   @Input() set action(value: AllAdminActionsType) {
-    if (value === 'AddOffer') {
+    if(value) {
       this.getData('Refresh');
-      this.toastMessageService.notifyOfSuccess("Dodano nową ofertę");
-    }
-    else if (value === 'ModifyOffer') {
-      this.getData('Refresh');
-      this.toastMessageService.notifyOfSuccess("Zaktualizowano ofertę");
+      if (value === 'AddOffer') {
+        this.toastMessageService.notifyOfSuccess("Dodano nową ofertę");
+      }
+      else if (value === 'ModifyOffer') {
+        this.toastMessageService.notifyOfSuccess("Zaktualizowano ofertę");
+      }
+      else if (value === 'AddCategory') {
+        this.toastMessageService.notifyOfSuccess("Dodano nową kategorię");
+      }
+      else if (value === 'ModifyCategory') {
+        this.toastMessageService.notifyOfSuccess("Zaktualizowano kategorię");
+      }
+      else if (value === 'AddProduct') {
+        this.toastMessageService.notifyOfSuccess("Dodano nowy produkt");
+      }
+      else if (value === 'ModifyProduct') {
+        this.toastMessageService.notifyOfSuccess("Zaktualizowano produkt");
+      }
+      else if (value === 'AddSalesPoint') {
+        this.toastMessageService.notifyOfSuccess("Dodano nowy punkt sprzedaży");
+      }
+      else if (value === 'ModifySalesPoint') {
+        this.toastMessageService.notifyOfSuccess("Zaktualizowano punkt sprzedaży");
+      }
+      else if (value === 'BanUser') {
+        this.toastMessageService.notifyOfSuccess("Zbanowano użytkownika");
+      }
+      else if (value === 'UnbanUser') {
+        this.toastMessageService.notifyOfSuccess("Odbanowano użytkownika");
+      }
     }
   }
   @ViewChild(MatTable) table: MatTable<any[]>;

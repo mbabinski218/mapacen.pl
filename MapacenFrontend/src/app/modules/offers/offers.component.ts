@@ -61,7 +61,7 @@ export class OffersComponent implements OnInit {
       comment: [null],
     });
 
-    this.isAdmin = this.myLocalStorageService.isAdmin();
+    this.isAdmin = this.myLocalStorageService.isServiceAdmin();
     this.isNotLogged = !this.myLocalStorageService.isLogged();
     this.canComment = localStorage.getItem('userCommenting') === 'true' ? true : false;
     this.isFavourites = false;

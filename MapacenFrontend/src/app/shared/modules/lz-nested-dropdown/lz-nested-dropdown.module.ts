@@ -3,13 +3,11 @@ import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { LzNestedDropdownComponent } from './lz-nested-dropdown.component';
-import { DropdownItemComponent } from './components/dropdown-item/dropdown-item.component';
+import { LzNestedDropdownComponent } from '@shared/modules/lz-nested-dropdown/lz-nested-dropdown.component';
 
 @NgModule({
   declarations: [
     LzNestedDropdownComponent,
-    DropdownItemComponent,
   ],
   imports: [
     CommonModule,

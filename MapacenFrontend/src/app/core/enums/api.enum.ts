@@ -17,7 +17,6 @@ export enum Api {
   ROLE = '/api/role/:id',
   SALES_POINTS = '/api/salesPoint',
   SALES_POINT_UPDATE = '/api/salesPoint/:id',
-  SALES_POINT = '/api/salesPoint/:countyId',
   LOGIN = '/api/user/login',
   REGISTER = '/api/user/register',
   USERS = '/api/user',

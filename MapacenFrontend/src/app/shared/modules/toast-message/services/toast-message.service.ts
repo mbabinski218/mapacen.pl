@@ -6,7 +6,7 @@ import { SuccessToastComponent } from '@shared/modules/toast-message/components/
 @Injectable()
 export class ToastMessageService {
 
-  durationInMilliseconds = 5500;
+  durationInMilliseconds = 4000;
 
   constructor(private _snackBar: MatSnackBar) { }
 

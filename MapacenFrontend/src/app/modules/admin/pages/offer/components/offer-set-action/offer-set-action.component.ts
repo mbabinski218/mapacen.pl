@@ -37,6 +37,6 @@ export class OfferSetActionComponent implements OnInit {
     if (this.prevType) {
       this.offerFormHandlerService.clearControls(this.form, this.prevType);
     }
-    this.prevType = prevType.value as AddModifyOfferType;
+    this.prevType = prevType.value;
   }
 }

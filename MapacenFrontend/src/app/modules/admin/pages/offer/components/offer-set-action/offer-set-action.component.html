@@ -1,5 +1,6 @@
-<div>
+<div class="box">
   <mat-button-toggle-group
+    class="buttons"
     name="action-type"
     (change)="handleActionTypeChange($event)"
     value="AddOffer"
@@ -21,4 +22,8 @@
   </mat-button-toggle-group>
 </div>
 
-<offer-type-switch [toggleValue]="prevType"></offer-type-switch>
+<offer-type-switch
+  class="form"
+  [toggleValue]="prevType"
+>
+</offer-type-switch>

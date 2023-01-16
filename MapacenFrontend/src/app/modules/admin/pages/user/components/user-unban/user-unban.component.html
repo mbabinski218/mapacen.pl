@@ -1,0 +1,15 @@
+<div class="forms">
+  <div class="item">
+    <mat-form-field class="fix backgroundColor item">
+      <mat-label>Użytkownik</mat-label>
+      <mat-select formControlName="userId">
+        <mat-option
+          *ngFor="let item of users"
+          [value]="item.id"
+        >
+          {{ item.name + ', ' + item.email }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

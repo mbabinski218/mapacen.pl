@@ -4,6 +4,7 @@
 
 .button {
   height: 56px;
+  border-radius: 18px;
 
   &:disabled {
     background-color: rgb(96, 87, 121) !important;
@@ -15,10 +16,14 @@
 }
 
 .buttons {
-  gap: 55px;
+  position: relative;
+  bottom: 28px;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  width: max-content;
+  gap: 40px;
+  float: right;
 }
 
 .form {
@@ -27,4 +32,9 @@
   align-items: center;
   padding-bottom: 50px;
   margin: 0px !important;
+}
+
+.table {
+  position: relative;
+  bottom: 30px;
 }

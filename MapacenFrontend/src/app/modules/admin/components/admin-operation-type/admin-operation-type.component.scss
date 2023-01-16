@@ -1,6 +1,6 @@
 .dropdown {
-  display: flex;
   margin: 5px 0px 10px 0px;
+  width: max-content;
 }
 
 .title {
@@ -9,9 +9,6 @@
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px
+  position: relative;
+  top: 25px;
 }

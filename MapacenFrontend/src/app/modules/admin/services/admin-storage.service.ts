@@ -59,11 +59,9 @@ export class AdminStorageService {
   }
 
   getAllOffers(): Observable<Offers[]> {
-    // if (this.isServiceAdmin) {
-    //strzal po wszystkie salespointy bez countyid
-    // } else {
+    const countyId = this.isServiceAdmin ? '' : Number(localStorage.getItem('userProfileCountyId'));
     const params = new HttpParams()
-      .set('countyId', Number(localStorage.getItem('userProfileCountyId')));
+      .set('countyId', countyId);
 
     return this.http.get<MainOffer>(`${environment.httpBackend}${Api.OFFERS}`, { params }).pipe(
       map((res) => res.offers),
@@ -73,15 +71,14 @@ export class AdminStorageService {
         return of([]);
       }),
     );
-    // }
   }
 
   getAllSalesPoints(): Observable<SalesPoint[]> {
-    // if (this.isServiceAdmin) {
-    //strzal po wszystkie salespointy bez countyid
-    // } else {
-    const countyId = localStorage.getItem('userProfileCountyId');
-    return this.http.get<SalesPoint[]>(`${environment.httpBackend}${Api.SALES_POINT}`.replace(':countyId', countyId))
+    const countyId = this.isServiceAdmin ? '' : Number(localStorage.getItem('userProfileCountyId'));
+    const params = new HttpParams()
+      .set('countyId', countyId);
+
+    return this.http.get<SalesPoint[]>(`${environment.httpBackend}${Api.SALES_POINTS}`, { params })
       .pipe(
         tap((res) => this.salesPoints$.next(res)),
         catchError((err) => {
@@ -89,7 +86,6 @@ export class AdminStorageService {
           return of([]);
         }),
       );
-    // }
   }
 
   getAllCategories(): Observable<Category[]> {

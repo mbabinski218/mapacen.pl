@@ -1,3 +1,7 @@
-export type AddModifyOfferType = 'AddOffer' | 'ModifyOffer';//dla kazdego jeden taki zeby dalo sie czyscic formularze
+export type AddModifyOfferType = 'AddOffer' | 'ModifyOffer';
+export type AddModifyCategoryType = 'AddCategory' | 'ModifyCategory';
+export type AddModifyProductType = 'AddProduct' | 'ModifyProduct';
+export type AddModifySalesPointType = 'AddSalesPoint' | 'ModifySalesPoint';
+export type BanUnbanUserType = 'BanUser' | 'UnbanUser';
 
-export type AllAdminActionsType = AddModifyOfferType; // | JakisInny dodajecie kolejne
+export type AllAdminActionsType = AddModifyOfferType | AddModifyCategoryType | AddModifyProductType | AddModifySalesPointType | BanUnbanUserType;

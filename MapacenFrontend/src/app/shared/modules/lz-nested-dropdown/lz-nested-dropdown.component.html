@@ -16,21 +16,7 @@
   class="nestedDropdownMenu"
 >
   <ng-container *ngFor="let item of navData">
-    <ng-container *ngIf="item.children && item.children.length > 0">
-      <button
-        mat-menu-item
-        [matMenuTriggerFor]="menu.childMenu"
-      >
-        {{ item.text }}
-      </button>
-      <lz-dropdown-item
-        (emitChild)="changeDropdown($event)"
-        #menu
-        [childData]="item.children"
-      >
-      </lz-dropdown-item>
-    </ng-container>
-    <ng-container *ngIf="!item.children || item.children.length === 0">
+    <ng-container *ngIf="item.canShow">
       <button
         mat-menu-item
         (click)="changeDropdown(item)"
