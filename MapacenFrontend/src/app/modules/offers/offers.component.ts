@@ -1,7 +1,7 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
 import { OffersService } from '@modules/offers/api/offers.service';
 import { OfferContent } from '@modules/top-menu/interfaces/top-menu.interface';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MyComment, Offers } from '@modules/offers/interfaces/offers.interface';
 import { MyLocalStorageService } from '@shared/services/my-local-storage.service';
 
@@ -22,25 +22,31 @@ export class OffersComponent implements OnInit {
     }
   }
 
-  @Input() set getFavourites(value: string) {
-    this.isFavourites = true;
-    this.page = 1;
-    if (value) {
-      this.offersService.getFavourites(Number(value), this.page, this.pageSize).subscribe((res) => {
-        this.offers = res.offers;
-        this.totalSites = Math.ceil(res.count / this.pageSize);
-        this.resetFavourites.emit('');
-      });
+  @Input() set getFavourites(value: number) {
+    if (localStorage.getItem('userToken')) {
+      this.getFav();
     }
   }
 
-  @Output() resetFavourites = new EventEmitter<string>();
+  getFav(): void {
+    this.isFavourites = true;
+    this.page = 1;
+    this.offersService.getFavourites(this.page, this.pageSize).subscribe((res) => {
+      this.offers = res.offers.map((result) => {
+        return {
+          ...result,
+          isFavourite: true,
+        }
+      })
+      this.totalSites = Math.ceil(res.count / this.pageSize);
+    });
+  }
 
   countyId: number;
   search: string;
   categoryId: number;
   page = 1;
-  offers: Offers[];
+  offers: Offers[] = [];
   totalSites: number;
   isAdmin: boolean;
   isNotLogged: boolean;
@@ -93,65 +99,61 @@ export class OffersComponent implements OnInit {
     this.offersService.deleteComment(comment.id).subscribe(() => this.getComments(offer));
   }
 
-
-
-
-
-
-
-
   toggleFavourite(offer: Offers): void {
-    // this.offersService.updateFavourites(offer.id, Number(localStorage.getItem('favouritesId'))).subscribe();
-    offer.favourite = !offer.favourite;
+    this.offersService.updateFavourites(offer.id, Number(localStorage.getItem('userId'))).subscribe(() => {
+      offer.isFavourite = !offer.isFavourite;
+
+      if (this.isFavourites) {
+        this.getFav();
+      }
+    });
   }
 
-
-
-
-
-
-
-
-
   like(comment: MyComment): void {
-    this.offersService.like(comment.id, Number(localStorage.getItem('userId'))).subscribe();
-
-    if (comment.isLikedOrDislikedByUser === true) {
-      comment.likes = comment.likes - 1;
-      comment.isLikedOrDislikedByUser = null;
-    }
-    else if (comment.isLikedOrDislikedByUser === false) {
-      comment.likes = comment.likes + 1;
-      comment.disLikes = comment.disLikes - 1;
-      comment.isLikedOrDislikedByUser = true;
-    }
-    else if (comment.isLikedOrDislikedByUser === null) {
-      comment.likes = comment.likes + 1;
-      comment.isLikedOrDislikedByUser = true;
-    }
+    this.offersService.like(comment.id, Number(localStorage.getItem('userId'))).subscribe(() => {
+      if (comment.isLikedOrDislikedByUser === true) {
+        comment.likes = comment.likes - 1;
+        comment.isLikedOrDislikedByUser = null;
+      }
+      else if (comment.isLikedOrDislikedByUser === false) {
+        comment.likes = comment.likes + 1;
+        comment.disLikes = comment.disLikes - 1;
+        comment.isLikedOrDislikedByUser = true;
+      }
+      else if (comment.isLikedOrDislikedByUser === null) {
+        comment.likes = comment.likes + 1;
+        comment.isLikedOrDislikedByUser = true;
+      }
+    });
   }
 
   dislike(comment: MyComment): void {
-    this.offersService.dislike(comment.id, Number(localStorage.getItem('userId'))).subscribe();
-
-    if (comment.isLikedOrDislikedByUser === false) {
-      comment.disLikes = comment.disLikes - 1;
-      comment.isLikedOrDislikedByUser = null;
-    }
-    else if (comment.isLikedOrDislikedByUser === true) {
-      comment.disLikes = comment.disLikes + 1;
-      comment.likes = comment.likes - 1;
-      comment.isLikedOrDislikedByUser = false;
-    }
-    else if (comment.isLikedOrDislikedByUser === null) {
-      comment.disLikes = comment.disLikes + 1;
-      comment.isLikedOrDislikedByUser = false;
-    }
+    this.offersService.dislike(comment.id, Number(localStorage.getItem('userId'))).subscribe(() => {
+      if (comment.isLikedOrDislikedByUser === false) {
+        comment.disLikes = comment.disLikes - 1;
+        comment.isLikedOrDislikedByUser = null;
+      }
+      else if (comment.isLikedOrDislikedByUser === true) {
+        comment.disLikes = comment.disLikes + 1;
+        comment.likes = comment.likes - 1;
+        comment.isLikedOrDislikedByUser = false;
+      }
+      else if (comment.isLikedOrDislikedByUser === null) {
+        comment.disLikes = comment.disLikes + 1;
+        comment.isLikedOrDislikedByUser = false;
+      }
+    });
   }
 
   changePage(number: number): void {
     this.page = this.page + number;
     this.panelOpenState = false;
+    this.refreshOffers();
+  }
+
+  leaveFavourites() {
+    this.isFavourites = false;
+    this.page = 1;
     this.refreshOffers();
   }
 

@@ -21,38 +21,39 @@ export class OffersService {
       .set('categoryId', categoryId ? categoryId : '')
       .set('pageSize', pageSize)
       .set('pageNumber', page)
+      .set('userId', Number(localStorage.getItem('userId')))
 
     return this.http.get<MainOffer>(`${environment.httpBackend}${Api.OFFERS}`, { params }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of();
       }),
     );
   }
 
-  getFavourites(favouritesId: number, page: number, pageSize: number): Observable<MainOffer> {
+  getFavourites(page: number, pageSize: number): Observable<MainOffer> {
     const params = new HttpParams()
       .set('pageSize', pageSize)
       .set('pageNumber', page)
 
     return this.http.get<MainOffer>(`${environment.httpBackend}${Api.FAVOURITES}`
-      .replace(':favouritesId', favouritesId.toString()), { params })
+      .replace(':userId', localStorage.getItem('userId')), { params })
       .pipe(
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error);
+          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
           return of();
         }),
       );
   }
 
-  updateFavourites(offerId: number, favouritesId: number): Observable<any> {
+  updateFavourites(offerId: number, userId: number): Observable<any> {
     const params = new HttpParams()
       .set('offerId', offerId)
-      .set('favouritesId', favouritesId)
+      .set('userId', userId)
 
-    return this.http.post<any>(`${environment.httpBackend}${Api.FAVOURITES_UPDATE}`, { params }).pipe(
+    return this.http.post<any>(`${environment.httpBackend}${Api.FAVOURITES_UPDATE}`, {}, { params }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of();
       }),
     );
@@ -65,7 +66,7 @@ export class OffersService {
 
     return this.http.get<MyComment[]>(`${environment.httpBackend}${Api.OFFER_COMMENTS}`, { params }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of([]);
       }),
     );
@@ -75,7 +76,7 @@ export class OffersService {
     const creationDate = new Date().toISOString();
     return this.http.post<any>(`${environment.httpBackend}${Api.COMMENT}`, { content, userId, offerId, creationDate }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of();
       }),
     );
@@ -86,7 +87,7 @@ export class OffersService {
       .replace(':commentId', commentId.toString())
       .replace(':userId', userId.toString()), {}).pipe(
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error);
+          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
           return of();
         }),
       );
@@ -97,7 +98,7 @@ export class OffersService {
       .replace(':commentId', commentId.toString())
       .replace(':userId', userId.toString()), {}).pipe(
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error);
+          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
           return of();
         }),
       );
@@ -107,7 +108,7 @@ export class OffersService {
     return this.http.put<any>(`${environment.httpBackend}${Api.BAN}`
       .replace(':id', id.toString()), {}).pipe(
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error);
+          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
           return of();
         }),
       );
@@ -117,7 +118,7 @@ export class OffersService {
     return this.http.delete<any>(`${environment.httpBackend}${Api.COMMENT_DELETE}`
       .replace(':id', id.toString()), {}).pipe(
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error);
+          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
           return of();
         }),
       );

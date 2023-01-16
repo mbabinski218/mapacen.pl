@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   admin = false;
   offer: OfferContent;
-  favouritesId: string;
+  favouritesId = 0;
 
   constructor(
     private router: Router,
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
     this.offer = offer;
   }
 
-  getFavourites(favouritesId: string): void {
-    this.favouritesId = favouritesId;
+  getFavourites(): void {
+    this.favouritesId += 1;
   }
 }

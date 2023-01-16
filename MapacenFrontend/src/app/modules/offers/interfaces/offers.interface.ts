@@ -8,9 +8,9 @@ export interface Offers {
   price: number,
   product: Product,
   salesPoint: SalesPoint,
+  isFavourite: boolean,
   opened?: boolean,
   comments?: MyComment[],
-  favourite?: boolean,
 }
 
 export interface Product {

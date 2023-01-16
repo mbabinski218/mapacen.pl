@@ -17,7 +17,7 @@ export class TopMenuService {
   getAllCounties(): Observable<idNameOnly[]> {
     return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.COUNTIES}`).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of([]);
       }),
     );
@@ -26,7 +26,7 @@ export class TopMenuService {
   getAllCategories(): Observable<idNameOnly[]> {
     return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.CATEGORIES}`).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of([]);
       }),
     );
@@ -54,7 +54,7 @@ export class TopMenuService {
     return this.http.post<any>(`${environment.httpBackend}${Api.UPDATE_USER_COUNTY.replace(':userId', userId).replace(':countyId', countyId)}`, {})
       .pipe(
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error);
+          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
           return of();
         }),
       );

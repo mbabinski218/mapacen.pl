@@ -67,7 +67,7 @@ export class AdminStorageService {
       map((res) => res.offers),
       tap((res) => this.offers$.next(res)),
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of([]);
       }),
     );
@@ -82,7 +82,7 @@ export class AdminStorageService {
       .pipe(
         tap((res) => this.salesPoints$.next(res)),
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error);
+          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
           return of([]);
         }),
       );
@@ -92,7 +92,7 @@ export class AdminStorageService {
     return this.http.get<Category[]>(`${environment.httpBackend}${Api.CATEGORIES}`).pipe(
       tap((res) => this.categories$.next(res)),
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of([]);
       }),
     );
@@ -102,7 +102,7 @@ export class AdminStorageService {
     return this.http.get<Product[]>(`${environment.httpBackend}${Api.PRODUCTS}`).pipe(
       tap((res) => this.products$.next(res)),
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of([]);
       }),
     );
@@ -112,7 +112,7 @@ export class AdminStorageService {
     return this.http.get<UserInfo[]>(`${environment.httpBackend}${Api.USERS}`).pipe(
       tap((res) => this.users$.next(res)),
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of([]);
       }),
     );
@@ -121,7 +121,7 @@ export class AdminStorageService {
   getAllCounties(): Observable<idNameOnly[]> {
     return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.COUNTIES}`).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
         return of([]);
       }),
     );
@@ -131,7 +131,7 @@ export class AdminStorageService {
     return this.http.delete<any>(`${environment.httpBackend}${deleteApi}`.replace(':id', id.toString()))
       .pipe(
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error);
+          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
           return of();
         }),
       );

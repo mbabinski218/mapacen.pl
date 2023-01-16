@@ -9,7 +9,7 @@ export enum Api {
   OFFERS = '/api/offer',
   OFFER_COMMENTS = '/api/offer/comments',
   FAVOURITES_UPDATE = '/api/offer/favourites',
-  FAVOURITES = '/api/offer/favourites/:favouritesId',
+  FAVOURITES = '/api/offer/favourites/:userId',
   PRODUCTS = '/api/product',
   PRODUCT = '/api/product/:name',
   PRODUCT_UPDATE = '/api/product/:id',
