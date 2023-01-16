@@ -12,7 +12,7 @@ namespace MapacenBackend.Services
     {
         int CreateSalesPoint(CreateSalesPointDto dto);
         int UpdateSalesPoint(int id, UpdateSalesPointDto dto);
-        IEnumerable<SalesPointDto>? GetSalesPointsByCounty(int countyId);
+        IEnumerable<SalesPointDto>? GetSalesPoints(int? countyId);
         void DeleteSalesPoint(int id);
     }
 
@@ -69,15 +69,15 @@ namespace MapacenBackend.Services
             return id;
         }
 
-        public IEnumerable<SalesPointDto>? GetSalesPointsByCounty(int countyId)
+        public IEnumerable<SalesPointDto>? GetSalesPoints(int? countyId)
         {
             var salesPoints = _dbContext
                 .SalesPoints
                 .Include(s => s.Address)
-                .ThenInclude(a => a.County)
-                .Where(s => s.Address.CountyId == countyId);
+                    .ThenInclude(a => a.County)
+                .Where(s => countyId == null || s.Address.CountyId == countyId);
 
-            return _mapper.Map<List<SalesPointDto>>(salesPoints);
+            return _mapper.Map<IEnumerable<SalesPointDto>>(salesPoints);
 
         }
 

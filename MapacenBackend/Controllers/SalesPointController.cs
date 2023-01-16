@@ -31,10 +31,10 @@ namespace MapacenBackend.Controllers
             return Ok(_service.UpdateSalesPoint(id, dto));
         }
 
-        [HttpGet("{countyId}")]
-        public ActionResult GetSalesPointsByCounty([FromRoute] int countyId)
+        [HttpGet]
+        public ActionResult GetSalesPoints([FromQuery] int? countyId)
         {
-            return Ok(_service.GetSalesPointsByCounty(countyId));
+            return Ok(_service.GetSalesPoints(countyId));
         }
 
         [HttpDelete("{id}")]
