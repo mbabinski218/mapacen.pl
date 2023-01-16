@@ -21,7 +21,7 @@ namespace MapacenBackend.Services
         IEnumerable<CommentDto>? GetAllComments(int offerId);
         IEnumerable<CommentDto>? GetAllComments(int offerId, int userId);
         OffersWithTotalCount GetFavouritesOffers(int userId, int pageSize, int pageNumber);
-        OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber);
+        OffersWithTotalCount GetOffers(int? countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber);
         int UpdateOffer(int id, UpdateOfferDto dt);
         void DeleteOffer(int id);
     }
@@ -49,7 +49,7 @@ namespace MapacenBackend.Services
             return offer.Id;
         }
 
-        public OffersWithTotalCount GetOffers(int countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber)
+        public OffersWithTotalCount GetOffers(int? countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber)
         {
             var offers = _dbContext
                 .Offers
@@ -58,7 +58,7 @@ namespace MapacenBackend.Services
                 .Include(o => o.SalesPoint)
                     .ThenInclude(s => s.Address)
                         .ThenInclude(a => a.County)
-                .Where(o => o.SalesPoint.Address.CountyId == countyId)
+                .Where(o => countyId == null || o.SalesPoint.Address.CountyId == countyId)
                 .Where(o => categoryId == null || o.Product.CategoryId == categoryId)
                 .Where(o => EF.Functions
                     .Like(o.Product.Name, $"%{productName}%"))
