@@ -11,5 +11,6 @@ namespace MapacenBackend.Models.OfferDtos
         public decimal Price { get; set; }
         public ProductDto Product { get; set; }
         public SalesPointDto SalesPoint { get; set; }
+        public bool IsFavourite { get; set; }
     }
 }

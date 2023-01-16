@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Xml.Linq;
 
 namespace MapacenBackend.Services
 {
@@ -18,10 +19,9 @@ namespace MapacenBackend.Services
     {
         int AddOffer(CreateOfferDto dto);
         void AddOfferToFavourites(int offerId, int userId);
-        IEnumerable<CommentDto>? GetAllComments(int offerId);
         IEnumerable<CommentDto>? GetAllComments(int offerId, int userId);
         OffersWithTotalCount GetFavouritesOffers(int userId, int pageSize, int pageNumber);
-        OffersWithTotalCount GetOffers(int? countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber);
+        OffersWithTotalCount GetOffers(int? countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber, int? userId);
         int UpdateOffer(int id, UpdateOfferDto dt);
         void DeleteOffer(int id);
     }
@@ -49,7 +49,7 @@ namespace MapacenBackend.Services
             return offer.Id;
         }
 
-        public OffersWithTotalCount GetOffers(int? countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber)
+        public OffersWithTotalCount GetOffers(int? countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber, int? userId)
         {
             var offers = _dbContext
                 .Offers
@@ -71,7 +71,24 @@ namespace MapacenBackend.Services
                 offers = offers.Skip(pageSize.Value * (pageNumber.Value - 1)).Take(pageSize.Value);
 
             var offersDto = _mapper.Map<List<OfferDto>>(offers);
+
+            if (userId == null)
+                return new OffersWithTotalCount { Count = count, Offers = offersDto };
+
+            var userFavs = _dbContext
+                   .Favourites
+                   .Include(f => f.Offer)
+                   .Where(f => f.UserId == userId)
+                   .Select(f => f.Offer);
+
+
+            offersDto.ForEach(o =>
+            {
+                o.IsFavourite = userFavs.FirstOrDefault(uf => uf.Id == o.Id) == null ? false : true;
+            });
+
             return new OffersWithTotalCount { Count = count, Offers = offersDto };
+
         }
 
         public IEnumerable<CommentDto>? GetAllComments(int offerId, int userId)
@@ -96,31 +113,32 @@ namespace MapacenBackend.Services
             }
         }
 
-        //najprawdopodobniej do usunięcia
-        public IEnumerable<CommentDto>? GetAllComments(int offerId)
-        {
-            var comments = _dbContext
-                .Comments
-                .Where(c => c.OfferId == offerId)
-                .OrderByDescending(c => c.CreationDate)
-                .Include(c => c.User);
-
-            return _mapper.Map<List<CommentDto>>(comments);
-        }
-
         public void AddOfferToFavourites(int offerId, int userId)
         {
-            var user = _dbContext.Users.FirstOrDefault(f => f.Id == userId)
+            var user = _dbContext
+                .Users
+                .Include(u => u.Favourites)
+                .FirstOrDefault(f => f.Id == userId)
                 ?? throw new NotFoundException("Użytkownik nie istnieje");
 
             var offer = GetOfferById(offerId);
 
-            _dbContext.Favourites.Add(
+            var offerInFavs = user
+                .Favourites
+                ?.FirstOrDefault(f => f.OfferId == offerId);
+
+            if (offerInFavs == null)
+            {
+                _dbContext.Favourites.Add(
                 new UserOffer
                 {
                     UserId = user.Id,
                     OfferId = offer.Id
                 });
+            }
+
+            else
+                _dbContext.Favourites.Remove(offerInFavs);
 
             _dbContext.SaveChanges();
         }

@@ -26,15 +26,9 @@ namespace MapacenBackend.Controllers
         }
 
         [HttpGet]
-        public ActionResult<OffersWithTotalCount> GetOffers(int? countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber)
+        public ActionResult<OffersWithTotalCount> GetOffers(int? countyId, string? productName, int? categoryId, int? pageSize, int? pageNumber, int? userId)
         {
-            return Ok(_service.GetOffers(countyId, productName, categoryId, pageSize, pageNumber));
-        }
-
-        [HttpGet("comments/{offerId}")]
-        public ActionResult<IEnumerable<CommentDto>> GetAllComments([FromRoute] int offerId)
-        {
-            return Ok(_service.GetAllComments(offerId));
+            return Ok(_service.GetOffers(countyId, productName, categoryId, pageSize, pageNumber, userId));
         }
 
         [HttpGet("comments")]
