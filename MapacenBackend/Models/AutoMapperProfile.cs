@@ -37,7 +37,8 @@ namespace MapacenBackend.Models
 
             //Product
             CreateMap<Product, ProductDto>();
-            CreateMap<CreateProductDto, Product>();
+            CreateMap<CreateProductDto, Product>()
+                .ForMember(dto => dto.ImageName, p => p.MapFrom(p => p.Image.FileName));
 
             // SalesPoint
             CreateMap<SalesPoint, SalesPointDto>();

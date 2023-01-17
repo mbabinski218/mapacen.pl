@@ -5,6 +5,7 @@ using MapacenBackend.Models.CategoryDtos;
 using MapacenBackend.Models.ProductDtos;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
+using System.IO;
 
 namespace MapacenBackend.Services
 {
@@ -27,10 +28,20 @@ namespace MapacenBackend.Services
             _mapper = mapper;
         }
 
+        //TODO można przerobic na async
         public int CreateProduct(CreateProductDto dto)
         {
             if (_dbContext.Products.Any(p => p.Name == dto.Name))
                 throw new NotUniqueElementException("Produkt o podanej nazwie już istnieje");
+
+            var path = Path.Combine(Path.GetFullPath("wwwroot"), dto.Image.FileName);
+            if (File.Exists(path))
+                throw new NotUniqueElementException("Plik o takiej nazwie już istnieje");
+
+            using (var fs = new FileStream(path, FileMode.Create))
+            {
+                dto.Image.CopyTo(fs);
+            }
 
             var product = _mapper.Map<Product>(dto);
 
@@ -49,6 +60,9 @@ namespace MapacenBackend.Services
 
             _dbContext.Remove(product);
             _dbContext.SaveChanges();
+
+            var path = Path.Combine(Path.GetFullPath("wwwroot"), product.ImageName);
+            File.Delete(path);
         }
 
         public IEnumerable<ProductDto>? GetAllProducts()

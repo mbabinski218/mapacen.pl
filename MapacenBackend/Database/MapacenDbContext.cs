@@ -22,6 +22,7 @@ public class MapacenDbContext : DbContext
     public DbSet<UserOffer> Favourites { get; set; }
     public DbSet<Likers> Likers { get; set; }
     public DbSet<Dislikers> Dislikers { get; set; }
+    //public DbSet<ProductPicture> ProductPictures { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,7 +37,7 @@ public class MapacenDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<UserOffer>()
-         .HasKey(uo => new { uo.OfferId, uo.UserId});
+         .HasKey(uo => new { uo.OfferId, uo.UserId });
         modelBuilder.Entity<UserOffer>()
             .HasOne(uo => uo.User)
             .WithMany(u => u.Favourites)
