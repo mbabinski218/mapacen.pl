@@ -1,5 +1,6 @@
 ﻿using MapacenBackend.Entities;
 using MapacenBackend.Models.CategoryDtos;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace MapacenBackend.Models.ProductDtos
@@ -8,11 +9,13 @@ namespace MapacenBackend.Models.ProductDtos
     {
         [Required(ErrorMessage = "Pole jest wymagane")]
         [MaxLength(32, ErrorMessage = "Nazwa jest za długa")]
-        [MinLength(1, ErrorMessage ="Niepoprawne dane")]
+        [MinLength(1, ErrorMessage = "Niepoprawne dane")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Pole jest wymagane")]
-        public int CategoryId{ get; set; }
+        public int CategoryId { get; set; }
 
+        [Required(ErrorMessage = "Pole jest wymagane")]
+        public IFormFile Image { get; set; }
     }
 }

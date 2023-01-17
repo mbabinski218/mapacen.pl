@@ -22,7 +22,7 @@ namespace MapacenBackend.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Service Administrator, Local Administrator")]
-        public ActionResult<int> CreateProduct([FromBody] CreateProductDto dto)
+        public ActionResult<int> CreateProduct([FromForm] CreateProductDto dto)
         {
             var productId = _service.CreateProduct(dto);
             return Created($"/api/product/{productId}", productId);

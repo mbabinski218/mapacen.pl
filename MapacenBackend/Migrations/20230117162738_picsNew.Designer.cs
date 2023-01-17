@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MapacenBackend.Migrations
 {
     [DbContext(typeof(MapacenDbContext))]
-    [Migration("20230113181638_nowa")]
-    partial class nowa
+    [Migration("20230117162738_picsNew")]
+    partial class picsNew
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -193,6 +193,10 @@ namespace MapacenBackend.Migrations
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
