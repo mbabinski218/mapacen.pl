@@ -10,11 +10,11 @@ const routes: Routes = [
   },
   {
     path: RoutesPath.HOME,
-    loadChildren: () => import('./modules/home/home.module').then(m => m.HomeModule),
+    loadChildren: () => import('@modules/home/home.module').then(m => m.HomeModule),
   },
   {
     path: '**',
-    redirectTo: RoutesPath.HOME
+    redirectTo: RoutesPath.HOME,
   },
 ];
 

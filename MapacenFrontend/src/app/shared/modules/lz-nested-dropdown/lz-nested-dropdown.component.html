@@ -1,0 +1,28 @@
+<div class="row">
+  <button
+    mat-menu-item
+    [matMenuTriggerFor]="show"
+    class="button"
+  >
+    {{ functionName }}
+    <mat-icon class="icon">
+      arrow_drop_down
+    </mat-icon>
+  </button>
+</div>
+
+<mat-menu
+  #show="matMenu"
+  class="nestedDropdownMenu"
+>
+  <ng-container *ngFor="let item of navData">
+    <ng-container *ngIf="item.canShow">
+      <button
+        mat-menu-item
+        (click)="changeDropdown(item)"
+      >
+        {{ item.text }}
+      </button>
+    </ng-container>
+  </ng-container>
+</mat-menu>

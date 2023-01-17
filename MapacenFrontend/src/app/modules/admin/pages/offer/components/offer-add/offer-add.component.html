@@ -1,0 +1,34 @@
+<div class="forms">
+  <my-input
+    appearance="fill"
+    class="fix backgroundColor item"
+    label="Cena"
+    type="text"
+    controlName="price"
+  >
+  </my-input>
+
+  <mat-form-field class="fix backgroundColor item">
+    <mat-label>Produkt</mat-label>
+    <mat-select formControlName="product">
+      <mat-option
+        *ngFor="let item of products | async"
+        [value]="item.id"
+      >
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="fix backgroundColor item">
+    <mat-label>Punkt sprzedaży</mat-label>
+    <mat-select formControlName="salesPoint">
+      <mat-option
+        *ngFor="let item of salesPointsFixedNames"
+        [value]="item.id"
+      >
+        {{ item.changedName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

@@ -1,0 +1,29 @@
+<div class="box">
+  <mat-button-toggle-group
+    class="buttons"
+    name="action-type"
+    (change)="handleActionTypeChange($event)"
+    value="BanUser"
+  >
+    <mat-button-toggle
+      value="BanUser"
+      class="button button--left"
+      [ngClass]="prevType === 'UnbanUser' ? 'color-clicked' : 'color-default'"
+    >
+      Zbanuj
+    </mat-button-toggle>
+    <mat-button-toggle
+      value="UnbanUser"
+      class="button button--right"
+      [ngClass]="prevType === 'BanUser' ? 'color-clicked' : 'color-default'"
+    >
+      Odblokuj
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<user-type-switch
+  class="form"
+  [toggleValue]="prevType"
+>
+</user-type-switch>

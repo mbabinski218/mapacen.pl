@@ -1,0 +1,14 @@
+<div [class.container]="formResponse.dropdown">
+  <lz-nested-dropdown
+    class="dropdown"
+    [data]="navData"
+    name="Wybierz"
+    [canBeLockable]="false"
+    (dropdownChange)="handleDropdownChange($event)"
+  >
+  </lz-nested-dropdown>
+</div>
+
+<ng-container *ngIf="adminOperationType">
+  <ng-component *ngComponentOutlet="AdminOperationDetails; injector: myInjector"></ng-component>
+</ng-container>

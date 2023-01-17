@@ -1,17 +1,23 @@
-<div class="background mat-app-background">
-  <div class="move">
-    <mat-icon class="mr-8">brightness_5</mat-icon>
-    <mat-slide-toggle
-      [formControl]="toggleControl"
-      class="mr-8"
-    >
-    </mat-slide-toggle>
-    <mat-icon>bedtime</mat-icon>
-  </div>
-  <!-- nie tykać kurwa tego wyżej!! -->
+<app-top-menu
+  (refreshOffers)="refreshOffers($event)"
+  (getFavourites)="getFavourites()"
+>
+</app-top-menu>
 
-  <div class="content">
-
-
-  </div>
+<div class="center">
+  <app-offers
+    class="offer"
+    [filterOffers]="offer"
+    [getFavourites]="favouritesId"
+  >
+  </app-offers>
 </div>
+
+<button
+  *ngIf="admin"
+  mat-fab
+  class="admin-button"
+  (click)="onAdminButtonClick();"
+>
+  <mat-icon>construction</mat-icon>
+</button>
