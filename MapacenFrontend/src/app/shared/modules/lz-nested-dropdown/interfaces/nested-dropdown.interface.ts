@@ -1,7 +1,8 @@
 export interface NestedDropdown<T> {
-  text: DropDownText;
+  text: DropDownText,
   data?: T,
-  children?: NestedDropdown<T>[];
+  canShow?: boolean,
+  serviceAdminOnly: boolean,
 }
 
 export type DropDownText = 'Oferta' | 'Produkt' | 'Kategoria' | 'Punkt sprzedaży' | 'Użytkownik';

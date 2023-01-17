@@ -24,7 +24,7 @@ export class OfferFormHandlerService {
   }
 
   clearControls(form: FormGroup, previousType: AddModifyOfferType): void {
-    this.adminStorageService.currentAction = previousType === 'AddOffer' ? 'ModifyOffer' : 'AddOffer' as AddModifyOfferType;
+    this.adminStorageService.currentAction = previousType === 'AddOffer' ? 'ModifyOffer' : 'AddOffer';
     const previousFields = ADMIN_FIELDS_LIST[previousType];
     previousFields.forEach((field) => form.removeControl(field));
   }

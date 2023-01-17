@@ -6,16 +6,24 @@
   >
     Aby korzystać ze strony wybierz najpierw interesujący Cię region lub zaloguj się
   </div>
+  <span
+    class="favourites-title"
+    *ngIf="isFavourites"
+  >
+    <mat-icon
+      (click)="leaveFavourites()"
+      class="arrow"
+    >
+      arrow_back_ios
+    </mat-icon>
+    <span>
+      Ulubione
+    </span>
+  </span>
   <div
     class="isData"
     *ngIf="offers?.length; else noData"
   >
-    <span
-      class="favourites-title"
-      *ngIf="isFavourites"
-    >
-      Ulubione
-    </span>
     <mat-accordion
       class="item"
       *ngFor="let offer of offers"
@@ -27,12 +35,16 @@
         (closed)="offer.opened = false"
       >
         <mat-expansion-panel-header
+          class="header"
           [collapsedHeight]="'125px'"
           [expandedHeight]="'125px'"
         >
           <div class="max">
             <div class="data--side">
-              Zdjęcie
+              <img
+                class="photo"
+                [src]="'https://mapacenio.azurewebsites.net/api/file?fileName=' + offer.product.imageName"
+              >
             </div>
             <span class="data--center">
               <span class="name">
@@ -69,7 +81,7 @@
               mat-icon-button
               (click)="toggleFavourite(offer)"
             >
-              <mat-icon [svgIcon]="offer.favourite ? 'my-heart-red' : 'my-heart-white'"></mat-icon>
+              <mat-icon [svgIcon]="offer.isFavourite ? 'my-heart-red' : 'my-heart-white'"></mat-icon>
             </button>
           </div>
           <form

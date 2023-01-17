@@ -1,0 +1,26 @@
+<div class="forms">
+  <my-input
+    appearance="fill"
+    class="fix backgroundColor item"
+    label="Nazwa"
+    type="text"
+    controlName="name"
+  >
+  </my-input>
+
+  <mat-form-field class="fix backgroundColor item">
+    <mat-label>Kategoria</mat-label>
+    <mat-select formControlName="category">
+      <mat-option
+        *ngFor="let item of categories | async"
+        [value]="item.id"
+      >
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+<div class="center">
+  <lz-base64 (emitImage)="saveImage($event)"></lz-base64>
+</div>

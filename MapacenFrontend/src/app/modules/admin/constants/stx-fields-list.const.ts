@@ -8,7 +8,35 @@ export const ADMIN_FIELDS_LIST = {
     "offer",
     "price",
   ],
-  WriteNip: [
-    //tak wygląda pusty
-  ] as string[],
+  AddCategory: [
+    "name",
+  ],
+  ModifyCategory: [
+    "category",
+    "name",
+  ],
+  AddProduct: [
+    "name",
+    "category",
+  ],
+  ModifyProduct: [
+    "product",
+    "name",
+    "category",
+  ],
+  AddSalesPoint: [
+    "name",
+    "address",
+  ],
+  ModifySalesPoint: [
+    "salesPoint",
+    "name",
+    "address",
+  ],
+  BanUser: [
+    "userId",
+  ],
+  UnbanUser: [
+    "userId",
+  ],
 };

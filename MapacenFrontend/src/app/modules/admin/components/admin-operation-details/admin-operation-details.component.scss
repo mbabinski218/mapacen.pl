@@ -4,10 +4,16 @@
 
 .button {
   height: 56px;
-
+  border-radius: 18px;
+  border: 1px solid white;
+  
   &:disabled {
     background-color: rgb(96, 87, 121) !important;
   }
+}
+
+.fab {
+  border: 1px solid white;
 }
 
 .icon {
@@ -15,10 +21,14 @@
 }
 
 .buttons {
-  gap: 55px;
+  position: relative;
+  bottom: 31px;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  width: max-content;
+  gap: 40px;
+  float: right;
 }
 
 .form {
@@ -27,4 +37,9 @@
   align-items: center;
   padding-bottom: 50px;
   margin: 0px !important;
+}
+
+.table {
+  position: relative;
+  bottom: 30px;
 }

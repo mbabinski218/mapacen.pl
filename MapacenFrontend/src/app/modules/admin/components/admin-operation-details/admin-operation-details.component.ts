@@ -2,7 +2,6 @@ import { FormGroup } from '@angular/forms';
 import { Component, Inject, OnInit } from '@angular/core';
 import { AdminFormService } from '@modules/admin/services/admin-form.service';
 import { AllAdminActionsType } from '@modules/admin/types/admin-actions.types';
-import { AdminOperationType } from '@modules/admin/types/admin-operations.types';
 import { ADMIN_RESPONSE_TOKEN } from '@modules/admin/tokens/admin-response.token';
 import { AdminStorageService } from '@modules/admin/services/admin-storage.service';
 import { AdminSubmitFormService } from '@modules/admin/services/admin-submit-form.service';
@@ -19,7 +18,6 @@ export class AdminOperationDetailsComponent implements OnInit {
 
   adminForm: FormGroup;
   operationText: DropDownText;
-  operationType: AdminOperationType[];
   action: AllAdminActionsType;
 
   constructor(
@@ -33,7 +31,6 @@ export class AdminOperationDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.adminForm = this.adminFormService.adminForm();
     this.operationText = this.formResponse.dropdown.text;
-    this.operationType = this.formResponse.dropdown.data.operationType;
   }
 
   submitForm(): void {

@@ -16,7 +16,7 @@ import { LoginDialogComponent } from '@modules/top-menu/components/login-dialog/
 export class TopMenuComponent implements OnInit {
 
   @Output() refreshOffers = new EventEmitter<OfferContent>();
-  @Output() getFavourites = new EventEmitter<string>();
+  @Output() getFavourites = new EventEmitter();
   counties: idNameOnly[] = [];
   categories: idNameOnly[] = [];
   form: FormGroup;
@@ -87,7 +87,7 @@ export class TopMenuComponent implements OnInit {
   }
 
   emitFavourites() {
-    this.getFavourites.emit(localStorage.getItem('favouritesId'));
+    this.getFavourites.emit();
   }
 
   reload() {

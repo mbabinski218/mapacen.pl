@@ -19,6 +19,6 @@ export class AdminComponent implements OnInit {
   }
 
   returnButton() {
-    this.router.navigateByUrl('/home')
+    this.router.navigateByUrl('/home');
   }
 }

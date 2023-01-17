@@ -56,6 +56,15 @@ body {
 
 .cdk-overlay-pane:not(.mat-mdc-select-panel-above) .mdc-menu-surface.mat-mdc-select-panel {
   background-color: rgb(96, 72, 156);
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background-color: rgb(58, 39, 105);
+  }
 }
 
 .center {
@@ -122,9 +131,14 @@ body {
   }
 }
 
-.mat-mdc-table,
-.mat-mdc-paginator-container {
+.mat-mdc-table {
   background-color: rgb(66, 51, 104);
+}
+
+.mat-mdc-paginator-container,
+.mat-mdc-paginator {
+  background-color: rgb(66, 51, 104);
+  border-radius: 0 0 18px 18px;
 }
 
 .mat-mdc-select-panel-above .mdc-menu-surface.mat-mdc-select-panel {

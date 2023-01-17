@@ -17,6 +17,7 @@
   top: 95px;
   left: 20px;
   background-color: rgb(96, 72, 156);
+  border: 1px solid white;
 }
 
 .title {
@@ -34,8 +35,12 @@
 }
 
 .margin {
-  margin: 30px 18% 0 18%;
+  margin: 30px 16% 0 16%;
   background-color: rgb(22, 32, 65);
   border-radius: 18px;
   padding: 20px;
+}
+
+.icon {
+  color: white;
 }
