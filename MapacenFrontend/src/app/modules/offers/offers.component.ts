@@ -160,9 +160,9 @@ export class OffersComponent implements OnInit {
   private refreshOffers(): void {
     const county = Number(localStorage.getItem('userLocalCountyId'));
     this.countyId = county ? county : Number(localStorage.getItem('userProfileCountyId'));
-    this.offersService.getAllOffers(this.countyId, this.search, this.categoryId, this.page, this.pageSize).subscribe((res) => {
-      this.offers = res.offers;
-      this.totalSites = Math.ceil(res.count / this.pageSize);
+    this.offersService.getAllOffers(this.countyId, this.search, this.categoryId, this.page, this.pageSize).subscribe((value) => {
+      this.offers = value.offers;
+      this.totalSites = Math.ceil(value.count / this.pageSize);
     });
   }
 }

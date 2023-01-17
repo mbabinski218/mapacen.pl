@@ -115,10 +115,13 @@ export class AdminSubmitFormService {
   }
 
   addProduct(form: FormGroup): Observable<number> {
-    const name = form.value.name;
-    const categoryId = form.value.category;
 
-    return this.http.post<number>(`${environment.httpBackend}${Api.PRODUCTS}`, { name, categoryId }).pipe(
+    const formData = new FormData();
+    formData.append('Name', form.value.name);
+    formData.append('CategoryId', form.value.category);
+    formData.append('Image', form.value.image);
+
+    return this.http.post<number>(`${environment.httpBackend}${Api.PRODUCTS}`, formData).pipe(
       catchError((err) => {
         this.toastMessageService.notifyOfError(err.error.errors?.Name ? err.error.errors.Name[0] : 'Nie udało się dodać produktu');
         return of();

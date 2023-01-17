@@ -34,4 +34,12 @@ export class ProductAddComponent implements OnInit {
 
     this.categories = this.adminStorageService.categories$.asObservable();
   }
+
+  saveImage(image: File): void {
+    this.form.patchValue({
+      image: image,
+    });
+    this.form.get('image').updateValueAndValidity();
+  }
+
 }

@@ -15,6 +15,7 @@ export class ProductFormHandlerService {
   setFormGroupForProductAdd(formGroup: FormGroup): void {
     formGroup.addControl('name', this.fb.control(null, [Validators.required]));
     formGroup.addControl('category', this.fb.control(null, [Validators.required]));
+    formGroup.addControl('image', this.fb.control(null, [Validators.required]));
   }
 
   setFormGroupForProductModify(formGroup: FormGroup): void {

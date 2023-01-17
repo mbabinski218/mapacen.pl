@@ -16,6 +16,7 @@ import { OfferComponent } from '@modules/admin/pages/offer/offer.component';
 import { ProductComponent } from '@modules/admin/pages/product/product.component';
 import { CategoryComponent } from '@modules/admin/pages/category/category.component';
 import { SalesPointComponent } from '@modules/admin/pages/sales-point/sales-point.component';
+import { Base64Component } from '@modules/admin/pages/product/components/base64/base64.component';
 import { UserBanComponent } from '@modules/admin/pages/user/components/user-ban/user-ban.component';
 import { UserFormHandlerService } from '@modules/admin/pages/user/services/user-form-handler.service';
 import { OfferAddComponent } from '@modules/admin/pages/offer/components/offer-add/offer-add.component';
@@ -46,6 +47,7 @@ import { SalesPointTypeSwitchComponent } from '@modules/admin/pages/sales-point/
   declarations: [
     UserComponent,
     OfferComponent,
+    Base64Component,
     UserBanComponent,
     ProductComponent,
     OfferAddComponent,

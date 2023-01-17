@@ -17,6 +17,7 @@ export interface Product {
   id: number,
   name: string,
   category: Category,
+  imageName: string,
 }
 
 export interface Category {
