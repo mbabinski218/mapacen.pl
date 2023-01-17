@@ -5,10 +5,15 @@
 .button {
   height: 56px;
   border-radius: 18px;
-
+  border: 1px solid white;
+  
   &:disabled {
     background-color: rgb(96, 87, 121) !important;
   }
+}
+
+.fab {
+  border: 1px solid white;
 }
 
 .icon {
@@ -17,7 +22,7 @@
 
 .buttons {
   position: relative;
-  bottom: 28px;
+  bottom: 31px;
   display: flex;
   justify-content: space-around;
   align-items: center;

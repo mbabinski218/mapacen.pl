@@ -7,14 +7,14 @@
   >
     <mat-button-toggle
       value="BanUser"
-      class="button"
+      class="button button--left"
       [ngClass]="prevType === 'UnbanUser' ? 'color-clicked' : 'color-default'"
     >
       Zbanuj
     </mat-button-toggle>
     <mat-button-toggle
       value="UnbanUser"
-      class="button"
+      class="button button--right"
       [ngClass]="prevType === 'BanUser' ? 'color-clicked' : 'color-default'"
     >
       Odblokuj

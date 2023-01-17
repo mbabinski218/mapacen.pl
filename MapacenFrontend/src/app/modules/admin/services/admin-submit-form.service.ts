@@ -73,7 +73,7 @@ export class AdminSubmitFormService {
 
     return this.http.post<number>(`${environment.httpBackend}${Api.OFFERS}`, { price, productId, salesPointId }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        this.toastMessageService.notifyOfError(err.error.errors?.Price ? err.error.errors.Price[0] : 'Nie udało się dodać oferty');
         return of();
       }),
     );
@@ -86,7 +86,7 @@ export class AdminSubmitFormService {
 
     return this.http.put<number>(`${environment.httpBackend}${Api.OFFERS}`, {}, { params }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        this.toastMessageService.notifyOfError(err.error.errors?.Price ? err.error.errors.Price[0] : 'Nie udało się zmodyfikować oferty');
         return of();
       }),
     );
@@ -97,7 +97,7 @@ export class AdminSubmitFormService {
 
     return this.http.post<number>(`${environment.httpBackend}${Api.CATEGORIES}`, { name }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        this.toastMessageService.notifyOfError(err.error.errors?.Name ? err.error.errors.Name[0] : 'Nie udało się dodać kategorii');
         return of();
       }),
     );
@@ -108,7 +108,7 @@ export class AdminSubmitFormService {
 
     return this.http.put<number>(`${environment.httpBackend}${Api.CATEGORY}`.replace(':id', form.value.category), { name }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        this.toastMessageService.notifyOfError(err.error.errors?.Name ? err.error.errors.Name[0] : 'Nie udało się zmodyfikować kategorii');
         return of();
       }),
     );
@@ -120,7 +120,7 @@ export class AdminSubmitFormService {
 
     return this.http.post<number>(`${environment.httpBackend}${Api.PRODUCTS}`, { name, categoryId }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        this.toastMessageService.notifyOfError(err.error.errors?.Name ? err.error.errors.Name[0] : 'Nie udało się dodać produktu');
         return of();
       }),
     );
@@ -132,7 +132,7 @@ export class AdminSubmitFormService {
 
     return this.http.put<number>(`${environment.httpBackend}${Api.PRODUCT_UPDATE}`.replace(':id', form.value.product), { name, categoryId }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        this.toastMessageService.notifyOfError(err.error.errors?.Name ? err.error.errors.Name[0] : 'Nie udało się zmodyfikować produktu');
         return of();
       }),
     );
@@ -150,7 +150,7 @@ export class AdminSubmitFormService {
 
     return this.http.post<number>(`${environment.httpBackend}${Api.SALES_POINTS}`, { name, address }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        this.toastMessageService.notifyOfError(err.error.errors?.Name ? err.error.errors.Name[0] : 'Nie udało się dodać punktu sprzedaży');
         return of();
       }),
     );
@@ -168,7 +168,7 @@ export class AdminSubmitFormService {
 
     return this.http.put<number>(`${environment.httpBackend}${Api.SALES_POINT_UPDATE}`.replace(':id', form.value.salesPoint), { name, address }).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        this.toastMessageService.notifyOfError(err.error.errors?.Name ? err.error.errors.Name[0] : 'Nie udało się zmodyfikować punktu sprzedaży');
         return of();
       }),
     );
@@ -178,7 +178,7 @@ export class AdminSubmitFormService {
     return this.http.put<any>(`${environment.httpBackend}${Api.BAN}`
       .replace(':id', form.get('userId').value), {}).pipe(
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+          this.toastMessageService.notifyOfError(err.error.errors?.Name ? err.error.errors.Name[0] : 'Nie udało się zbanować użytkownika');
           return of();
         }),
       );
@@ -188,7 +188,7 @@ export class AdminSubmitFormService {
     return this.http.put<any>(`${environment.httpBackend}${Api.UNBAN}`
       .replace(':id', form.get('userId').value), {}).pipe(
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+          this.toastMessageService.notifyOfError(err.error.errors?.Name ? err.error.errors.Name[0] : 'Nie udało się odbanować użytkownika');
           return of();
         }),
       );

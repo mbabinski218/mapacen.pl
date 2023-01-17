@@ -6,7 +6,20 @@
 }
 
 .button {
+  height: 56px;
   width: 130px;
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &--left {
+    border-radius: 18px 0 0 18px;
+  }
+
+  &--right {
+    border-radius: 0 18px 18px 0;
+  }
 }
 
 .color {
@@ -23,8 +36,13 @@
   display: flex;
   justify-content: center;
   position: relative;
-  bottom: 81px;
+  bottom: 88px;
   width: max-content;
+  border: 0;
+}
+
+.mat-button-toggle-group-appearance-standard .mat-button-toggle+.mat-button-toggle {
+  border-left: 0;
 }
 
 .box {

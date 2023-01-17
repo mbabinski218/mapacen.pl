@@ -16,8 +16,8 @@ export class TopMenuService {
 
   getAllCounties(): Observable<idNameOnly[]> {
     return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.COUNTIES}`).pipe(
-      catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+      catchError(() => {
+        this.toastMessageService.notifyOfError('Nie udało się pobrać powiatów');
         return of([]);
       }),
     );
@@ -25,8 +25,8 @@ export class TopMenuService {
 
   getAllCategories(): Observable<idNameOnly[]> {
     return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.CATEGORIES}`).pipe(
-      catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+      catchError(() => {
+        this.toastMessageService.notifyOfError('Nie udało się pobrać kategorii');
         return of([]);
       }),
     );
@@ -34,8 +34,8 @@ export class TopMenuService {
 
   loginUser({ email, password }: Login): Observable<Token> {
     return this.http.post<Token>(`${environment.httpBackend}${Api.LOGIN}`, { email, password }).pipe(
-      catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error);
+      catchError(() => {
+        this.toastMessageService.notifyOfError('Niepoprawny e-mail lub hasło');
         return of();
       }),
     );
@@ -53,8 +53,8 @@ export class TopMenuService {
   updateCounty(userId: string, countyId: string): Observable<any> {
     return this.http.post<any>(`${environment.httpBackend}${Api.UPDATE_USER_COUNTY.replace(':userId', userId).replace(':countyId', countyId)}`, {})
       .pipe(
-        catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        catchError(() => {
+          this.toastMessageService.notifyOfError('Nie udało się zmienić powiatu');
           return of();
         }),
       );

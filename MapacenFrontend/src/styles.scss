@@ -131,9 +131,14 @@ body {
   }
 }
 
-.mat-mdc-table,
-.mat-mdc-paginator-container {
+.mat-mdc-table {
   background-color: rgb(66, 51, 104);
+}
+
+.mat-mdc-paginator-container,
+.mat-mdc-paginator {
+  background-color: rgb(66, 51, 104);
+  border-radius: 0 0 18px 18px;
 }
 
 .mat-mdc-select-panel-above .mdc-menu-surface.mat-mdc-select-panel {

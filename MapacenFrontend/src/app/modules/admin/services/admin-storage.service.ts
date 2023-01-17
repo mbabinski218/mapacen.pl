@@ -66,8 +66,8 @@ export class AdminStorageService {
     return this.http.get<MainOffer>(`${environment.httpBackend}${Api.OFFERS}`, { params }).pipe(
       map((res) => res.offers),
       tap((res) => this.offers$.next(res)),
-      catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+      catchError(() => {
+        this.toastMessageService.notifyOfError('Nie udało się pobrać ofert');
         return of([]);
       }),
     );
@@ -81,8 +81,8 @@ export class AdminStorageService {
     return this.http.get<SalesPoint[]>(`${environment.httpBackend}${Api.SALES_POINTS}`, { params })
       .pipe(
         tap((res) => this.salesPoints$.next(res)),
-        catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        catchError(() => {
+          this.toastMessageService.notifyOfError('Nie udało się pobrać punktów sprzedaży');
           return of([]);
         }),
       );
@@ -91,8 +91,8 @@ export class AdminStorageService {
   getAllCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${environment.httpBackend}${Api.CATEGORIES}`).pipe(
       tap((res) => this.categories$.next(res)),
-      catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+      catchError(() => {
+        this.toastMessageService.notifyOfError('Nie udało się pobrać kategorii');
         return of([]);
       }),
     );
@@ -101,8 +101,8 @@ export class AdminStorageService {
   getAllProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${environment.httpBackend}${Api.PRODUCTS}`).pipe(
       tap((res) => this.products$.next(res)),
-      catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+      catchError(() => {
+        this.toastMessageService.notifyOfError('Nie udało się pobrać produktów');
         return of([]);
       }),
     );
@@ -111,8 +111,8 @@ export class AdminStorageService {
   getAllUsers(): Observable<UserInfo[]> {
     return this.http.get<UserInfo[]>(`${environment.httpBackend}${Api.USERS}`).pipe(
       tap((res) => this.users$.next(res)),
-      catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+      catchError(() => {
+        this.toastMessageService.notifyOfError('Nie udało się pobrać użytkowników');
         return of([]);
       }),
     );
@@ -121,7 +121,7 @@ export class AdminStorageService {
   getAllCounties(): Observable<idNameOnly[]> {
     return this.http.get<idNameOnly[]>(`${environment.httpBackend}${Api.COUNTIES}`).pipe(
       catchError((err) => {
-        this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+        this.toastMessageService.notifyOfError('Nie udało się pobrać powiatów');
         return of([]);
       }),
     );
@@ -131,7 +131,7 @@ export class AdminStorageService {
     return this.http.delete<any>(`${environment.httpBackend}${deleteApi}`.replace(':id', id.toString()))
       .pipe(
         catchError((err) => {
-          this.toastMessageService.notifyOfError(err.error.errors.Name[0]);
+          this.toastMessageService.notifyOfError('Usuwanie nie powiodło się');
           return of();
         }),
       );
