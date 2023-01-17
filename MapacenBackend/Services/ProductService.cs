@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using MapacenBackend.Entities;
 using MapacenBackend.Exceptions;
-using MapacenBackend.Models.CategoryDtos;
 using MapacenBackend.Models.ProductDtos;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Metrics;
-using System.IO;
+using System.Drawing;
 
 namespace MapacenBackend.Services
 {
@@ -38,15 +36,18 @@ namespace MapacenBackend.Services
             if (File.Exists(path))
                 throw new NotUniqueElementException("Plik o takiej nazwie już istnieje");
 
-            using (var fs = new FileStream(path, FileMode.Create))
-            {
-                dto.Image.CopyTo(fs);
-            }
+            using (var fs = new FileStream(path, FileMode.CreateNew))            
+                dto.Image.CopyTo(fs);            
 
             var product = _mapper.Map<Product>(dto);
 
             _dbContext.Products.Add(product);
             _dbContext.SaveChanges();
+
+            var image = Image.FromFile(path);
+            var resized = new Bitmap(image, new Size(170, 125));
+            image.Dispose();
+            resized.Save(Path.Combine(Path.GetFullPath("wwwroot"), dto.Image.FileName));
 
             return product.Id;
         }
