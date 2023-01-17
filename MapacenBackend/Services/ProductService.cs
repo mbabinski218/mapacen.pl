@@ -36,18 +36,15 @@ namespace MapacenBackend.Services
             if (File.Exists(path))
                 throw new NotUniqueElementException("Plik o takiej nazwie już istnieje");
 
-            using (var fs = new FileStream(path, FileMode.CreateNew))            
-                dto.Image.CopyTo(fs);            
+            using(var image = Image.FromStream(dto.Image.OpenReadStream()))
+            {
+                var resized = new Bitmap(image, new Size(170, 125));
+                resized.Save(Path.Combine(Path.GetFullPath("wwwroot"), dto.Image.FileName));
+            }
 
             var product = _mapper.Map<Product>(dto);
-
             _dbContext.Products.Add(product);
             _dbContext.SaveChanges();
-
-            var image = Image.FromFile(path);
-            var resized = new Bitmap(image, new Size(170, 125));
-            image.Dispose();
-            resized.Save(Path.Combine(Path.GetFullPath("wwwroot"), dto.Image.FileName));
 
             return product.Id;
         }
