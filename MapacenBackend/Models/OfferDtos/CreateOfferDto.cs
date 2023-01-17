@@ -5,13 +5,13 @@ namespace MapacenBackend.Models.OfferDtos
 {
     public class CreateOfferDto
     {
-        [Required]
+        [Required(ErrorMessage = "Pole jest wymagane")]
         public decimal Price { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Pole jest wymagane")]
         public int ProductId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Pole jest wymagane")]
         public int SalesPointId { get; set; }
     }
 }

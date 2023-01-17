@@ -4,8 +4,8 @@ namespace MapacenBackend.Models.CategoryDtos
 {
     public class CreateCategoryDto
     {
-        [Required]
-        [MaxLength(32)]
+        [Required(ErrorMessage ="Pole jest wymagane")]
+        [MaxLength(32, ErrorMessage = "Za długa nazwa")]
         public string Name { get; set; }
     }
 }

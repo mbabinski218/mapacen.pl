@@ -5,7 +5,7 @@ namespace MapacenBackend.Models.UserDtos;
 
 public class LoginUserDto
 {
-    [EmailAddress]
+    [EmailAddress(ErrorMessage ="Niepoprawny format")]
     public string? Email { get; set; }
 
     public string? Password { get; set; }

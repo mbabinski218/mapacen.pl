@@ -6,12 +6,12 @@ namespace MapacenBackend.Models.ProductDtos
 {
     public class CreateProductDto
     {
-        [Required]
-        [MaxLength(32)]
-        [MinLength(1)]
+        [Required(ErrorMessage = "Pole jest wymagane")]
+        [MaxLength(32, ErrorMessage = "Nazwa jest za długa")]
+        [MinLength(1, ErrorMessage ="Niepoprawne dane")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Pole jest wymagane")]
         public int CategoryId{ get; set; }
 
     }

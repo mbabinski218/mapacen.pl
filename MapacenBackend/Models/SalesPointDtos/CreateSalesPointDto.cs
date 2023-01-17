@@ -6,12 +6,12 @@ namespace MapacenBackend.Models.SalesPointDtos
 {
     public class CreateSalesPointDto
     {
-        [Required]
-        [MaxLength(128)]
-        [MinLength(1)]
+        [Required(ErrorMessage = "Pole jest wymagane")]
+        [MaxLength(128, ErrorMessage = "Nazwa jest za długa")]
+        [MinLength(1, ErrorMessage = "Niepoprawne dane")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Pole jest wymagane")]
         public CreateAddressDto Address { get; set; }
 
     }

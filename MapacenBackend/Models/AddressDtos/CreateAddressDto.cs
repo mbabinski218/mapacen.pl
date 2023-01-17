@@ -5,30 +5,29 @@ namespace MapacenBackend.Models.AddressDtos
 {
     public class CreateAddressDto
     {
-        //TODO poprawić regexa żeby polskie znaki przyjmował 
-        [Required]
-        [MaxLength(64)]
-        [MinLength(1)]
-        [RegularExpression(@"^[a-żA-Ż]+\-?[a-żA-Ż]+$")]  // Accepts upper and lower case letters and one hyphen
+        [Required(ErrorMessage = "Pole jest wymagane")]
+        [MaxLength(64, ErrorMessage = "Nazwa jest za długa")]
+        [MinLength(1, ErrorMessage ="Nazwa jest za krótka")]
+        [RegularExpression(@"^[a-żA-Ż]+\-?[a-żA-Ż]+$",ErrorMessage ="Niepoprawny format")]  // Accepts upper and lower case letters and one hyphen
         public string City { get; set; }
 
-        [Required]
-        [MaxLength(64)]
-        [MinLength(1)]
-        [RegularExpression(@"^[a-żA-Ż]+(\s?[a-żA-Ż]+)*$")] //Accepts upper and lower case letters and spaces
+        [Required(ErrorMessage = "Pole jest wymagane")]
+        [MaxLength(64, ErrorMessage = "Nazwa jest za długa")]
+        [MinLength(1, ErrorMessage ="Nazwa jest za krótka")]
+        [RegularExpression(@"^[a-żA-Ż]+(\s?[a-żA-Ż]+)*$", ErrorMessage ="Niepoprawny format")] //Accepts upper and lower case letters and spaces
         public string Street { get; set; }
 
-        [Required]
-        [MaxLength(64)]
-        [MinLength(1)]
-        [RegularExpression(@"\d{2}-\d{3}")]
+        [Required(ErrorMessage = "Pole jest wymagane")]
+        [MaxLength(64, ErrorMessage = "Nazwa jest za długa")]
+        [MinLength(1, ErrorMessage ="Nazwa jest za krótka")]
+        [RegularExpression(@"\d{2}-\d{3}",ErrorMessage ="Niepoprawny format")]
         public string PostalCode { get; set; }
 
-        [Required]
-        [Range(1, 5000)]
+        [Required(ErrorMessage = "Pole jest wymagane")]
+        [Range(1, 5000,ErrorMessage ="Niepoprawna wartość")]
         public int Number { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Pole jest wymagane")]
         public int CountyId { get; set; }
     }
 }
