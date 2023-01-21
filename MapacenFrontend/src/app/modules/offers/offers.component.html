@@ -4,7 +4,7 @@
     class="disclaimer"
     *ngIf="isNotLogged && !countyId"
   >
-    Aby korzystać ze strony wybierz najpierw interesujący Cię region lub zaloguj się
+    Aby korzystać z serwisu, wybierz interesujący Cię region lub zaloguj się
   </div>
   <span
     class="favourites-title"
@@ -43,7 +43,7 @@
             <div class="data--side">
               <img
                 class="photo"
-                [src]="'https://mapacenio.azurewebsites.net/api/file?fileName=' + offer.product.imageName"
+                [src]="'https://localhost:7105/api/file?fileName=' + offer.product.imageName"
               >
             </div>
             <span class="data--center">
@@ -173,7 +173,7 @@
           </div>
           <ng-template #noComments>
             <span class="no-comments">
-              Brak komentarzy :(((
+              Brak komentarzy
             </span>
           </ng-template>
 
@@ -183,7 +183,7 @@
 
     <div class="paging">
       <span *ngIf="isNotLogged">
-        Aby odblokować wszystkie możliwości strony proszę się zalogować
+        Aby odblokować wszystkie możliwości strony, proszę się zalogować
       </span>
       <button
         [disabled]="page <= 1 || isNotLogged"
@@ -209,7 +209,7 @@
       class="noData"
     >
       <span>
-        Brak ofert :(
+        Brak ofert
       </span>
       <span>
         Proszę zmienić filtrację produktów lub sprawdzić w innym powiacie
@@ -220,7 +220,7 @@
       class="noData"
     >
       <span>
-        Brak ulubionych :(
+        Brak ulubionych
       </span>
       <span>
         Proszę dodać jakieś oferty do ulubionych

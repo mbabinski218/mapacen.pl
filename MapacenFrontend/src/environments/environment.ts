@@ -4,7 +4,7 @@ export const environment: Environment = {
   production: false,
 
   backend: '',
-  httpBackend: 'https://mapacenio.azurewebsites.net',
+  httpBackend: 'https://localhost:7105',
 };
 
 interface Environment {
