@@ -1,14 +1,19 @@
 # mapacen.pl
-5th semester software engineering project
+3rd year 5th semester Computer Science - Software Engineering project
 
+# Division of tasks:
 
-Chłopaki czytelny kod pls\
-Komentujcie każdy plik, klasę, metodę, oraz poszczególne atrybuty\
-Uwaga komentarze zgodne z DOXYGEN!!!\
-Najlepiej dodać sobie addon w VS
+## Frontend:
+- Filip - https://github.com/corosto
+- Karol - https://github.com/my-memory-leaked
+- Dominik - https://github.com/DominikBarys
 
-# Podział na zadania:
+## Backend:
+- Mateusz - https://github.com/matebab551
+- Janek - https://github.com/PanJan44
 
-Frontend:
+## Designer:
+- Wiktor - https://github.com/wm1511
 
-Backend:
+**Copyright (C) 2023**
+**All rights reserved.**
