@@ -42,7 +42,7 @@ export class OfferModifyComponent implements OnInit {
       if (price.charAt(price.length - 2) === '.') {
         additionalZero = '0';
       }
-      
+
       this.offersFixedNames.push({
         id: res.id,
         changedName: 'id: ' + res.id + ' | ' + res.product.name + ' | ' + res.price + additionalZero + 'zł',

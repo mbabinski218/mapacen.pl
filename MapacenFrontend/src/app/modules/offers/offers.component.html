@@ -1,5 +1,9 @@
 <div class="container">
-  <disable-area *ngIf="isNotLogged && !countyId"></disable-area>
+  <disable-area
+    class="chuj"
+    *ngIf="isNotLogged && !countyId"
+  >
+  </disable-area>
   <div
     class="disclaimer"
     *ngIf="isNotLogged && !countyId"
@@ -40,7 +44,7 @@
           [expandedHeight]="'125px'"
         >
           <div class="max">
-            <div class="data--side">
+            <div class="data--side pic">
               <img
                 class="photo"
                 [src]="'https://localhost:7105/api/file?fileName=' + offer.product.imageName"
@@ -60,12 +64,11 @@
               </span>
             </span>
             <div class="data--side">
-              <span
-                *ngIf="isAdmin"
-                class="id"
-              >
-                &nbsp;Id oferty: {{ offer.id }}
-              </span>
+              <div class="id">
+                <span *ngIf="isAdmin">
+                  &nbsp;Id oferty: {{ offer.id }}
+                </span>
+              </div>
               <span class="price">
                 {{ offer.price | setPrecision }} zł
               </span>
