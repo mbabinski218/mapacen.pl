@@ -9,7 +9,7 @@
 - Dominik - https://github.com/DominikBarys
 
 ## Backend:
-- Mateusz - https://github.com/matebab551
+- Mateusz - https://github.com/mbabinski218
 - Janek - https://github.com/PanJan44
 
 ## Designer:
