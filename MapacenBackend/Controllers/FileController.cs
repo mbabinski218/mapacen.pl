@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.StaticFiles;
 
 namespace MapacenBackend.Controllers
 {
-    [Route("file")]
+    [Route("api/file")]
     [ApiController]
     public class FileController : ControllerBase
     {

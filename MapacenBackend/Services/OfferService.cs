@@ -191,20 +191,18 @@ namespace MapacenBackend.Services
         {
             var product = _dbContext
                 .Products
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefault(p => p.Id == id)
+            ?? throw new NotFoundException("Wybrany produkt nie istnieje");
 
-            if (product == null)
-                throw new NotFoundException("Wybrany produkt nie istnieje");
             return product;
         }
 
         private SalesPoint GetSalesPointById(int id)
         {
             var salesPoint = _dbContext.SalesPoints
-                .FirstOrDefault(s => s.Id == id);
+                .FirstOrDefault(s => s.Id == id)
+            ?? throw new NotFoundException("Wybrany punkt sprzedaży nie istnieje");
 
-            if (salesPoint == null)
-                throw new NotFoundException("Wybrany punkt sprzedaży nie istnieje");
             return salesPoint;
         }
 

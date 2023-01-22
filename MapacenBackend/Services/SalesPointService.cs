@@ -75,7 +75,8 @@ namespace MapacenBackend.Services
                 .SalesPoints
                 .Include(s => s.Address)
                     .ThenInclude(a => a.County)
-                .Where(s => countyId == null || s.Address.CountyId == countyId);
+                .Where(s => countyId == null || s.Address.CountyId == countyId)
+                .OrderBy(s=>s.Name);
 
             return _mapper.Map<IEnumerable<SalesPointDto>>(salesPoints);
 
